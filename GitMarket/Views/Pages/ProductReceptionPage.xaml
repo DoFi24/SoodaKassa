@@ -1,0 +1,114 @@
+﻿<Page x:Class="GitMarket.Views.Pages.ProductReceptionPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:GitMarket.Views.Pages"
+      xmlns:vm="clr-namespace:GitMarket.ViewModels.PagesViewModels"
+      d:DataContext="{d:DesignInstance vm:ProductReceptionPageViewModel}"
+      mc:Ignorable="d" 
+      d:DesignHeight="540" d:DesignWidth="900"
+      Title="{Binding PageTitle}">
+    
+    <Grid Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="20" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20" />
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="20" />
+            <ColumnDefinition Width="5*" />
+            <ColumnDefinition Width="20" />
+        </Grid.ColumnDefinitions>
+
+        <Border Background="white" Padding="5" CornerRadius="6" Grid.Column="1" Grid.Row="1">
+            <DataGrid  ColumnHeaderStyle="{DynamicResource hederstyle_Kuxne}" IsReadOnly="True"
+                      ItemsSource="{Binding RequestsList, UpdateSourceTrigger=PropertyChanged}" 
+                      SelectedItem="{Binding SelectedRequest,UpdateSourceTrigger=PropertyChanged}" 
+                      ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                      RowHeight="35" CanUserAddRows="False" BorderThickness="0"
+                      Background="White" CellStyle="{DynamicResource requestProductCell}"
+                      RowBackground="White" SelectionMode="Single"
+                      CanUserReorderColumns="False" VerticalScrollBarVisibility="Hidden" 
+                      VerticalGridLinesBrush="Transparent" HorizontalGridLinesBrush="Transparent" 
+                      AutoGenerateColumns="False" CanUserResizeRows="False" CanUserDeleteRows="False" CanUserResizeColumns="false"              
+                      HeadersVisibility="Column" CanUserSortColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Width="1.5*"  Header="Магазин">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding from_shop.name}" HorizontalAlignment="Center" FontSize="15"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Width="1.2*"  Header="Дата">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding prihod_date,StringFormat=dd.MM.yyyy HH:mm}" HorizontalAlignment="Center" FontSize="15"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
+
+        <Border  Grid.Column="3" Grid.Row="1">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="60" />
+                </Grid.RowDefinitions>
+                <Border Background="white" CornerRadius="6" Padding="5">
+                    <DataGrid  RowHeight="35" AutoGenerateColumns="False" BorderThickness="0" Background="white" 
+                      CanUserAddRows="False" CanUserDeleteRows="False"
+                      ColumnHeaderStyle="{DynamicResource hederstyle_Kuxne}" 
+                      ItemsSource="{Binding SelectedRequest.prihods_details,UpdateSourceTrigger=PropertyChanged}"
+                      RowBackground="White" SelectionMode="Single"
+                      CanUserReorderColumns="False" VerticalScrollBarVisibility="Hidden" 
+                      VerticalGridLinesBrush="Transparent" HorizontalGridLinesBrush="Transparent" 
+                      CanUserResizeRows="False"  CanUserResizeColumns="false"              
+                      HeadersVisibility="Column" CanUserSortColumns="False"
+                      CellStyle="{DynamicResource requestProductCell}"
+                      SelectedItem="{Binding SelectedProduct,UpdateSourceTrigger=PropertyChanged}">
+                        <DataGrid.Columns>
+                            <DataGridCheckBoxColumn Header="Принять" Binding="{Binding IsCheked}" Width="0.4*" />
+                            <DataGridTextColumn FontSize="16" IsReadOnly="True" Header="Наименование" Width="*" Binding="{Binding product_name}"/>
+                            <DataGridTemplateColumn Header="Кол-во" Width="0.3*">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button HorizontalAlignment="Stretch" Height="30" VerticalAlignment="Stretch" 
+                                            HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
+                                            Tag="{Binding product_name}"  FontWeight="Normal"
+                                            Content="{Binding quantity,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" 
+                                            Command="{Binding DataContext.ChangeProductQuantityCommand,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type DataGrid}}}"
+                                            BorderThickness="0" Background="{x:Null}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Width="1*" IsReadOnly="False" Header="Примечание">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button  MinWidth="220" Background="{x:Null}" BorderThickness="0 0 0 0.3" 
+                                                 Content="{Binding comment, UpdateSourceTrigger=PropertyChanged}" 
+                                                 Command="{Binding DataContext.CommentSelectedProductsCommand,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type DataGrid}}}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Border>
+
+
+                <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button Margin="10 0 10 0" Width="150" Height="45" Background="#3B9AAE" Foreground="white" Command="{Binding AcceptProductsCommand}" BorderThickness="0" Content="Сохранить" />
+
+                    <Button Margin="10 0 10 0" Width="150" Height="45" Foreground="#3B9AAE" Background="white" Command="{Binding ExitCommand}" BorderBrush="#3B9AAE" BorderThickness="2" Content="Отмена" />
+
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Page>

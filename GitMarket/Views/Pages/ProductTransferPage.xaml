@@ -1,0 +1,172 @@
+﻿<Page x:Class="GitMarket.Views.Pages.ProductTransferPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:GitMarket.Views.Pages"
+      xmlns:vm="clr-namespace:GitMarket.ViewModels.PagesViewModels"
+      mc:Ignorable="d" d:Height="540" d:Width="900"
+      d:DataContext="{d:DesignInstance vm:ProductTransferPageViewModel}"
+      Title="{Binding PageTitle,UpdateSourceTrigger=PropertyChanged}">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="30" />
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="30" />
+            <ColumnDefinition Width="5*" />
+            <ColumnDefinition Width="30" />
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" />
+            <RowDefinition Height="50" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+
+        <Border Margin="0 15 0 0" Padding="5" CornerRadius="6" Background="white" Grid.Row="1" Grid.Column="1">
+            <ComboBox Background="White" HorizontalAlignment="Stretch" 
+          Style="{StaticResource {x:Static ToolBar.ComboBoxStyleKey}}" BorderThickness="0" SelectedItem="{Binding SelectedSklad,UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding SkladsComboBoxItems,UpdateSourceTrigger=PropertyChanged}" SelectedIndex="0">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Height="25" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FontWeight="DemiBold" Background="White" FontSize="15" Margin="30 0 0 0" TextAlignment="Center" Text="{Binding Name}"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+        </Border>
+
+        <Border Margin="0 15 0 0" CornerRadius="6" Background="White" Padding="5" Grid.Column="1">
+            <Grid >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="8*" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+                <TextBox FontSize="16" VerticalContentAlignment="Center" BorderThickness="0 0 .5 0" Text="{Binding FiltrText,UpdateSourceTrigger=PropertyChanged}"/>
+                <Button Grid.Column="1" Command="{Binding SearchByImageCommand}" Background="{x:Null}" BorderThickness="0 0 0 0">
+                    <Image Height="20" Source="/Resources/DefaultIcons/search.png"/>
+                </Button>
+            </Grid>
+        </Border>
+
+        <Border Margin="0 15 0 80" Grid.Column="1" Grid.Row="2" Padding="5" CornerRadius="6" Background="white">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="10*" />
+                    <RowDefinition Height="1*" />
+                </Grid.RowDefinitions>
+                <ListBox  Background="White" SelectionMode="Extended"
+                      BorderThickness="0"
+                      ItemsSource="{Binding AllProductsCollection, UpdateSourceTrigger=PropertyChanged}"
+                      SelectedItem="{Binding SelectedProductIn, UpdateSourceTrigger=PropertyChanged}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Height="25">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition Width="1*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Foreground="Black" Margin="10 0 0 0" TextAlignment="Left" Text="{Binding SrokEnd,StringFormat=dd.MM.yyyy}" Width="150"/>
+                                <TextBlock Foreground="Black" TextAlignment="Center" Grid.Column="1" Text="{Binding Count,StringFormat=0.00}" />
+                                <TextBlock Foreground="Black" TextAlignment="Center" Grid.Column="2" Text="{Binding Comment}"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                    <ListBox.GroupStyle>
+                        <GroupStyle>
+                            <GroupStyle.ContainerStyle>
+                                <Style TargetType="{x:Type GroupItem}">
+                                    <Setter Property="Margin" Value="0,0,0,5"/>
+                                    <Setter Property="Background" Value="White" />
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type GroupItem}">
+                                                <Expander IsExpanded="false" Background="White" BorderBrush="Black" Foreground="#FFEEEEEE" BorderThickness="0 0 0 .5">
+                                                    <Expander.Header>
+                                                        <DockPanel>
+                                                            <TextBlock FontWeight="Bold" Text="{Binding Path=Name}" Foreground="Black" Margin="10,0,0,0" Width="120"/>
+                                                            <TextBlock FontWeight="Bold" Foreground="Black" Margin="15,0,0,0" Text="{Binding Path=ItemCount, StringFormat=Количество : 0}"/>
+                                                        </DockPanel>
+                                                    </Expander.Header>
+                                                    <Expander.Content>
+                                                        <ItemsPresenter Margin="25 5 0 0"/>
+                                                    </Expander.Content>
+                                                </Expander>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </GroupStyle.ContainerStyle>
+                        </GroupStyle>
+                        <GroupStyle>
+                            <GroupStyle.HeaderTemplate>
+                                <DataTemplate>
+                                    <DockPanel Margin="0 10 0 10" Background="White">
+                                        <TextBlock Text="{Binding Path=Name ,StringFormat=dd.MM.yyyy}"      Foreground="Black" FontWeight="DemiBold" Margin="80,0,0,0"/>
+                                    </DockPanel>
+                                </DataTemplate>
+                            </GroupStyle.HeaderTemplate>
+                        </GroupStyle>
+                    </ListBox.GroupStyle>
+                </ListBox>
+            </Grid>
+        </Border>
+
+        <Border VerticalAlignment="Bottom" Background="White" CornerRadius="6" Height="35" Margin="0 0 0 30" Grid.Column="1" Grid.Row="2" Padding="5">
+            <Button Background="Transparent" BorderThickness="0" Content="{Binding MagazinName}" Command="{Binding SelectMagazinCommand}"/>
+        </Border>
+
+        <Border Margin="0 15 0 30" Padding="5 5 8 5" Grid.Column="3" CornerRadius="6" Background="white" Grid.RowSpan="3">
+            <DataGrid Background="White" RowHeight="35" SelectedItem="{Binding SelectedProduct}"
+                      BorderThickness="0" ColumnHeaderStyle="{DynamicResource hederstyle_Kuxne}"
+                      RowBackground="White" SelectionMode="Single" CellStyle="{DynamicResource cellStyleForTransfer}"
+                      CanUserReorderColumns="False" VerticalScrollBarVisibility="Hidden" 
+                      VerticalGridLinesBrush="Transparent" HorizontalGridLinesBrush="Transparent" 
+                      AutoGenerateColumns="False" CanUserResizeRows="False" CanUserDeleteRows="False" CanUserResizeColumns="false" 
+                      CanUserAddRows="False" ItemsSource="{Binding SelectedProductsList, UpdateSourceTrigger=PropertyChanged}"
+                      HeadersVisibility="Column" CanUserSortColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Width="3*" Binding="{Binding Name}"  IsReadOnly="True"  Header="Наименование"/>
+                    <DataGridTemplateColumn Header="Количество" Width="*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button HorizontalAlignment="Stretch" Height="30" VerticalAlignment="Stretch" 
+                                        HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
+                                        Tag="{Binding Name}"  FontWeight="Normal"
+                                        Content="{Binding Count,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" 
+                                        Command="{Binding DataContext.ChangeProductQuantityCommand,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type DataGrid}}}"
+                                        BorderThickness="0" Background="{x:Null}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Width="1.5*" IsReadOnly="False"  Header="Примечание">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button  MinWidth="120" Background="{x:Null}" BorderThickness="0 0 0 0.8" Content="{Binding Comment, UpdateSourceTrigger=PropertyChanged}" Command="{Binding DataContext.CommentSelectedProductsCommand,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type DataGrid}}}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Width=".2*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Background="{x:Null}" Command="{Binding DataContext.DeleteInSelectedProductsCommand,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type DataGrid}}}" BorderThickness="0">
+                                    <Image Source="/Images/Close_500px.png"/>
+                                </Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
+
+        <Grid Background="Transparent" HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Column="3" Grid.Row="3">
+            <Button Background="Transparent" Command="{Binding SendRequestCommand}" VerticalAlignment="Bottom" Margin="0 0 10 40" Height="60" Width="60" BorderThickness="0">
+                <Border BorderThickness="1" BorderBrush="#3E9BAF" Padding="10" Background="White" CornerRadius="35" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <Image Source="/Resources/Icons/Vector.png" Height="40"/>
+                </Border>
+            </Button>
+        </Grid>
+
+    </Grid>
+
+</Page>

@@ -1,0 +1,51 @@
+﻿<Page x:Class="GitMarket.Views.Pages.ProductOrderPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:vm="clr-namespace:GitMarket.ViewModels.PagesViewModels"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      mc:Ignorable="d" d:DesignHeight="540" d:DesignWidth="900"
+      d:DataContext="{d:DesignInstance vm:ProductOrderPageViewModel}"
+      Title="ProductOrderPage">
+    <Grid >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+        
+        <TextBox Style="{DynamicResource OrderPageTextBox}"
+                 Text="{Binding SearchTextBox,UpdateSourceTrigger=PropertyChanged}"/>
+        
+        <Border Margin="20 8 20 30"  Grid.Row="1" CornerRadius="6" 
+                Padding="5" Background="White">
+            <DataGrid Style="{DynamicResource OderPageDataGrid}" 
+                      ItemsSource="{Binding}" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="Black" TextBlock.FontWeight="SemiBold" TextBlock.FontSize="16">
+                <DataGrid.Columns>
+                    <DataGridTextColumn FontSize="18" IsReadOnly="True" Header="Наименование" Width="350" Binding="{Binding}"/>
+                    <DataGridTextColumn FontSize="18" IsReadOnly="True" Header="Количество" Width="*" Binding="{Binding}"/>
+                    <DataGridTextColumn FontSize="18" IsReadOnly="false" Header="Примечание" Width="*" Binding="{Binding}"/>
+                    <DataGridTemplateColumn Width="0.4*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button BorderBrush="red" Background="Transparent" Uid="{Binding}" Content="Удалить"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
+
+        <DataGrid Style="{DynamicResource OderPageDataGrid_1}" Grid.RowSpan="2"
+                  ItemsSource="{Binding }">
+            <DataGrid.Columns>
+                <DataGridTextColumn FontSize="14" IsReadOnly="True" Header="Наименование" Width="*" Binding="{Binding}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Button Command="{Binding}" Margin="35" Opacity="0.5" HorizontalAlignment="Right" VerticalAlignment="Bottom" 
+                Width="80" Height="80" Grid.Row="1" BorderThickness="0" Background="Transparent">
+            <Border CornerRadius="40" BorderBrush="#6495ED" BorderThickness="1" Padding="15">
+                <Image Source="/Resources/Icons/Vector.png"/>
+            </Border>
+        </Button>
+    </Grid>
+</Page>

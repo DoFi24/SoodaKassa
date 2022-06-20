@@ -1,0 +1,25 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+
+    <BitmapImage x:Key="Uid0" UriSource="/Resources/MenuButtonIcons/Group 6885.png" />
+    <BitmapImage x:Key="Uid1" UriSource="/Resources/MenuButtonIcons/Iconography - Caesarzkn.png" />
+    <BitmapImage x:Key="Uid2" UriSource="/Resources/MenuButtonIcons/Shape.png" />
+    <BitmapImage x:Key="Uid3" UriSource="/Resources/MenuButtonIcons/Iconography - Caesarzkn-1.png" />
+    <BitmapImage x:Key="Uid4" UriSource="/Resources/MenuButtonIcons/Iconography - Caesarzkn-2.png" />
+    <BitmapImage x:Key="Uid5" UriSource="/Resources/MenuButtonIcons/Form.png" />
+    <BitmapImage x:Key="Uid6" UriSource="/Resources/MenuButtonIcons/Iconography - Caesarzkn-3.png" />
+    <BitmapImage x:Key="Uid7" UriSource="/Resources/MenuButtonIcons/Iconography - Caesarzkn (4).png" />
+    <BitmapImage x:Key="Uid8" UriSource="/Resources/MenuButtonIcons/Setting_alt_line.png" />
+
+
+    <BitmapImage x:Key="lUid0" UriSource="/Resources/MenuButtonIcons/whiteIcons/Group 6885.png" />
+    <BitmapImage x:Key="lUid1" UriSource="/Resources/MenuButtonIcons/whiteIcons/Shape.png" />
+    <BitmapImage x:Key="lUid2" UriSource="/Resources/MenuButtonIcons/whiteIcons/Iconography - Caesarzkn (5).png" />
+    <BitmapImage x:Key="lUid3" UriSource="/Resources/MenuButtonIcons/whiteIcons/Shape-1.png" />
+    <BitmapImage x:Key="lUid4" UriSource="/Resources/MenuButtonIcons/whiteIcons/Iconography - Caesarzkn.png" />
+    <BitmapImage x:Key="lUid5" UriSource="/Resources/MenuButtonIcons/whiteIcons/Iconography - Caesarzkn-1.png" />
+    <BitmapImage x:Key="lUid6" UriSource="/Resources/MenuButtonIcons/whiteIcons/Form.png" />
+    <BitmapImage x:Key="lUid7" UriSource="/Resources/MenuButtonIcons/whiteIcons/Iconography - Caesarzkn-2.png" />
+    <BitmapImage x:Key="lUid8" UriSource="/Resources/MenuButtonIcons/whiteIcons/Setting_alt_line.png" />
+</ResourceDictionary>

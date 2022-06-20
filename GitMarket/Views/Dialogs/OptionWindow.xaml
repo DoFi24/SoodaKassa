@@ -1,0 +1,85 @@
+﻿<Window x:Class="GitMarket.Views.Dialogs.OptionWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GitMarket.Views.Dialogs"
+        mc:Ignorable="d" WindowStyle="None"
+        Title="Настройки" Height="270" Width="360">
+    <Grid Background="Transparent">
+        <Grid.Resources>
+            <Style TargetType="Button">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate>
+                            <Border CornerRadius="30" Background="{TemplateBinding Background}" BorderThickness="0">
+                                <TextBlock Margin="0 2 0 0" HorizontalAlignment="Center" FontSize="14" Foreground="White" Text="{TemplateBinding Button.Content}"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="45" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="90" />
+        </Grid.RowDefinitions>
+        <Grid Background="White" MouseDown="Grid_MouseDown" Opacity="0.96"/>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="35" />
+                <ColumnDefinition Width="35" />
+            </Grid.ColumnDefinitions>
+            <Button Click="Button_Click_2" Grid.Column="1" Width="25" Height="25"/>
+            <Button Click="Button_Click" Grid.Column="2" Width="25" Height="25" Background="#E9524A"/>
+        </Grid>
+        <Grid Grid.Row="1" Grid.RowSpan="2" Background="White" Opacity="0.91"/>
+        <Grid Grid.Row="1">
+            <Label FontSize="14" FontWeight="DemiBold" Margin="0 15 130 0" Content="КKМ" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+            <Label FontSize="14" FontWeight="DemiBold" Margin="25 15 0 0" Content="Чековый принтер" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <ComboBox x:Name="printers" Margin="10 50 0 0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="160" Height="25"/>
+            <ComboBox x:Name="printerskkm" Margin="0 50 10 0" HorizontalAlignment="Right" VerticalAlignment="Top" Width="160" Height="25"/>
+        </Grid>
+        <Grid Grid.Row="2">
+            <Grid.Resources>
+                <Style TargetType="Button">
+                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="FontSize" Value="16"/>
+                    <Setter Property="FontWeight" Value="DemiBold"/>
+                    <Setter Property="Width" Value="135"/>
+                    <Setter Property="Height" Value="40"/>
+                    <Setter Property="Background" Value="#3B9AAE" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate>
+                                <Border CornerRadius="2" Background="{TemplateBinding Background}" BorderThickness="0">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Content="{TemplateBinding Button.Content}"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Opacity" Value="0.6" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Opacity" Value="0.8" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Resources>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+
+            <Button Content="Сохранить" Grid.Row="1" Grid.Column="0" Click="Button_Click_1"/>
+            <Button Content="Отмена" Grid.Row="1" Grid.Column="2" Click="Button_Click"/>
+        </Grid>
+    </Grid>
+</Window>

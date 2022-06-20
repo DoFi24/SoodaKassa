@@ -1,0 +1,202 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\BackgroundImage\q1.png" />
+    <None Remove="Resources\BackgroundImage\q2.png" />
+    <None Remove="Resources\BackgroundImage\q3.png" />
+    <None Remove="Resources\Base\logo1.png" />
+    <None Remove="Resources\Base\logo2.png" />
+    <None Remove="Resources\DefaultIcons\addproduct.png" />
+    <None Remove="Resources\DefaultIcons\barcode.png" />
+    <None Remove="Resources\DefaultIcons\cancel.png" />
+    <None Remove="Resources\DefaultIcons\close.png" />
+    <None Remove="Resources\DefaultIcons\credit_card.png" />
+    <None Remove="Resources\DefaultIcons\discount.png" />
+    <None Remove="Resources\DefaultIcons\lock.png" />
+    <None Remove="Resources\DefaultIcons\login.png" />
+    <None Remove="Resources\DefaultIcons\manyproducts.png" />
+    <None Remove="Resources\DefaultIcons\menu.png" />
+    <None Remove="Resources\DefaultIcons\money.png" />
+    <None Remove="Resources\DefaultIcons\multiply.png" />
+    <None Remove="Resources\DefaultIcons\password.png" />
+    <None Remove="Resources\DefaultIcons\product.png" />
+    <None Remove="Resources\DefaultIcons\restore.png" />
+    <None Remove="Resources\DefaultIcons\search.png" />
+    <None Remove="Resources\DefaultIcons\searchIcon.png" />
+    <None Remove="Resources\DefaultIcons\subtract.png" />
+    <None Remove="Resources\DefaultIcons\unnamed.png" />
+    <None Remove="Resources\GIFs\barcode-scan.gif" />
+    <None Remove="Resources\Icons\Vector.png" />
+    <None Remove="Resources\MenuButtonIcons\Form.png" />
+    <None Remove="Resources\MenuButtonIcons\Group 6885.png" />
+    <None Remove="Resources\MenuButtonIcons\Iconography - Caesarzkn %284%29.png" />
+    <None Remove="Resources\MenuButtonIcons\Iconography - Caesarzkn-1.png" />
+    <None Remove="Resources\MenuButtonIcons\Iconography - Caesarzkn-2.png" />
+    <None Remove="Resources\MenuButtonIcons\Iconography - Caesarzkn-3.png" />
+    <None Remove="Resources\MenuButtonIcons\Iconography - Caesarzkn.png" />
+    <None Remove="Resources\MenuButtonIcons\Setting_alt_line.png" />
+    <None Remove="Resources\MenuButtonIcons\Shape-1.png" />
+    <None Remove="Resources\MenuButtonIcons\Shape.png" />
+    <None Remove="Resources\MenuButtonIcons\whiteIcons\Form.png" />
+    <None Remove="Resources\MenuButtonIcons\whiteIcons\Group 6885.png" />
+    <None Remove="Resources\MenuButtonIcons\whiteIcons\Iconography - Caesarzkn %285%29.png" />
+    <None Remove="Resources\MenuButtonIcons\whiteIcons\Iconography - Caesarzkn-1.png" />
+    <None Remove="Resources\MenuButtonIcons\whiteIcons\Iconography - Caesarzkn-2.png" />
+    <None Remove="Resources\MenuButtonIcons\whiteIcons\Iconography - Caesarzkn-3.png" />
+    <None Remove="Resources\MenuButtonIcons\whiteIcons\Iconography - Caesarzkn.png" />
+    <None Remove="Resources\MenuButtonIcons\whiteIcons\Setting_alt_line.png" />
+    <None Remove="Resources\MenuButtonIcons\whiteIcons\Shape-1.png" />
+    <None Remove="Resources\MenuButtonIcons\whiteIcons\Shape.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\DefaultIcons\addproduct.png" />
+    <Resource Include="Resources\DefaultIcons\barcode.png" />
+    <Resource Include="Resources\DefaultIcons\credit_card.png" />
+    <Resource Include="Resources\DefaultIcons\discount.png" />
+    <Resource Include="Resources\DefaultIcons\login.png" />
+    <Resource Include="Resources\DefaultIcons\manyproducts.png" />
+    <Resource Include="Resources\DefaultIcons\money.png" />
+    <Resource Include="Resources\DefaultIcons\password.png" />
+    <Resource Include="Resources\DefaultIcons\product.png" />
+    <Resource Include="Resources\DefaultIcons\unnamed.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\GIFs\barcode-scan.gif">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\MenuButtonIcons\Iconography - Caesarzkn-1.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Fonts\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\BackgroundImage\q1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\BackgroundImage\q2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\BackgroundImage\q3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Base\logo1.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Base\logo2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\DefaultIcons\cancel.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\DefaultIcons\close.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\DefaultIcons\lock.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\DefaultIcons\menu.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\DefaultIcons\multiply.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\DefaultIcons\restore.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\DefaultIcons\search.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\DefaultIcons\searchIcon.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\DefaultIcons\subtract.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <EmbeddedResource Include="Resources\Icons\Vector.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <PackageReference Include="MaterialDesignThemes" Version="4.4.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="WpfAnimatedGif" Version="2.0.2" />
+    <ProjectReference Include="..\GitMarket.Domain\GitMarket.Domain.csproj" />
+    <Resource Include="Resources\MenuButtonIcons\Form.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\MenuButtonIcons\Group 6885.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\MenuButtonIcons\Iconography - Caesarzkn (4).png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\MenuButtonIcons\Iconography - Caesarzkn-2.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\MenuButtonIcons\Iconography - Caesarzkn-3.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\MenuButtonIcons\Iconography - Caesarzkn.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\MenuButtonIcons\Setting_alt_line.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\MenuButtonIcons\Shape-1.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\MenuButtonIcons\Shape.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\MenuButtonIcons\whiteIcons\Form.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\MenuButtonIcons\whiteIcons\Group 6885.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\MenuButtonIcons\whiteIcons\Iconography - Caesarzkn-1.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\MenuButtonIcons\whiteIcons\Iconography - Caesarzkn-2.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\MenuButtonIcons\whiteIcons\Iconography - Caesarzkn-3.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\MenuButtonIcons\whiteIcons\Iconography - Caesarzkn.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\MenuButtonIcons\whiteIcons\Setting_alt_line.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\MenuButtonIcons\whiteIcons\Shape-1.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Settings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+</Project>
