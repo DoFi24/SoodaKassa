@@ -57,6 +57,18 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style TargetType="{x:Type DataGridColumnHeader}" x:Key="Service_Page_DataGrid" >
+        <Setter Property="FontSize" Value="1"/>
+        <Setter Property="Height" Value="0"/>
+        <Setter Property="BorderBrush" Value="Gray"/>
+        <Setter Property="BorderThickness" Value=".5"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+    </Style>
+    
     <Style TargetType="DataGrid" x:Key="grid_Kuxne">
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="BorderBrush" Value="#DDDDDD" />

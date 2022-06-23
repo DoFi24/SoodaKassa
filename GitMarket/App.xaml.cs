@@ -2,41 +2,67 @@
 using GitMarket.Domain.Models.APIResponseRequest;
 using GitMarket.Infrastructure.APIs;
 using GitMarket.Views.MainWindows;
-using GitMarket.Views.Pages;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Windows;
-using GitMarket.ViewModels.PagesViewModels;
-using GitMarket.Views.Dialogs;
 
 namespace GitMarket
 {
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
+    /// 
     public partial class App : Application
     {
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        static extern bool SetForegroundWindow(IntPtr hWnd);
+
         protected override async void OnStartup(StartupEventArgs e)
         {
-            if (Setts.Default.IsSaveLoginPassword)
+            if (IsOnce())
             {
-                if (await APIRequests.GetIsValidAsync())
+                if (Setts.Default.IsSaveLoginPassword)
                 {
-                    new MainNavigationWindow().Show();
+                    if (await APIRequests.GetIsValidAsync())
+                    {
+                        new MainNavigationWindow().Show();
+                    }
+                    else
+                    {
+                        new LoginWindow().Show();
+                        MessageBox.Show("Не валидный токен!");
+                    }
                 }
                 else
                 {
                     new LoginWindow().Show();
-                    MessageBox.Show("Не валидный токен!");
                 }
-
+                base.OnStartup(e);
             }
-            else
+            else 
             {
-                new LoginWindow().Show();
+                MessageBox.Show("Программа уже была открыта!","Окно",MessageBoxButton.OK,MessageBoxImage.Error);
             }
-            base.OnStartup(e);
         }
-
+        private static bool IsOnce()
+        {
+            int countMyApp = 0;
+            foreach (Process process in Process.GetProcesses())
+            {
+                if (System.AppDomain.CurrentDomain.FriendlyName.IndexOf(process.ProcessName) == 0)
+                {
+                    countMyApp++;
+                }
+            }
+            if (countMyApp > 1)
+            {
+                return false;
+            }
+            return true;
+        }
         protected async override void OnExit(ExitEventArgs e)
         {
             await APIRequests.SaveChangesAsync(new JournalApiModel

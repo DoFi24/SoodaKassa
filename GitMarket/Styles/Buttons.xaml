@@ -252,7 +252,7 @@
 
     <Style TargetType="Button" x:Key="MenuItemsButton">
         <Setter Property="Background" Value="White" />
-        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="BorderThickness" Value="0 0 0 1"/>
         <Setter Property="Height" Value="40"/>
         <Setter Property="Margin" Value="0 10 0 10"/>
         <Setter Property="FontWeight" Value="DemiBold"/>
@@ -266,12 +266,9 @@
                                 <ColumnDefinition Width="60" />
                                 <ColumnDefinition Width="1*" />
                             </Grid.ColumnDefinitions>
-                            <Image Margin="10" Name="limgButton"/>
-                            <Image Margin="10" Name="imgButton"/>
-
-
+                            <Image Margin="10 5 5 5" SnapsToDevicePixels="False" Stretch="Uniform" Name="limgButton"/>
+                            <Image Margin="10 5 5 5" SnapsToDevicePixels="False"  Stretch="Uniform" Name="imgButton"/>
                             <ContentPresenter Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="center" Content="{TemplateBinding Button.Content}"/>
-
                         </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
@@ -412,7 +409,7 @@
                         </Trigger>
                         <Trigger Property="Uid" Value="7" >
                             <Setter TargetName="imgButton" Property="Image.Source" Value="{StaticResource Uid7}"/>
-                            <Setter TargetName="limgButton" Property="Source" Value="{StaticResource lUid2}"/>
+                            <Setter TargetName="limgButton" Property="Source" Value="{StaticResource lUid7}"/>
 
                         </Trigger>
                         <Trigger Property="Uid" Value="8" >

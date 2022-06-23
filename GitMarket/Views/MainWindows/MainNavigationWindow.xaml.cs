@@ -19,7 +19,10 @@ namespace GitMarket.Views.MainWindows
     /// </summary>
     public partial class MainNavigationWindow : Window
     {
+        public bool _isNavigating = false;
         private MainNavigationWindowViewModel main;
+
+        private MainNavigationWindow SecondWindow;
         public MainNavigationWindow()
         {
             InitializeComponent();
@@ -203,6 +206,27 @@ namespace GitMarket.Views.MainWindows
         {
             Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
+        }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (_isNavigating)
+            {
+                if (WindowComboBox.SelectedIndex == 1)
+                {
+                    SecondWindow = new MainNavigationWindow
+                    {
+                        Owner = this,
+                        _isNavigating = true
+                    };
+                    SecondWindow.Show();
+                }
+                else
+                {
+                    Owner.Show();
+                }
+                this.Hide();
+            }
         }
     }
 }

@@ -8,7 +8,7 @@ namespace GitMarket.Infrastructure
 {
     public static class HotKeysStructure
     {
-        public static List<HotKeyModel> HotKeysDictionary { get; set; }
+        public static List<HotKeyModel> HotKeysDictionary;
         public static async Task<List<HotKeyModel>> GetHotKeys()
         {
             return new List<HotKeyModel>(await APIRequests.GetFromAPIAsync<HotKeyModel?>(

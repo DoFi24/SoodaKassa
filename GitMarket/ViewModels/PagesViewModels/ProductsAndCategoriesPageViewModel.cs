@@ -36,51 +36,11 @@ namespace GitMarket.ViewModels.PagesViewModels
                         }
                     }));
         }
-
-        private string? _searchTextBox;
-        public string? SearchTextBox
-        {
-            get { return _searchTextBox; }
-            set
-            {
-                Set(ref _searchTextBox, value);
-                if (value != null && value != string.Empty && value.Length > 1)
-                {
-                    GetSearchedText(value);
-                }
-                else SearchItems.Clear();
-            }
-        }
-        private async void GetSearchedText(string value)
-        {
-            var result = await APIRequests.GetFromAPIAsync<SaleProduct>(
-                new RequestModelGet
-                {
-                    page = 1,
-                    shopId = Setts.Default.ShopId,
-                    staffId = Setts.Default.StaffId,
-                    parameter = "get",
-                    pageSize = 1,
-                    data = new
-                    {
-                        barcode = new ArrayList { "=", value }
-                    }
-                });
-            SearchItems = new ObservableCollection<SaleProduct>(result.Where(s => s.Product_Name.Contains(value)).ToArray());
-        }
-
         private ObservableCollection<APICategories>? _categoryItems;
         public ObservableCollection<APICategories> CategoryItems
         {
             get { return _categoryItems; }
             set { Set(ref _categoryItems, value); }
-        }
-
-        private ObservableCollection<SaleProduct>? _searchItems = new();
-        public ObservableCollection<SaleProduct> SearchItems
-        {
-            get { return _searchItems; }
-            set { Set(ref _searchItems, value); }
         }
 
         private ObservableCollection<SaleProduct>? _productsCollection = new();

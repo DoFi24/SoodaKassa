@@ -4,7 +4,6 @@ using GitMarket.Domain.Models.APIResponseRequest;
 using GitMarket.Domain.Models.TitiModels.ProductsModel;
 using GitMarket.Infrastructure;
 using GitMarket.Infrastructure.APIs;
-using GitMarket.ViewModels.PagesViewModels;
 using GitMarket.Views.Dialogs;
 using GitMarket.Views.MainWindows;
 using GitMarket.Views.Pages;
@@ -25,11 +24,8 @@ namespace GitMarket.ViewModels.WindowsViewModels
         public MainNavigationWindowViewModel(MainNavigationWindow _mainWindow)
         {
             mainWindow = _mainWindow;
-            //_productsSalePageViewModel = new();
-            //ChangePage(_productsSalePage = new ProductsSalePage(_productsSalePageViewModel));
             GetHotKeys();
         }
-
         private async void GetHotKeys()
         {
             HotKeysStructure.HotKeysDictionary = await HotKeysStructure.GetHotKeys();
@@ -51,23 +47,6 @@ namespace GitMarket.ViewModels.WindowsViewModels
                 Set(ref _searchText, value);
             }
         }
-
-        #endregion
-
-        #region Windows
-
-        //public ProductReceptionPage? _productReceptionPage;
-        //public ProductTransferPage? _productTransferPage;
-        //public ProductOrderPage? _productOrderPage;
-        //public ProductsAndCategoriesPage? _productsAndCategoriesPage;
-        public OptionWindow _optionWindow;
-        //public ProductsSpisaniePage? _productsSpisaniePage;
-
-        //public ProductReceptionPageViewModel? _productReceptionPageViewModel;
-        //public ProductTransferPageViewModel? _productTransferPageViewModel;
-        //public ProductOrderPageViewModel? _productOrderPageViewModel;
-        //public ProductsAndCategoriesPageViewModel? _productsAndCategoriesPageViewModel;
-        //public ProductsSpisaniePageViewModel? _productsSpisaniePageViewModel;
 
         #endregion
 
@@ -281,19 +260,21 @@ namespace GitMarket.ViewModels.WindowsViewModels
         #region Search
         public void AddSelectedProduct()
         {
-            if (SearchSelectedProduct is not null && SearchSelectedProduct != new SaleProduct())
-                if (!SelectedProductsCollection.Any(s => s.Prihod_Detail_Id == SearchSelectedProduct.Prihod_Detail_Id))
-                {
-                    SearchSelectedProduct.QuantityCount = 1;
-                    SelectedProductsCollection.Add(SearchSelectedProduct);
-                }
-                else
-                {
-                    var product = SelectedProductsCollection.First(s => s.Prihod_Detail_Id == SearchSelectedProduct.Prihod_Detail_Id);
-                    product.QuantityCount++;
-                    SelectedProductsCollection.Remove(product);
-                    SelectedProductsCollection.Add(product);
-                }
+            if (SearchSelectedProduct is null || SearchSelectedProduct != new SaleProduct())
+                return;
+
+            if (!SelectedProductsCollection.Any(s => s.Prihod_Detail_Id == SearchSelectedProduct.Prihod_Detail_Id))
+            {
+                SearchSelectedProduct.QuantityCount = 1;
+                SelectedProductsCollection.Add(SearchSelectedProduct);
+            }
+            else
+            {
+                var product = SelectedProductsCollection.First(s => s.Prihod_Detail_Id == SearchSelectedProduct.Prihod_Detail_Id);
+                product.QuantityCount++;
+                SelectedProductsCollection.Remove(product);
+                SelectedProductsCollection.Add(product);
+            }
             SelectedProductItem = SelectedProductsCollection.Last();
             SearchSelectedProduct = null;
             GetCalculate();
@@ -384,7 +365,7 @@ namespace GitMarket.ViewModels.WindowsViewModels
                     new AddProductFromCollectionDialogWindow(products.ToList(), this).ShowDialog();
                 }
 
-                SelectedProductIndex = SelectedProductsCollection.Count-1;
+                SelectedProductIndex = SelectedProductsCollection.Count - 1;
                 GetCalculate();
             }
             else
@@ -412,8 +393,7 @@ namespace GitMarket.ViewModels.WindowsViewModels
                     new ServiceSaleWindow(this).ShowDialog();
                     break;
                 case "8":
-                    _optionWindow = new OptionWindow();
-                    _optionWindow.ShowDialog();
+                    new OptionWindow().ShowDialog();
                     break;
             }
             ExecuteOpenMenuCommand(null);
@@ -476,8 +456,10 @@ namespace GitMarket.ViewModels.WindowsViewModels
 
             Prodaja = await PayMethodAsync();
 
-            Thread.Sleep(100);
+            Thread.Sleep(300);
 
+            if (Prodaja is null || Prodaja == new ProdajaModel())
+                return;
             new PaymentEndDialogWindow(this).Show();
         }
 
