@@ -21,12 +21,14 @@ namespace GitMarket.Views.MainWindows
     {
         public bool _isNavigating = false;
         private MainNavigationWindowViewModel main;
-
         private MainNavigationWindow SecondWindow;
         public MainNavigationWindow()
         {
             InitializeComponent();
-            main = new MainNavigationWindowViewModel(this);
+            main = new MainNavigationWindowViewModel(this)
+            {
+                closeMainWindow = Close
+            };
             DataContext = main;
             ProgramStartWriteToJournal();
         }

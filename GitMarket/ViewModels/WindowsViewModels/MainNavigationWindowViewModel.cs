@@ -20,10 +20,10 @@ namespace GitMarket.ViewModels.WindowsViewModels
 {
     public class MainNavigationWindowViewModel : Base.BaseViewModel
     {
-        private MainNavigationWindow? mainWindow;
+        public delegate void CloseMainWindow();
+        public CloseMainWindow? closeMainWindow;
         public MainNavigationWindowViewModel(MainNavigationWindow _mainWindow)
         {
-            mainWindow = _mainWindow;
             GetHotKeys();
         }
         private async void GetHotKeys()
@@ -200,6 +200,14 @@ namespace GitMarket.ViewModels.WindowsViewModels
 
         #region Commands
 
+        private RelayCommand? _UDSSettingsCommand;
+        public RelayCommand? UDSSettingsCommand =>
+            _openMenuCommand ??= new RelayCommand(ExecuteUDSSettingsCommand, (object obj) => true);
+        private void ExecuteUDSSettingsCommand(object obj)
+        {
+            
+        }
+
         private RelayCommand? _openMenuCommand;
         public RelayCommand? OpenMenuCommand =>
             _openMenuCommand ??= new RelayCommand(ExecuteOpenMenuCommand, (object obj) => true);
@@ -242,7 +250,7 @@ namespace GitMarket.ViewModels.WindowsViewModels
                 }
             });
             new LoginWindow().Show();
-            mainWindow.Close();
+            closeMainWindow();
         }
 
         private RelayCommand? _closeApplicationCommand;
