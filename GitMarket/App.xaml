@@ -13,6 +13,7 @@
                 <ResourceDictionary Source="Styles/TextBlocks.xaml" />
                 <ResourceDictionary Source="Styles/ComboBoxs.xaml" />
                 <ResourceDictionary Source="Styles/TextBoxs.xaml" />
+                <ResourceDictionary Source="Styles/ListViewsStyles.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

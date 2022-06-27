@@ -18,23 +18,6 @@ namespace GitMarket.ViewModels.PagesViewModels
         {
             GetCategoriesAPI();
             _model = model;
-            GetUnCategoryProduct();
-        }
-        private async void GetUnCategoryProduct()
-        {
-            ProductsCollection = new ObservableCollection<SaleProduct>(await APIRequests.GetFromAPIAsync<SaleProduct>(
-                    new RequestModelGet
-                    {
-                        page = 1,
-                        shopId = Setts.Default.ShopId,
-                        staffId = Setts.Default.StaffId,
-                        parameter = "get",
-                        pageSize = 1,
-                        data = new
-                        {
-                            categoryId = new ArrayList { "=", "0" }
-                        }
-                    }));
         }
         private ObservableCollection<APICategories>? _categoryItems;
         public ObservableCollection<APICategories> CategoryItems
@@ -124,6 +107,8 @@ namespace GitMarket.ViewModels.PagesViewModels
             {
                 new APICategories { NAME = "Товары без категории", ID = 0 }
             };
+
+            SelectedCategoryItem = CategoryItems.Last();
         }
     }
 }

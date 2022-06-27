@@ -2,10 +2,10 @@
 {
     public class SaleProduct
     {
-        public int? Shop_Id { get; set; }
-        public int? Sklad_Id { get; set; }
-        public int? Prihod_Detail_Id { get; set; }
-        public int? Product_Id { get; set; }
+        public long? Shop_Id { get; set; }
+        public long? Sklad_Id { get; set; }
+        public long? Prihod_Detail_Id { get; set; }
+        public long? Product_Id { get; set; }
         public string? Product_Barcode_Text { get; set; }
         public string? Product_Name { get; set; }
         public string? Product_Category { get; set; }

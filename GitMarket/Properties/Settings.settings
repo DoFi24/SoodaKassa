@@ -9,12 +9,21 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="ShopId" Type="System.UInt32" Scope="User">
-      <Value Profile="(Default)">78</Value>
+      <Value Profile="(Default)">1</Value>
     </Setting>
     <Setting Name="StaffId" Type="System.UInt32" Scope="User">
       <Value Profile="(Default)">1</Value>
     </Setting>
     <Setting Name="SkladId" Type="System.UInt32" Scope="User">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="CompanyId" Type="System.String" Scope="User">
+      <Value Profile="(Default)">549756108956</Value>
+    </Setting>
+    <Setting Name="ApiKey" Type="System.String" Scope="User">
+      <Value Profile="(Default)">YWRlNDIyZDEtZDU5Ny00NmZjLThlMDctZDFjNTIzNWRkMWFj</Value>
+    </Setting>
+    <Setting Name="NonceUuid" Type="System.Int64" Scope="User">
       <Value Profile="(Default)">1</Value>
     </Setting>
   </Settings>

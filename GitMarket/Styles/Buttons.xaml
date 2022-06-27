@@ -8,7 +8,7 @@
     
     <Style TargetType="Button" x:Key="CheckButton">
 
-        <Setter Property="Margin" Value="9 7.5 9 7.5"/>
+        <Setter Property="Margin" Value="9 8 9 8"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
@@ -394,7 +394,7 @@
                         </Trigger>
                         <Trigger Property="Uid" Value="4" >
                             <Setter TargetName="imgButton" Property="Image.Source" Value="{StaticResource Uid4}"/>
-                            <Setter TargetName="limgButton" Property="Source" Value="{StaticResource lUid5}"/>
+                            <Setter TargetName="limgButton" Property="Source" Value="{StaticResource lUid4}"/>
 
                         </Trigger>
                         <Trigger Property="Uid" Value="5" >
@@ -427,18 +427,25 @@
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="Background" Value="#2B2A2A"/>
         <Setter Property="Foreground" Value="White"/>
+        <Setter Property="FontWeight" Value="DemiBold"/>
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate>
-                    <Border CornerRadius="4" Background="{TemplateBinding Button.Background}">
-                        <TextBlock  FontWeight="DemiBold" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" Text="{TemplateBinding Button.Content}"/>
+                <ControlTemplate TargetType="Button">
+                    <Border CornerRadius="4" Background="{TemplateBinding Background}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Content="{TemplateBinding Content}"/>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
         <Style.Triggers>
             <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Opacity" Value="0.5" />
+                <Setter Property="Opacity" Value="0.8" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" Value="0.6" />
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="FontWeight" Value="Bold" />
             </Trigger>
         </Style.Triggers>
     </Style>

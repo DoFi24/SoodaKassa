@@ -1,6 +1,7 @@
 ﻿global using Setts = GitMarket.Properties.Settings;
 using GitMarket.Domain.Models.APIResponseRequest;
 using GitMarket.Infrastructure.APIs;
+using GitMarket.Views.Dialogs;
 using GitMarket.Views.MainWindows;
 using System;
 using System.Collections.Generic;
@@ -22,30 +23,33 @@ namespace GitMarket
 
         protected override async void OnStartup(StartupEventArgs e)
         {
-            if (IsOnce())
-            {
-                if (Setts.Default.IsSaveLoginPassword)
-                {
-                    if (await APIRequests.GetIsValidAsync())
-                    {
-                        new MainNavigationWindow().Show();
-                    }
-                    else
-                    {
-                        new LoginWindow().Show();
-                        MessageBox.Show("Не валидный токен!");
-                    }
-                }
-                else
-                {
-                    new LoginWindow().Show();
-                }
-                base.OnStartup(e);
-            }
-            else 
-            {
-                MessageBox.Show("Программа уже была открыта!","Окно",MessageBoxButton.OK,MessageBoxImage.Error);
-            }
+            new ChecksHistoryDialogWindow().Show();
+
+            //new UDSDialogWindow().Show();
+            //if (IsOnce())
+            //{
+            //    if (Setts.Default.IsSaveLoginPassword)
+            //    {
+            //        if (await APIRequests.GetIsValidAsync())
+            //        {
+            //            new MainNavigationWindow().Show();
+            //        }
+            //        else
+            //        {
+            //            new LoginWindow().Show();
+            //            MessageBox.Show("Не валидный токен!");
+            //        }
+            //    }
+            //    else
+            //    {
+            //      new LoginWindow().Show();
+            //    }
+            //}
+            //else
+            //{
+            //    MessageBox.Show("Программа уже была открыта!", "Окно", MessageBoxButton.OK, MessageBoxImage.Error);
+            //}
+            base.OnStartup(e);
         }
         private static bool IsOnce()
         {

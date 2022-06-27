@@ -49,7 +49,7 @@ namespace GitMarket.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("78")]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
         public uint ShopId {
             get {
                 return ((uint)(this["ShopId"]));
@@ -80,6 +80,42 @@ namespace GitMarket.Properties {
             }
             set {
                 this["SkladId"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("549756108956")]
+        public string CompanyId {
+            get {
+                return ((string)(this["CompanyId"]));
+            }
+            set {
+                this["CompanyId"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("YWRlNDIyZDEtZDU5Ny00NmZjLThlMDctZDFjNTIzNWRkMWFj")]
+        public string ApiKey {
+            get {
+                return ((string)(this["ApiKey"]));
+            }
+            set {
+                this["ApiKey"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public long NonceUuid {
+            get {
+                return ((long)(this["NonceUuid"]));
+            }
+            set {
+                this["NonceUuid"] = value;
             }
         }
     }

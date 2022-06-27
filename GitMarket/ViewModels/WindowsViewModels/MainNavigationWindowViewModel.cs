@@ -202,10 +202,10 @@ namespace GitMarket.ViewModels.WindowsViewModels
 
         private RelayCommand? _UDSSettingsCommand;
         public RelayCommand? UDSSettingsCommand =>
-            _openMenuCommand ??= new RelayCommand(ExecuteUDSSettingsCommand, (object obj) => true);
+            _UDSSettingsCommand ??= new RelayCommand(ExecuteUDSSettingsCommand, (object obj) => { if (SelectedProductsCollection!.Any()) return true; return false; });
         private void ExecuteUDSSettingsCommand(object obj)
         {
-            
+            new UDSDialogWindow().ShowDialog();
         }
 
         private RelayCommand? _openMenuCommand;
@@ -309,7 +309,7 @@ namespace GitMarket.ViewModels.WindowsViewModels
                 IsOpenPopup = true;
             }
         }
-        public void SearchUpDown(string v)
+        public void SearchUpDown(bool v)
         {
             if (SearchProductCollection.Count > 0)
             {
@@ -318,7 +318,7 @@ namespace GitMarket.ViewModels.WindowsViewModels
                 else
                 {
                     var index = SearchProductCollection.IndexOf(SearchSelectedProduct);
-                    if (v == "Down")
+                    if (v)
                     {
                         if (index == SearchProductCollection.Count - 1)
                             SearchSelectedProduct = SearchProductCollection.First();
@@ -392,6 +392,8 @@ namespace GitMarket.ViewModels.WindowsViewModels
         {
             var but = obj.ToString();
 
+            ExecuteOpenMenuCommand(null);
+
             switch (but)
             {
                 case "1":
@@ -404,7 +406,6 @@ namespace GitMarket.ViewModels.WindowsViewModels
                     new OptionWindow().ShowDialog();
                     break;
             }
-            ExecuteOpenMenuCommand(null);
         }
 
         private RelayCommand _changeProductQuantityCommand;
@@ -412,7 +413,7 @@ namespace GitMarket.ViewModels.WindowsViewModels
             _changeProductQuantityCommand ?? (_changeProductQuantityCommand = new RelayCommand(ExecutedChangeProductQuantityCommand, (object obj) => true));
         private void ExecutedChangeProductQuantityCommand(object obj)
         {
-            if ((bool)obj)
+            if (!(bool)obj)
             {
                 if (SelectedProductItem.Unpack > 1)
                 {
@@ -442,7 +443,7 @@ namespace GitMarket.ViewModels.WindowsViewModels
         }
         private RelayCommand _toPayCommand;
         public RelayCommand ToPayCommand =>
-            _toPayCommand ??= new RelayCommand(ExecutedToPayCommand, (object obj) => { if (SelectedProductsCollection.Any()) return true; return false; });
+            _toPayCommand ??= new RelayCommand(ExecutedToPayCommand, (object obj) => { if (SelectedProductsCollection!.Any() && (ReceiptPaid + ReceiptPaidCard) >= ReceiptPrice) return true; return false; });
         private async void ExecutedToPayCommand(object obj)
         {
             var alltaxes = new TaxesModel
@@ -546,168 +547,167 @@ namespace GitMarket.ViewModels.WindowsViewModels
         }
         private async Task<ProdajaModel> PayMethodAsync() //при uds оплате изменить структуру
         {
-            try
+
+            if (ReceiptPaid + ReceiptPaidCard >= ReceiptPrice)
             {
-                if (ReceiptPaid + ReceiptPaidCard >= ReceiptPrice)
-                {
-                    ProdajaModels lasteses;
-                    if (bonuses.Any() && discount.Any())
-                        lasteses = new ProdajaModels
+                ProdajaModels lasteses;
+                if (bonuses.Any() && discount.Any())
+                    lasteses = new ProdajaModels
+                    {
+                        parameter = "windows",
+                        data = new data
                         {
-                            parameter = "windows",
-                            data = new data
-                            {
-                                shop_id = Setts.Default.ShopId,
-                                sklad_id = Setts.Default.StaffId,
-                                staff_id = Setts.Default.SkladId,
-                                kontragent_id = null,
-                                pay_sum = ReceiptPrice,
-                                comment = "",
-                                rows = (from s in SelectedProductsCollection
-                                        join d in discount on s.Prihod_Detail_Id equals d.Prihod_Detail_Id
-                                        join b in bonuses on s.Prihod_Detail_Id equals b.Prihod_Detail_Id
-                                        join t in taxes on s.Prihod_Detail_Id equals t.prihod_detail_id
-                                        select new ProdajaProduct
-                                        {
-                                            prihod_detail_id = d.Prihod_Detail_Id,
-                                            sale_price = (decimal)((bool)!s.IsUnpack ? s.Sale_Price : s.Unpack_Sale_Price),
-                                            bonus_sum = b.Bonus_Sum,
-                                            discount_id = d.Discount_Id,
-                                            discount_sum = d.Discount_Sum,
-                                            bonus_id = b.Bonus_Id,
-                                            pay_bonus_sum = b.Pay_Bonus_Sum,
-                                            taxe_sum = t.taxe_sum,
-                                            comment = s.Comment,
-                                            quantity = s.QuantityCount,
-                                            service_id = (int)s.Service_id,
-                                            is_service = (bool)s.Is_service
-                                        }).ToList()
-                            },
-                            sum = ReceiptPaid,
-                            esum = ReceiptPaidCard,
-                            pageSize = 2,
-                            page = 1
-                        };
-                    else if (!bonuses.Any() && !discount.Any())
-                        lasteses = new ProdajaModels
+                            shop_id = Setts.Default.ShopId,
+                            sklad_id = Setts.Default.StaffId,
+                            staff_id = Setts.Default.SkladId,
+                            kontragent_id = null,
+                            pay_sum = ReceiptPrice,
+                            comment = "",
+                            rows = (from s in SelectedProductsCollection
+                                    join d in discount on s.Prihod_Detail_Id equals d.Prihod_Detail_Id
+                                    join b in bonuses on s.Prihod_Detail_Id equals b.Prihod_Detail_Id
+                                    join t in taxes on s.Prihod_Detail_Id equals t.prihod_detail_id
+                                    select new ProdajaProduct
+                                    {
+                                        prihod_detail_id = d.Prihod_Detail_Id,
+                                        sale_price = (decimal)((bool)!s.IsUnpack ? s.Sale_Price : s.Unpack_Sale_Price),
+                                        bonus_sum = b.Bonus_Sum,
+                                        discount_id = d.Discount_Id,
+                                        discount_sum = d.Discount_Sum,
+                                        bonus_id = b.Bonus_Id,
+                                        pay_bonus_sum = b.Pay_Bonus_Sum,
+                                        taxe_sum = t.taxe_sum,
+                                        comment = s.Comment,
+                                        quantity = s.QuantityCount,
+                                        service_id = (int)s.Service_id,
+                                        is_service = (bool)s.Is_service
+                                    }).ToList()
+                        },
+                        sum = ReceiptPaid,
+                        esum = ReceiptPaidCard,
+                        pageSize = 2,
+                        page = 1
+                    };
+                else if (!bonuses.Any() && !discount.Any())
+                    lasteses = new ProdajaModels
+                    {
+                        parameter = "windows",
+                        data = new data
                         {
-                            parameter = "windows",
-                            data = new data
-                            {
-                                shop_id = Setts.Default.ShopId,
-                                sklad_id = Setts.Default.StaffId,
-                                staff_id = Setts.Default.SkladId,
-                                comment = "",
-                                pay_sum = ReceiptPrice,
-                                kontragent_id = 0,
-                                rows = (from s in SelectedProductsCollection
-                                        join t in taxes on s.Prihod_Detail_Id equals t.prihod_detail_id
-                                        select new ProdajaProduct
-                                        {
-                                            prihod_detail_id = (int)s.Prihod_Detail_Id,
-                                            bonus_id = 0,
-                                            discount_id = 0,
-                                            sale_price = (decimal)((bool)!s.IsUnpack ? s.Sale_Price : s.Unpack_Sale_Price),
-                                            quantity = s.QuantityCount,
-                                            discount_sum = 0,
-                                            bonus_sum = 0,
-                                            pay_bonus_sum = 0,
-                                            taxe_sum = t.taxe_sum,
-                                            comment = s.Comment,
-                                            service_id = (int)s.Service_id,
-                                            is_service = (bool)s.Is_service
-                                        }).ToList()
-                            },
-                            sum = ReceiptPaid,
-                            esum = ReceiptPaidCard,
-                            pageSize = 10,
-                            page = 1
-                        };
-                    else if (!bonuses.Any() && discount.Any())
-                        lasteses = new ProdajaModels
+                            shop_id = Setts.Default.ShopId,
+                            sklad_id = Setts.Default.StaffId,
+                            staff_id = Setts.Default.SkladId,
+                            comment = "",
+                            pay_sum = ReceiptPrice,
+                            kontragent_id = 0,
+                            rows = (from s in SelectedProductsCollection
+                                    join t in taxes on s.Prihod_Detail_Id equals t.prihod_detail_id
+                                    select new ProdajaProduct
+                                    {
+                                        prihod_detail_id = (int)s.Prihod_Detail_Id,
+                                        bonus_id = 0,
+                                        discount_id = 0,
+                                        sale_price = (decimal)((bool)!s.IsUnpack ? s.Sale_Price : s.Unpack_Sale_Price),
+                                        quantity = s.QuantityCount,
+                                        discount_sum = 0,
+                                        bonus_sum = 0,
+                                        pay_bonus_sum = 0,
+                                        taxe_sum = t.taxe_sum,
+                                        comment = s.Comment,
+                                        service_id = (int)s.Service_id,
+                                        is_service = (bool)s.Is_service
+                                    }).ToList()
+                        },
+                        sum = ReceiptPaid,
+                        esum = ReceiptPaidCard,
+                        pageSize = 10,
+                        page = 1
+                    };
+                else if (!bonuses.Any() && discount.Any())
+                    lasteses = new ProdajaModels
+                    {
+                        parameter = "windows",
+                        data = new data
                         {
-                            parameter = "windows",
-                            data = new data
-                            {
-                                shop_id = Setts.Default.ShopId,
-                                sklad_id = Setts.Default.StaffId,
-                                staff_id = Setts.Default.SkladId,
-                                comment = "",
-                                pay_sum = ReceiptPrice,
-                                kontragent_id = 0,
-                                rows = (from s in SelectedProductsCollection
-                                        join d in discount on s.Prihod_Detail_Id equals d.Prihod_Detail_Id
-                                        join t in taxes on s.Prihod_Detail_Id equals t.prihod_detail_id
-                                        select new ProdajaProduct
-                                        {
-                                            prihod_detail_id = (int)s.Prihod_Detail_Id,
-                                            bonus_id = 0,
-                                            discount_id = d.Discount_Id,
-                                            sale_price = (decimal)((bool)!s.IsUnpack ? s.Sale_Price : s.Unpack_Sale_Price),
-                                            quantity = s.QuantityCount,
-                                            discount_sum = d.Discount_Sum,
-                                            bonus_sum = 0,
-                                            pay_bonus_sum = 0,
-                                            taxe_sum = t.taxe_sum,
-                                            comment = s.Comment,
-                                            service_id = (int)s.Service_id,
-                                            is_service = (bool)s.Is_service
-                                        }).ToList()
-                            },
-                            sum = ReceiptPaid,
-                            esum = ReceiptPaidCard,
-                            pageSize = 10,
-                            page = 1
-                        };
-                    else
-                        lasteses = new ProdajaModels
+                            shop_id = Setts.Default.ShopId,
+                            sklad_id = Setts.Default.StaffId,
+                            staff_id = Setts.Default.SkladId,
+                            comment = "",
+                            pay_sum = ReceiptPrice,
+                            kontragent_id = 0,
+                            rows = (from s in SelectedProductsCollection
+                                    join d in discount on s.Prihod_Detail_Id equals d.Prihod_Detail_Id
+                                    join t in taxes on s.Prihod_Detail_Id equals t.prihod_detail_id
+                                    select new ProdajaProduct
+                                    {
+                                        prihod_detail_id = (int)s.Prihod_Detail_Id,
+                                        bonus_id = 0,
+                                        discount_id = d.Discount_Id,
+                                        sale_price = (decimal)((bool)!s.IsUnpack ? s.Sale_Price : s.Unpack_Sale_Price),
+                                        quantity = s.QuantityCount,
+                                        discount_sum = d.Discount_Sum,
+                                        bonus_sum = 0,
+                                        pay_bonus_sum = 0,
+                                        taxe_sum = t.taxe_sum,
+                                        comment = s.Comment,
+                                        service_id = (int)s.Service_id,
+                                        is_service = (bool)s.Is_service
+                                    }).ToList()
+                        },
+                        sum = ReceiptPaid,
+                        esum = ReceiptPaidCard,
+                        pageSize = 10,
+                        page = 1
+                    };
+                else
+                    lasteses = new ProdajaModels
+                    {
+                        parameter = "windows",
+                        data = new data
                         {
-                            parameter = "windows",
-                            data = new data
-                            {
-                                shop_id = Setts.Default.ShopId,
-                                sklad_id = Setts.Default.StaffId,
-                                staff_id = Setts.Default.SkladId,
-                                comment = "",
-                                pay_sum = ReceiptPrice,
-                                kontragent_id = 0,
-                                rows = (from s in SelectedProductsCollection
-                                        join d in bonuses on s.Prihod_Detail_Id equals d.Prihod_Detail_Id
-                                        join t in taxes on s.Prihod_Detail_Id equals t.prihod_detail_id
-                                        select new ProdajaProduct
-                                        {
-                                            prihod_detail_id = (int)s.Prihod_Detail_Id,
-                                            bonus_id = d.Bonus_Id,
-                                            discount_id = 0,
-                                            sale_price = (decimal)((bool)!s.IsUnpack ? s.Sale_Price : s.Unpack_Sale_Price),
-                                            quantity = s.QuantityCount,
-                                            discount_sum = 0,
-                                            bonus_sum = d.Bonus_Sum,
-                                            pay_bonus_sum = 0,
-                                            taxe_sum = t.taxe_sum,
-                                            comment = s.Comment
-                                        }).ToList()
-                            },
-                            sum = ReceiptPaid,
-                            esum = ReceiptPaidCard,
-                            pageSize = 10,
-                            page = 1
-                        };
-                    return await APIRequests.GetSale(lasteses);
-                }
-                return new ProdajaModel();
+                            shop_id = Setts.Default.ShopId,
+                            sklad_id = Setts.Default.StaffId,
+                            staff_id = Setts.Default.SkladId,
+                            comment = "",
+                            pay_sum = ReceiptPrice,
+                            kontragent_id = 0,
+                            rows = (from s in SelectedProductsCollection
+                                    join d in bonuses on s.Prihod_Detail_Id equals d.Prihod_Detail_Id
+                                    join t in taxes on s.Prihod_Detail_Id equals t.prihod_detail_id
+                                    select new ProdajaProduct
+                                    {
+                                        prihod_detail_id = (int)s.Prihod_Detail_Id,
+                                        bonus_id = d.Bonus_Id,
+                                        discount_id = 0,
+                                        sale_price = (decimal)((bool)!s.IsUnpack ? s.Sale_Price : s.Unpack_Sale_Price),
+                                        quantity = s.QuantityCount,
+                                        discount_sum = 0,
+                                        bonus_sum = d.Bonus_Sum,
+                                        pay_bonus_sum = 0,
+                                        taxe_sum = t.taxe_sum,
+                                        comment = s.Comment
+                                    }).ToList()
+                        },
+                        sum = ReceiptPaid,
+                        esum = ReceiptPaidCard,
+                        pageSize = 10,
+                        page = 1
+                    };
+                return await APIRequests.GetSale(lasteses);
             }
-            catch (Exception e)
-            {
-                MessageBox.Show("Не правильный формат данных " + e.Message);
-                return new ProdajaModel();
-            }
+            return new ProdajaModel();
+            //}
+            //catch (Exception e)
+            //{
+            //    MessageBox.Show("Не правильный формат данных " + e.Message);
+            //    return new ProdajaModel();
+            //}
         }
-        public void UpDownCommand(string v)
+        public void UpDownCommand(bool v)
         {
             if (SelectedProductsCollection.Count > 1)
             {
-                if (v == "Down")
+                if (v)
                 {
                     if (SelectedProductIndex == SelectedProductsCollection.Count - 1)
                         SelectedProductIndex = 0;

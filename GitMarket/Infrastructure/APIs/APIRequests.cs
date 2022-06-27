@@ -1,8 +1,10 @@
 ﻿using GitMarket.Domain.Models.APIModels;
 using GitMarket.Domain.Models.APIResponseRequest;
 using GitMarket.Domain.Models.TitiModels.ProductsModel;
+using GitMarket.Domain.Models.UDSModels;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -10,7 +12,6 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
 
 namespace GitMarket.Infrastructure.APIs
 {
@@ -62,7 +63,6 @@ namespace GitMarket.Infrastructure.APIs
                 return result.success;
             }
         }
-
         public static async Task SaveChangesAsync(JournalApiModel journal)
         {
             using HttpClient httpClient = new();
@@ -75,7 +75,6 @@ namespace GitMarket.Infrastructure.APIs
 
             await response.Content.ReadAsStringAsync();
         }
-
         public static async Task<List<T>> GetFromAPIAsync<T>(RequestModelGet rmodel, string requestFunction = "FC_PRODAJA_GET_PRODUCT")
         {
             using (HttpClient httpClient = new())
@@ -186,7 +185,6 @@ namespace GitMarket.Infrastructure.APIs
             }
             return (pro, NDS);
         }
-
         #endregion
         public static async Task<ProdajaModel> GetSale(ProdajaModels param, int page = 1)
         {
@@ -205,7 +203,7 @@ namespace GitMarket.Infrastructure.APIs
                 return result is not null ? result.data : new ProdajaModel();
             }
         }
-        public static async Task<string> ReturnCardTypeAsync(RequestModelGet rmodel, string barcode)
+        public static async Task<string> ReturnCardTypeAsync(RequestModelGet rmodel)
         {
             using (HttpClient httpClient = new())
             {
@@ -222,6 +220,107 @@ namespace GitMarket.Infrastructure.APIs
                 return result?.message == "success" ? result?.data?.rows.First().data.First().full_name : "not";
             }
         }
+
+        #region UDSRequests
+
+        public static async Task<ResponseUserInfoModel?> GetUDSUserInfoRequest(string total, string code)
+        {
+            using (HttpClient httpClient = new())
+            {
+                httpClient.DefaultRequestHeaders.Add("Authorization", "Basic " + Convert.ToBase64String(Encoding.UTF8.GetBytes(Setts.Default.CompanyId + ":" + Setts.Default.ApiKey)));
+                try
+                {
+                    var response = await httpClient.GetStringAsync($"https://api.uds.app/partner/v2/customers/find?exchangeCode=true&total={total}&code={code}");
+                    if (String.IsNullOrEmpty(response))
+                        return null;
+                    var result = JObject.Parse(response).ToObject<ResponseUserInfoModel>();
+
+                    return result;
+                }
+                catch 
+                {
+                    return null;
+                }
+            }
+        }
+
+        public static async Task<uToperationResult?> MakeUDSOperationRequest(object param)
+        {
+            using (HttpClient httpClient = new())
+            {
+                try
+                {
+                    var data = new StringContent(JsonConvert.SerializeObject(param).ToString(), Encoding.UTF8, "application/json");
+
+                    httpClient.DefaultRequestHeaders.Add("Authorization", "Basic " + Setts.Default.AuthorizationToken);
+
+                    var response = await httpClient.PostAsync($"https://api.uds.app/partner/v2/operations", data);
+
+                    var responeString = await response.Content.ReadAsStringAsync();
+
+                    var result = JObject.Parse(responeString).ToObject<uToperationResult>();
+
+                    return result;
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+        }
+
+        public static ResponseInfoModel? GetCashRequest(object param)
+        {
+            using (HttpClient httpClient = new())
+            {
+                try
+                {
+                    var data = new StringContent(JsonConvert.SerializeObject(param).ToString(), Encoding.UTF8, "application/json");
+
+                    httpClient.DefaultRequestHeaders.Add("Authorization", "Basic " + Setts.Default.AuthorizationToken);
+
+                    var response = httpClient.PostAsync($"https://api.uds.app/partner/v2/operations/calc", data);
+
+                    var responeString = response.Result.Content.ReadAsStringAsync();
+
+                    var result = JObject.Parse(responeString.Result).ToObject<ResponseInfoModel>();
+
+                    return result;
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+        }
+
+        public static async Task<ResponseBonus?> GetBonusRequest(object param)
+        {
+            using (HttpClient httpClient = new())
+            {
+                try
+                {
+                    var data = new StringContent(JsonConvert.SerializeObject(param).ToString(), Encoding.UTF8, "application/json");
+
+                    httpClient.DefaultRequestHeaders.Add("Authorization", "Basic " + Setts.Default.AuthorizationToken);
+
+                    var response = await httpClient.PostAsync($"https://api.uds.app/partner/v2/operations/reward", data);
+
+                    var responeString = await response.Content.ReadAsStringAsync();
+
+                    var result = JObject.Parse(responeString).ToObject<ResponseBonus>();
+
+                    return result;
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+        }
+
+        #endregion
+
     }
 }
 

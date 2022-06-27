@@ -13,6 +13,10 @@
     <None Remove="Resources\BackgroundImage\q3.png" />
     <None Remove="Resources\Base\logo1.png" />
     <None Remove="Resources\Base\logo2.png" />
+    <None Remove="Resources\Base\udsIco.png" />
+    <None Remove="Resources\Base\udsIcon.jpg" />
+    <None Remove="Resources\Base\udsText.png" />
+    <None Remove="Resources\ButtonIcons\history.png" />
     <None Remove="Resources\ButtonIcons\kassa.png" />
     <None Remove="Resources\ButtonIcons\products.png" />
     <None Remove="Resources\ButtonIcons\service.png" />
@@ -61,6 +65,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resources\Base\udsIco.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Base\udsIcon.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Base\udsText.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\ButtonIcons\history.png" />
     <Resource Include="Resources\ButtonIcons\kassa.png" />
     <Resource Include="Resources\ButtonIcons\products.png" />
     <Resource Include="Resources\ButtonIcons\service.png" />

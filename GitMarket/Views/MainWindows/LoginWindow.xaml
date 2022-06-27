@@ -70,7 +70,7 @@
                             <mt:PackIcon Kind="Password" Width="32" 
                                          Margin="5 4 0 0" Foreground="#5e94ff" Height="32"/>
                             <TextBox MinWidth="300" VerticalContentAlignment="Center" FontSize="15"
-                             Foreground="#03006b" HorizontalContentAlignment="Left"
+                             Foreground="#03006b" HorizontalContentAlignment="Left" KeyUp="TextBox_KeyUp"
                              Text="{Binding PasswordText,UpdateSourceTrigger=PropertyChanged}"/>
                         </StackPanel>
                     </Border>

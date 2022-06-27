@@ -115,7 +115,7 @@ namespace GitMarket.ViewModels.PagesViewModels
                     if (!_model.SelectedProductsCollection.Any(s => s.Product_Id == value.Product_Id))
                     {
                         value.QuantityCount = 1;
-                        value.Service_id = value.Product_Id;
+                        value.Service_id = (int?)value.Product_Id;
                         value.Is_service = true;
                         _model.SelectedProductsCollection.Add(value);
                     }

@@ -3,8 +3,8 @@
     public class RequestInfoModel
     {
         public string code { get; set; }
-        public string participant { get; set; }
-        public string receipt { get; set; }
+        public Participant? participant { get; set; }
+        public Receipt? receipt { get; set; }
     }
     public class Participant
     {
@@ -13,8 +13,10 @@
     }
     public class Receipt
     {
-        public double total { get; set; }
-        public double skipLoyaltyTotal { get; set; }
-        public double points { get; set; }
+        public decimal total { get; set; }
+        public decimal? skipLoyaltyTotal { get; set; }
+        public decimal points { get; set; }
+        public string? number { get; set; }
+        public decimal cash { get; set; }
     }
 }

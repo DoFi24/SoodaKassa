@@ -102,30 +102,38 @@ namespace GitMarket.Views.Dialogs
         }
         private async void GetBonuses()
         {
-            //if (inputDeviceText != string.Empty)
-            //{
-            //    if (await APIRequests.ReturnCardTypeAsync(inputDeviceText).Result == "success")
-            //    {
-            //        var bonus = new TaxesModel
-            //        {
-            //            parameter = inputDeviceText,
-            //            pageSize = 10,
-            //            page = 1,
-            //    data = new List<taxeData>()
-            //        };
-            //        foreach (var item in products)
-            //        {
-            //            bonus.data.Add(new taxeData { id = item.Prihod_Detail_Id, quantity = item.Quantity });
-            //        }
+            if (inputDeviceText != string.Empty)
+            {
+                if (await APIRequests.ReturnCardTypeAsync(new Domain.Models.APIResponseRequest.RequestModelGet 
+                {
+                    shopId = 1,
+                    data = null,
+                    staffId = 1,
+                    pageSize  = 10,
+                    page = 1,
+                    parameter = inputDeviceText
+                }) == "success")
+                {
+                    var bonus = new TaxesModel
+                    {
+                        parameter = inputDeviceText,
+                        pageSize = 10,
+                        page = 1,
+                        data = new List<taxeData>()
+                    };
+                    foreach (var item in products)
+                    {
+                        bonus.data.Add(new taxeData { id = (long)item.Prihod_Detail_Id!, quantity = item.Quantity });
+                    }
 
-            //        model.bonuses = APIRequests.GetBonusSum(bonus).ToList();
+                    model.bonuses = APIRequests.GetBonusSum(bonus).ToList();
 
-            //        model.ReceiptBonus = model.bonuses.Sum(s => s.Bonus_Sum);
-            //        BonusLabel.Text = model.ReceiptBonus.ToString();
-            //    }
-            //}
+                    model.ReceiptBonus = model.bonuses.Sum(s => s.Bonus_Sum);
+                    BonusLabel.Text = model.ReceiptBonus.ToString();
+                }
+            }
         }
-
+        
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             model.GetCalculate();

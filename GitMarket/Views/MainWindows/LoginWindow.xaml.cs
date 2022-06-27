@@ -8,10 +8,22 @@ namespace GitMarket.Views.MainWindows
     /// </summary>
     public partial class LoginWindow : Window
     {
+        private LoginWindowViewModel loginVM;
         public LoginWindow()
         {
             InitializeComponent();
-            DataContext = new LoginWindowViewModel(this);
+            loginVM = new LoginWindowViewModel(this)
+            {
+                closeWindow = Close
+            };
+            DataContext = loginVM;
+        }
+
+        private void TextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == System.Windows.Input.Key.Return)
+                loginVM.SignInCommand.Execute(null);
+
         }
     }
 }

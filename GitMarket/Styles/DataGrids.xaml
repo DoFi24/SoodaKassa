@@ -58,6 +58,25 @@
         </Setter>
     </Style>
 
+    <Style TargetType="{x:Type DataGridColumnHeader}" x:Key="ColumnHeaderStyleCategoryProduct" >
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="Height" Value="50"/>
+        <Setter Property="BorderBrush" Value="Gray"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="5"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="DarkBlue"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="ContentTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" Text="{Binding}"/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style TargetType="{x:Type DataGridColumnHeader}" x:Key="Service_Page_DataGrid" >
         <Setter Property="FontSize" Value="1"/>
         <Setter Property="Height" Value="0"/>
@@ -143,7 +162,7 @@
     <Style TargetType="DataGrid" x:Key="SalePageDataGrid_2">
         <Setter Property="Margin" Value="10 8 10 10" />
         <Setter Property="Background" Value="Transparent" />
-        <Setter Property="AlternatingRowBackground" Value="#EBF5FB" />
+        <Setter Property="AlternatingRowBackground" Value="#c6e0ff" />
         <Setter Property="RowBackground" Value="White" />
         <Setter Property="SelectionMode" Value="Single" />
         <Setter Property="CanUserReorderColumns" Value="False" />
@@ -166,8 +185,10 @@
         <Setter Property="BorderBrush" Value="{x:Null}" />
         <Style.Triggers>
             <Trigger Property="IsSelected" Value="True">
-                <Setter Property="Background" Value="#AED6F1 " />
-                <Setter Property="BorderBrush" Value="#AED6F1  " />
+                <Setter Property="Opacity" Value="0.8"/>
+                <Setter Property="FontWeight" Value="DemiBold"/>
+                <!--<Setter Property="Background" Value="#AED6F1 " />
+                <Setter Property="BorderBrush" Value="#AED6F1  " />-->
             </Trigger>
         </Style.Triggers>
     </Style>

@@ -7,19 +7,6 @@
         mc:Ignorable="d" WindowStyle="None"
         Title="Настройки" Height="270" Width="360">
     <Grid Background="Transparent">
-        <Grid.Resources>
-            <Style TargetType="Button">
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate>
-                            <Border CornerRadius="30" Background="{TemplateBinding Background}" BorderThickness="0">
-                                <TextBlock Margin="0 2 0 0" HorizontalAlignment="Center" FontSize="14" Foreground="White" Text="{TemplateBinding Button.Content}"/>
-                            </Border>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-        </Grid.Resources>
         <Grid.RowDefinitions>
             <RowDefinition Height="45" />
             <RowDefinition Height="1*" />
@@ -29,16 +16,21 @@
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="35" />
-                <ColumnDefinition Width="35" />
+                <ColumnDefinition Width="30" />
+                <ColumnDefinition Width="30" />
             </Grid.ColumnDefinitions>
-            <Button Click="Button_Click_2" Grid.Column="1" Width="25" Height="25"/>
-            <Button Click="Button_Click" Grid.Column="2" Width="25" Height="25" Background="#E9524A"/>
+            <TextBlock Text="Настройки программы" Foreground="DarkBlue" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Button Click="Button_Click_2" BorderThickness=".5" Grid.Column="1" Width="22" Height="22">
+                <Image Source="/Resources/DefaultIcons/subtract.png"/>
+            </Button>
+            <Button Click="Button_Click" BorderThickness=".5" Grid.Column="2" Width="22" Height="22">
+                <Image Source="/Resources/DefaultIcons/close.png"/>
+            </Button>
         </Grid>
         <Grid Grid.Row="1" Grid.RowSpan="2" Background="White" Opacity="0.91"/>
         <Grid Grid.Row="1">
-            <Label FontSize="14" FontWeight="DemiBold" Margin="0 15 130 0" Content="КKМ" HorizontalAlignment="Right" VerticalAlignment="Top"/>
-            <Label FontSize="14" FontWeight="DemiBold" Margin="25 15 0 0" Content="Чековый принтер" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <TextBlock Foreground="DarkBlue" FontSize="14" FontWeight="DemiBold" Margin="0 15 80 0" Text="КKМ" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+            <TextBlock Foreground="DarkBlue" FontSize="14" FontWeight="DemiBold" Margin="25 15 0 0" Text="Чековый принтер" HorizontalAlignment="Left" VerticalAlignment="Top"/>
             <ComboBox x:Name="printers" Margin="10 50 0 0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="160" Height="25"/>
             <ComboBox x:Name="printerskkm" Margin="0 50 10 0" HorizontalAlignment="Right" VerticalAlignment="Top" Width="160" Height="25"/>
         </Grid>

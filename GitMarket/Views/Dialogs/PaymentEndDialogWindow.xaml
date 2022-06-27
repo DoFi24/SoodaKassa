@@ -15,7 +15,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="30" />
                 <RowDefinition Height="1.5*" />
-                <RowDefinition Height="115" />
+                <RowDefinition Height="100" />
             </Grid.RowDefinitions>
             <ScrollViewer x:Name="printGrid" Grid.Row="1" VerticalScrollBarVisibility="Visible">
                 <Grid>
@@ -150,16 +150,16 @@
                     <TextBlock Text="{Binding RecipeSdacha}" FontWeight="DemiBold" Margin="15 0 15 0" Grid.Row="15" FontSize="10" HorizontalAlignment="Right"/>
                 </Grid>
             </ScrollViewer>
-            <!--<TextBlock Text="Напечатать чек" FontSize="22" Foreground="#3B9AAF" FontWeight="DemiBold" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-            <Button Foreground="White" Style="{DynamicResource CheckButton}"
+            <TextBlock Text="Напечатать чек" FontSize="22" Foreground="#3B9AAF" FontWeight="DemiBold" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <Button Margin="10 15 0 0" Foreground="White" Style="{DynamicResource CheckButton}"
                     FontSize="18" FontWeight="DemiBold" Content="Ок (Enter)"
                     Background="#3B9AAF" BorderThickness="0" Width="120"  Grid.Row="2"
                     HorizontalAlignment="Left" Click="Button_Click" Height="55"/>
-            <Button Click="Button_Click_1" Style="{DynamicResource CheckButton}"
+            <Button Margin="0 15 10 0" Click="Button_Click_1" Style="{DynamicResource CheckButton}"
                     Foreground="#3B9AAF" FontSize="18" FontWeight="DemiBold"
                     Content="Сохранить чек&#x0a;(Esc)" Background="Transparent"
                     BorderBrush="#3B9AAF" BorderThickness="3" Width="140" Height="55"
-                    Grid.Row="2" Margin="0 0 10 0" HorizontalAlignment="Right"/>-->
+                    Grid.Row="2" HorizontalAlignment="Right"/>
         </Grid>
     </Border>
 </Window>

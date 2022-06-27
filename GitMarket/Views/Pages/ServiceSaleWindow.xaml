@@ -6,14 +6,12 @@
         xmlns:vm="clr-namespace:GitMarket.ViewModels.PagesViewModels"
         d:DataContext="{d:DesignInstance Type=vm:ServiceSaleWindowViewModel}"  
         mc:Ignorable="d" WindowStartupLocation="CenterScreen" WindowStyle="ThreeDBorderWindow"
-        Title="Услуги" Height="600" Width="900">
+        Title="Услуги" Height="800" Width="1200">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.WPF;component/Themes/MaterialDesignTheme.Dark.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.WPF;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.LightBlue.xaml"/>
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Lime.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
@@ -70,13 +68,13 @@
                 </DataGrid>
             </StackPanel>
             <StackPanel Grid.Column="1" Grid.Row="1">
-                <TextBlock Height="50" Text="Выберите товар" TextAlignment="Center" Padding="0 10 0 0" FontSize="20" Foreground="DarkBlue"/>
-                <ScrollViewer Height="530" CanContentScroll="False"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch" VerticalScrollBarVisibility="Hidden" PanningMode="Both">
+                <TextBlock Height="50" Text="Выберите услугу" TextAlignment="Center" Padding="0 10 0 0" FontSize="20" Foreground="DarkBlue"/>
+                <ScrollViewer Height="530" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" VerticalScrollBarVisibility="Hidden" PanningMode="Both">
                     <DataGrid Focusable="True" Margin="15,15,15,0" BorderBrush="LightBlue" 
                           BorderThickness=".8" Background="Transparent"
                           ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                           Style="{DynamicResource SalePageDataGrid_2}"
-                          ColumnHeaderStyle="{DynamicResource hederstyle_Kuxne1}"
+                          ColumnHeaderStyle="{DynamicResource ColumnHeaderStyleCategoryProduct}"
                           RowStyle="{DynamicResource SaleDataGridRow}"
                           VerticalGridLinesBrush="Transparent"
                           VerticalScrollBarVisibility="Hidden"
@@ -87,7 +85,7 @@
                          ItemsSource="{Binding ProductsCollection}"
                          SelectedItem="{Binding SelectedProduct}">
                         <DataGrid.Columns>
-                            <DataGridTemplateColumn Header="Название" Width="4*">
+                            <DataGridTemplateColumn Header="Название" Width="3*">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <Viewbox>
@@ -99,42 +97,25 @@
                             <DataGridTemplateColumn Header="Количество" Width="*">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock Text="{Binding Quantity}" Foreground="Black"  FontSize="20"/>
+                                        <TextBlock Text="{Binding Quantity}" TextAlignment="Center" Foreground="Black"  FontSize="20"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
                             <DataGridTemplateColumn Header="Цена" Width="*">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock Grid.Column="2" Text="{Binding Sale_Price}" Foreground="Black"  FontSize="20"/>
+                                        <TextBlock Grid.Column="2" TextAlignment="Center" Text="{Binding Sale_Price}" Foreground="Black"  FontSize="20"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
                             <DataGridTemplateColumn Header="Коментарий" Width="2*">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock Grid.Column="3" Text="{Binding Comment}" Foreground="Black"  FontSize="20"/>
+                                        <TextBlock Grid.Column="3" TextAlignment="Center" Text="{Binding Comment}" Foreground="Black"  FontSize="20"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
                         </DataGrid.Columns>
-                        <!--<ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="300" />
-                                    <ColumnDefinition Width="100" />
-                                    <ColumnDefinition Width="100" />
-                                    <ColumnDefinition Width="300" />
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Text="{Binding Product_Name}" Foreground="Black"  FontSize="20"/>
-                                <TextBlock Grid.Column="1"  Text="{Binding Sale_Price}"  Foreground="Black"  FontSize="20"/>
-                                <TextBlock Grid.Column="2" Text="{Binding Quantity}" Foreground="Black"  FontSize="20"/>
-                                <TextBlock Grid.Column="3" Text="{Binding Comment}" Foreground="Black"  FontSize="20"/>
-                            </Grid>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>-->
-
                     </DataGrid>
                 </ScrollViewer>
             </StackPanel>

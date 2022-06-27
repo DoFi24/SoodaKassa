@@ -19,7 +19,7 @@ namespace GitMarket.Views.MainWindows
     /// </summary>
     public partial class MainNavigationWindow : Window
     {
-        public bool _isNavigating = false;
+        public bool _isMain = true;
         private MainNavigationWindowViewModel main;
         private MainNavigationWindow SecondWindow;
         public MainNavigationWindow()
@@ -30,7 +30,9 @@ namespace GitMarket.Views.MainWindows
                 closeMainWindow = Close
             };
             DataContext = main;
-            ProgramStartWriteToJournal();
+            WindowComboBox.SelectedIndex = 0;
+            if (_isMain)
+                ProgramStartWriteToJournal();
         }
 
         private async void ProgramStartWriteToJournal()
@@ -83,7 +85,7 @@ namespace GitMarket.Views.MainWindows
             switch (e.Key)
             {
                 case System.Windows.Input.Key.Add:
-                    main.ToPayCommand.Execute("");
+                    if (main.ToPayCommand.CanExecute(null)) main.ToPayCommand.Execute(null);
                     itogTextBox.Focus();
                     return;
                 case System.Windows.Input.Key.Insert:
@@ -98,28 +100,28 @@ namespace GitMarket.Views.MainWindows
                     itogTextBox.Focus();
                     return;
                 case System.Windows.Input.Key.Subtract:
-                    main.GetBonusCommand.Execute("");
+                    if (main.GetBonusCommand.CanExecute(null)) main.GetBonusCommand.Execute(null);
                     itogTextBox.Focus();
                     return;
                 case System.Windows.Input.Key.Up:
-                    main.UpDownCommand("Up");
+                    main.UpDownCommand(false);
                     itogTextBox.Focus();
                     return;
                 case System.Windows.Input.Key.Down:
-                    main.UpDownCommand("Down");
+                    main.UpDownCommand(true);
                     itogTextBox.Focus();
                     return;
                 case System.Windows.Input.Key.Divide:
                     if (main.SelectedProductItem != new SaleProduct())
                     {
-                        main.ChangeProductQuantityCommand.Execute("unpack");
+                        main.ChangeProductQuantityCommand.Execute(false);
                     }
                     itogTextBox.Focus();
                     return;
                 case System.Windows.Input.Key.Multiply:
                     if (main.SelectedProductItem != new SaleProduct())
                     {
-                        main.ChangeProductQuantityCommand.Execute("");
+                        main.ChangeProductQuantityCommand.Execute(true);
                     }
                     itogTextBox.Focus();
                     return;
@@ -145,18 +147,18 @@ namespace GitMarket.Views.MainWindows
             if (e.KeyboardDevice.Modifiers == ModifierKeys.Control && e.Key == System.Windows.Input.Key.Up)
             {
                 itogTextBox.Focus();
-                main.SearchUpDown("Up");
+                main.SearchUpDown(false);
                 return;
             }
             else if (e.KeyboardDevice.Modifiers == ModifierKeys.Control && e.Key == System.Windows.Input.Key.Down)
             {
                 itogTextBox.Focus();
-                main.SearchUpDown("Down");
+                main.SearchUpDown(true);
                 return;
             }
             else if (e.KeyboardDevice.Modifiers == ModifierKeys.Control && e.Key == System.Windows.Input.Key.Delete)
             {
-                main.ClearSelectedProductsCommand.Execute("");
+                if (main.ClearSelectedProductsCommand.CanExecute(null)) main.ClearSelectedProductsCommand.Execute(null);
                 itogTextBox.Focus();
                 return;
             }
@@ -177,10 +179,6 @@ namespace GitMarket.Views.MainWindows
         {
 
         }
-        /// <summary>
-        /// Makes virtual keyboard disappear
-        /// </summary>
-        /// <param name="sender"></param>
         private void LoseFocus(object sender)
         {
             var control = sender as Control;
@@ -209,26 +207,33 @@ namespace GitMarket.Views.MainWindows
             Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
         }
-
-        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void WindowComboBox_DropDownClosed(object sender, System.EventArgs e)
         {
-            if (_isNavigating)
+            if (_isMain)
+            {
+                if (WindowComboBox.SelectedIndex == 0)
+                    return;
+                SecondWindow.WindowComboBox.SelectedIndex = 1;
+                SecondWindow.Show();
+            }
+            else
             {
                 if (WindowComboBox.SelectedIndex == 1)
-                {
-                    SecondWindow = new MainNavigationWindow
-                    {
-                        Owner = this,
-                        _isNavigating = true
-                    };
-                    SecondWindow.Show();
-                }
-                else
-                {
-                    Owner.Show();
-                }
-                this.Hide();
+                    return;
+                (Owner as MainNavigationWindow).WindowComboBox.SelectedIndex = 0;
+                Owner.Show();
             }
+            this.Hide();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (_isMain)
+                SecondWindow = new MainNavigationWindow
+                {
+                    Owner = this,
+                    _isMain = false
+                };
         }
     }
 }

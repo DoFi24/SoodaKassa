@@ -8,10 +8,10 @@ namespace GitMarket.ViewModels.WindowsViewModels
 {
     public class LoginWindowViewModel : Base.BaseViewModel
     {
-        private LoginWindow loginView;
+        public delegate void CloseWindow();
+        public CloseWindow? closeWindow;
         public LoginWindowViewModel(LoginWindow _loginView)
         {
-            loginView = _loginView;
             SignInCommand = new RelayCommand(ExecuteSignInCommand, CanSignInCommandExecuted);
         }
         public LoginWindowViewModel()
@@ -29,7 +29,7 @@ namespace GitMarket.ViewModels.WindowsViewModels
                 return true;
             return false;
         }
-        private async void ExecuteSignInCommand(object obj)
+        public async void ExecuteSignInCommand(object obj)
         {
             if (await APIRequests.RegisterAsync(LoginText, PasswordText))
             {
@@ -39,7 +39,7 @@ namespace GitMarket.ViewModels.WindowsViewModels
                     Setts.Default.Save();
                 }
                 new MainNavigationWindow().Show();
-                loginView?.Close();
+                closeWindow();
             }
             else
                 MessageBox.Show("Логин или пароль введены неправильно!", "Неверные данные!", MessageBoxButton.OK, MessageBoxImage.Error);

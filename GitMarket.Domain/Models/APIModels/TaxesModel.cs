@@ -10,7 +10,7 @@
 
     public class taxeData
     {
-        public int id { get; set; }
+        public long id { get; set; }
         public decimal quantity { get; set; }
     }
 }
