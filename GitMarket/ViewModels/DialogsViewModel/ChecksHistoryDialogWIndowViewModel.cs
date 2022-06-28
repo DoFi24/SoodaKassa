@@ -1,6 +1,9 @@
-﻿using GitMarket.Domain.Models.APIResponseRequest;
+﻿using GitMarket.Commands;
+using GitMarket.Domain.Models.APIResponseRequest;
 using System;
 using System.Collections.ObjectModel;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace GitMarket.ViewModels.DialogsViewModel
 {
@@ -40,6 +43,21 @@ namespace GitMarket.ViewModels.DialogsViewModel
         {
             get { return _selectedCheck;}
             set { Set(ref _selectedCheck, value);}
+        }
+
+        private RelayCommand? _printCheckCommand;
+        public RelayCommand? PrintCheckCommand =>
+            _printCheckCommand ??= new RelayCommand(ExecutePrintCheckCommand, (object obj) => { if ((SelectedCheck != new CheckModel()) && (SelectedCheck is not null)) return true; return false; });
+        private void ExecutePrintCheckCommand(object obj)
+        {
+            try
+            {
+                new PrintDialog().PrintVisual((obj as ScrollViewer), "Печать чека");
+            }
+            catch 
+            {
+                MessageBox.Show("Произошла ошибка при отправке на принтер!");
+            }
         }
     }
 }

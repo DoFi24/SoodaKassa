@@ -23,9 +23,11 @@ namespace GitMarket
 
         protected override async void OnStartup(StartupEventArgs e)
         {
-            new ChecksHistoryDialogWindow().Show();
+            //new ChecksHistoryDialogWindow().Show();
 
-            //new UDSDialogWindow().Show();
+
+
+            new UDSDialogWindow().Show();
             //if (IsOnce())
             //{
             //    if (Setts.Default.IsSaveLoginPassword)
@@ -42,13 +44,14 @@ namespace GitMarket
             //    }
             //    else
             //    {
-            //      new LoginWindow().Show();
+            //    new LoginWindow().Show();
             //    }
             //}
             //else
             //{
             //    MessageBox.Show("Программа уже была открыта!", "Окно", MessageBoxButton.OK, MessageBoxImage.Error);
             //}
+
             base.OnStartup(e);
         }
         private static bool IsOnce()

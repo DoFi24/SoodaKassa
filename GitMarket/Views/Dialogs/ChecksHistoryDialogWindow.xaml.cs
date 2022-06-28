@@ -14,12 +14,6 @@ namespace GitMarket.Views.Dialogs
             InitializeComponent();
             DataContext = new ChecksHistoryDialogWindowViewModel();
         }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void Window_KeyDown(object sender, MouseButtonEventArgs e)
         {
             DragMove();

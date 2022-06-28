@@ -252,7 +252,7 @@ namespace GitMarket.Infrastructure.APIs
                 {
                     var data = new StringContent(JsonConvert.SerializeObject(param).ToString(), Encoding.UTF8, "application/json");
 
-                    httpClient.DefaultRequestHeaders.Add("Authorization", "Basic " + Setts.Default.AuthorizationToken);
+                    httpClient.DefaultRequestHeaders.Add("Authorization", "Basic " + Convert.ToBase64String(Encoding.UTF8.GetBytes(Setts.Default.CompanyId + ":" + Setts.Default.ApiKey)));
 
                     var response = await httpClient.PostAsync($"https://api.uds.app/partner/v2/operations", data);
 
@@ -277,7 +277,7 @@ namespace GitMarket.Infrastructure.APIs
                 {
                     var data = new StringContent(JsonConvert.SerializeObject(param).ToString(), Encoding.UTF8, "application/json");
 
-                    httpClient.DefaultRequestHeaders.Add("Authorization", "Basic " + Setts.Default.AuthorizationToken);
+                    httpClient.DefaultRequestHeaders.Add("Authorization", "Basic " + Convert.ToBase64String(Encoding.UTF8.GetBytes(Setts.Default.CompanyId + ":" + Setts.Default.ApiKey)));
 
                     var response = httpClient.PostAsync($"https://api.uds.app/partner/v2/operations/calc", data);
 

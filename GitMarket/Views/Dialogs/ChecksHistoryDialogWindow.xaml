@@ -15,18 +15,19 @@
                 <ColumnDefinition Width="1*" />
                 <ColumnDefinition Width="1.2*" />
             </Grid.ColumnDefinitions>
-            <StackPanel Margin="5">
+            <StackPanel Margin="15 5 15 5">
                 <TextBlock Text="Выберите чек" FontSize="23" 
-                           Foreground="DarkBlue"
+                           Foreground="DarkBlue" FontWeight="DemiBold"
                            HorizontalAlignment="Center" Height="40"/>
                 <ListView ItemsSource="{Binding ChecksCollection}"
                           ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                           SelectedItem="{Binding SelectedCheck}"
                           Style="{DynamicResource HistoryListView}">
                     <ListView.View>
-                        <GridView ColumnHeaderContainerStyle="{DynamicResource HistoryListViewHeaderStyle}">
-                            <GridViewColumn Width="120" DisplayMemberBinding="{Binding id}" Header="Номер чека"/>
-                            <GridViewColumn Width="160" DisplayMemberBinding="{Binding prodaja_started,StringFormat=dd:MM:yyyy HH:mm}" Header="Дата"/>
+                        <GridView AllowsColumnReorder="False" 
+                                  ColumnHeaderContainerStyle="{DynamicResource HistoryListViewHeaderStyle}">
+                            <GridViewColumn Width="110" DisplayMemberBinding="{Binding id}" Header="Номер чека"/>
+                            <GridViewColumn Width="150" DisplayMemberBinding="{Binding prodaja_started,StringFormat=dd:MM:yyyy HH:mm}" Header="Дата"/>
                             <GridViewColumn Width="100" DisplayMemberBinding="{Binding total_sum}" Header="На сумму"/>
                             <GridViewColumn Width="150" DisplayMemberBinding="{Binding comment}" Header="Коментарий"/>
                         </GridView>
@@ -190,7 +191,7 @@
                             FontSize="18" FontWeight="DemiBold" Content="Напечатать"
                             HorizontalAlignment="Center"
                             Background="#3B9AAF" BorderThickness="0" Width="120"  Grid.Row="2"
-                            Click="Button_Click" Height="55"/>
+                            Command="{Binding PrintCheckCommand}" CommandParameter="{Binding ElementName=printGrid}" Height="55"/>
                 </Grid>
             </Grid>
         </Grid>
