@@ -4,7 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GitMarket.Views.Dialogs" WindowStartupLocation="CenterScreen"
-        mc:Ignorable="d" KeyUp="Win_KeyUp" WindowStyle="None" ResizeMode="NoResize"
+        mc:Ignorable="d" KeyUp="Win_KeyUp" Icon="/Resources/Base/logo2.png"
+        WindowStyle="None" ResizeMode="NoResize"
         Title="EndSaleDialogWindow" Height="300" Width="280">
     <Border BorderThickness="0.8" MouseDown="Border_MouseDown" BorderBrush="Black">
         <Grid Background="White">

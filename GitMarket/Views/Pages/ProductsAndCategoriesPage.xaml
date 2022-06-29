@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:GitMarket.ViewModels.PagesViewModels"
         mc:Ignorable="d" Background="White" Title="Выбор товаров"
+        Icon="/Resources/Base/logo2.png"
         d:DataContext="{d:DesignInstance Type=vm:ProductsAndCategoriesPageViewModel}"
         d:DesignHeight="800" d:DesignWidth="1200" WindowStartupLocation="CenterOwner">
     <Window.Resources>

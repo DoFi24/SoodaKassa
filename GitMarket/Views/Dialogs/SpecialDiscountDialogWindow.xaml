@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:GitMarket.Views.Dialogs"
+        xmlns:local="clr-namespace:GitMarket.Views.Dialogs" Icon="/Resources/Base/logo2.png"
         KeyUp="Window_KeyUp" AllowsTransparency="True" Background="Transparent"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowStyle="None"
         Title="SpecialDiscount" Height="160" Width="300">

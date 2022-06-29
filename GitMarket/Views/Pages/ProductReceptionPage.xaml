@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:GitMarket.Views.Pages"
       xmlns:vm="clr-namespace:GitMarket.ViewModels.PagesViewModels"
       d:DataContext="{d:DesignInstance vm:ProductReceptionPageViewModel}"
-      mc:Ignorable="d" 
+      mc:Ignorable="d"
       d:DesignHeight="540" d:DesignWidth="900"
       Title="{Binding PageTitle}">
     

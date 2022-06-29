@@ -8,7 +8,7 @@
         mc:Ignorable="d" AllowsTransparency="True"
         d:DataContext="{d:DesignInstance vm:MainNavigationWindowViewModel}"
         Title="{Binding WindowTitle}" Height="650" Width="900" MouseDown="Window_MouseDown"
-        WindowStyle="None" WindowStartupLocation="CenterScreen" 
+        WindowStyle="None" WindowStartupLocation="CenterScreen"  Icon="/Resources/Base/logo2.png"
         WindowState="Maximized" Background="{x:Null}" KeyUp="Window_KeyUp" Loaded="Window_Loaded">
     <Border BorderBrush="Black" BorderThickness="1" Background="Transparent">
         <Grid Background="Transparent">

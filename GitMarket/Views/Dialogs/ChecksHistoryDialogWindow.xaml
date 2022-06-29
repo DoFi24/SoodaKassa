@@ -6,10 +6,11 @@
         xmlns:local="clr-namespace:GitMarket.Views.Dialogs"
         xmlns:vm="clr-namespace:GitMarket.ViewModels.DialogsViewModel"
         mc:Ignorable="d" Background="{x:Null}" AllowsTransparency="True"
-        WindowStyle="None" MouseDown="Window_KeyDown"
+        WindowStyle="None" MouseDown="Window_KeyDown"  Icon="/Resources/Base/logo2.png"
         d:DataContext="{d:DesignInstance Type=vm:ChecksHistoryDialogWindowViewModel}"
         Title="ChecksHistoryDialogWindow" Height="800" Width="1200">
-    <Border BorderBrush="Black" CornerRadius="10" Background="White">
+    <Border BorderBrush="Black" BorderThickness="1"
+            CornerRadius="10" Background="White">
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*" />
@@ -39,8 +40,8 @@
                     <RowDefinition Height="7*" />
                     <RowDefinition Height="1*" />
                 </Grid.RowDefinitions>
-                <Button Height="20" Width="20" Margin="5" 
-                        BorderThickness=".1" Click="Button_Click_1"
+                <Button Height="20" Width="20" Margin="5" Background="White" 
+                        BorderThickness="0" Click="Button_Click_1"
                         HorizontalAlignment="Right" VerticalAlignment="Top">
                     <Image Source="/Resources/DefaultIcons/close.png"/>
                 </Button>

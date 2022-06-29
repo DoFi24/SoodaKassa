@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:GitMarket.Views.Dialogs"
         xmlns:mt="http://materialdesigninxaml.net/winfx/xaml/themes"
         MouseDown="DropDown" Background="{x:Null}" AllowsTransparency="True"
-        mc:Ignorable="d" ResizeMode="NoResize" WindowStyle="None"
+        mc:Ignorable="d" ResizeMode="NoResize" WindowStyle="None" Icon="/Resources/Base/logo2.png"
         Title="UDSDialogWindow" Height="400" Width="450">
     <Window.Resources>
         <Style TargetType="Button">

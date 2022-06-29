@@ -8,6 +8,7 @@
         xmlns:mt="http://materialdesigninxaml.net/winfx/xaml/themes"
         d:DataContext="{d:DesignInstance vm:LoginWindowViewModel}"
         WindowState="Maximized" WindowStyle="None" 
+        Icon="/Resources/Base/logo2.png"
         Title="LoginWindow" Height="600" Width="900">
     <Window.Resources>
         <ResourceDictionary>

@@ -5,6 +5,7 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>soodaLogo.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -62,6 +63,10 @@
     <None Remove="Resources\MenuButtonIcons\whiteIcons\Setting_alt_line.png" />
     <None Remove="Resources\MenuButtonIcons\whiteIcons\Shape-1.png" />
     <None Remove="Resources\MenuButtonIcons\whiteIcons\Shape.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="soodaLogo.ico" />
   </ItemGroup>
 
   <ItemGroup>

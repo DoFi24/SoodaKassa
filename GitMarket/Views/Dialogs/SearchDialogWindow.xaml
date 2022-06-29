@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GitMarket.Views.Dialogs" KeyUp="Window_KeyUp"
         mc:Ignorable="d" WindowStyle="None" WindowStartupLocation="CenterOwner" ResizeMode="NoResize"
-        Title="SearchWindow" Height="300" Width="340" AllowsTransparency="True" Background="Transparent">
+        Title="SearchWindow" Icon="/Resources/Base/logo2.png" Height="300" Width="340" AllowsTransparency="True" Background="Transparent">
     <Border MouseLeftButtonDown="Border_MouseLeftButtonDown" Background="White" CornerRadius="6" BorderThickness="1" BorderBrush="#94A6CA">
         <Border.Resources>
             <Style TargetType="TextBox">

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GitMarket.Views.Dialogs"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen" WindowStyle="None" 
-        ResizeMode="NoResize" KeyUp="Window_KeyUp"
+        ResizeMode="NoResize" KeyUp="Window_KeyUp" Icon="/Resources/Base/logo2.png"
         AllowsTransparency="True" Background="Transparent" Height="210" Width="300">
     <Border MouseLeftButtonDown="Border_MouseLeftButtonDown" Background="White" 
             BorderBrush="#94A6CA" BorderThickness="1" CornerRadius="6">

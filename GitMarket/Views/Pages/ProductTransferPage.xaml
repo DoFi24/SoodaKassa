@@ -8,7 +8,6 @@
       mc:Ignorable="d" d:Height="540" d:Width="900"
       d:DataContext="{d:DesignInstance vm:ProductTransferPageViewModel}"
       Title="{Binding PageTitle,UpdateSourceTrigger=PropertyChanged}">
-
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="30" />

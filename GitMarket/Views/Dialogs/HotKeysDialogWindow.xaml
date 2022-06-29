@@ -6,7 +6,8 @@
         xmlns:vm="clr-namespace:GitMarket.ViewModels.DialogsViewModel"
         KeyUp="Window_KeyUp" WindowStyle="None" ResizeMode="NoResize"
         d:DataContext="{d:DesignInstance Type=vm:HotKeysDialogWindowViewModel}"
-        mc:Ignorable="d" Background="{x:Null}" BorderThickness="0"
+        mc:Ignorable="d" Background="{x:Null}" 
+        BorderThickness="0" Icon="/Resources/Base/logo2.png"
         Title="HotKeysDialogWindow" WindowState="Maximized">
     <Border Background="White" BorderBrush="DarkBlue" BorderThickness=".3" CornerRadius="10">
         <Grid>
