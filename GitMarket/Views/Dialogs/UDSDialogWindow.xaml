@@ -4,10 +4,43 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GitMarket.Views.Dialogs"
-        MouseDown="DropDown" Background="{x:Null}"
+        xmlns:mt="http://materialdesigninxaml.net/winfx/xaml/themes"
+        MouseDown="DropDown" Background="{x:Null}" AllowsTransparency="True"
         mc:Ignorable="d" ResizeMode="NoResize" WindowStyle="None"
         Title="UDSDialogWindow" Height="400" Width="450">
-    <Border CornerRadius="4" Background="White" BorderThickness=".5" BorderBrush="Black">
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="LightBlue" />
+            <Setter Property="Width" Value="200" />
+            <Setter Property="Foreground" Value="DarkBlue" />
+            <Setter Property="Margin" Value="10" />
+            <Setter Property="BorderBrush" Value="DarkBlue" />
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="FontWeight" Value="DemiBold" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border CornerRadius="5" 
+                        Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" 
+                        BorderThickness=".5" >
+                            <ContentPresenter x:Name="contentPresenter" 
+                                      ContentTemplate="{TemplateBinding ContentTemplate}" 
+                                      Content="{TemplateBinding Content}" 
+                                      HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                      Margin="{TemplateBinding Padding}" 
+                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Opacity" Value="0.8" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+    <Border CornerRadius="12" Background="White" BorderThickness="1" BorderBrush="Black">
         <Grid Margin="1" Background="{x:Null}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*" />
@@ -20,24 +53,30 @@
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <StackPanel Margin="-30 0 20 0">
                     <TextBlock FontSize="15" Foreground="DarkBlue" FontWeight="DemiBold" Text="Общая сумма покупки"/>
-                    <TextBlock x:Name="TotalTextBlock" Text="300" HorizontalAlignment="Center" FontSize="24" FontWeight="Bold" Foreground="Green" />
+                    <TextBlock x:Name="TotalTextBlock" Text="0" HorizontalAlignment="Center" FontSize="24" FontWeight="Bold" Foreground="Green" />
                 </StackPanel>
                 <Image Height="40" Width="50" Source="/Resources/Base/udsIcon.jpg"/>
                 <Image Height="30" HorizontalAlignment="Center" Margin="10 0 0 5" Width="100" Source="/Resources/Base/udsText.png"/>
             </StackPanel>
-            <Button Background="White" Margin="2" BorderThickness=".5" Click="CloseWindowClick"
-                VerticalAlignment="Top" HorizontalAlignment="Right" Height="25">
-                <Image Source="/Resources/DefaultIcons/close.png"/>
+            <Button Background="White" Width="25" Margin="4"
+                    BorderThickness=".5" Click="CloseWindowClick"
+                    VerticalAlignment="Top" HorizontalAlignment="Right" Height="25">
+                <Image Height="18" Source="/Resources/DefaultIcons/close.png"/>
             </Button>
             <StackPanel Grid.Row="1" Orientation="Horizontal">
                 <TextBlock Foreground="DarkBlue" Margin="10 0 0 0" 
                            Text="Код клиента :" FontWeight="DemiBold" VerticalAlignment="Center" 
                            MaxWidth="100" TextWrapping="Wrap" FontSize="15"/>
                 <Border Margin="5 10 17 10" CornerRadius="5" BorderBrush="DarkBlue" BorderThickness=".5 .5 .5 2" >
-                    <TextBox BorderThickness="0" Margin="2" Foreground="DarkBlue" 
-                             KeyUp="TextKeyUp" Padding="2 5 0 0" Width="320" 
+                    <TextBox Margin="3" BorderThickness="0" Foreground="DarkBlue" 
+                             KeyUp="TextKeyUp" Padding="2 5 0 0" Width="240" 
                              x:Name="UdsTextCode" FontSize="18"/>
                 </Border>
+                <Button Width="50"
+                    Click="Button_Click_SearchClient"
+                    Grid.Row="5" HorizontalAlignment="Left">
+                    <mt:PackIcon Height="30" Width="30" Kind="Search"/>
+                </Button>
             </StackPanel>
             <Grid Grid.Row="2">
                 <Grid.ColumnDefinitions>
@@ -50,7 +89,7 @@
                 </Grid>
                 <Grid Grid.Column="1">
                     <TextBlock FontSize="15" FontWeight="DemiBold" Foreground="DarkBlue" VerticalAlignment="Top" HorizontalAlignment="Center" Text="Накопленные баллы: "/>
-                    <TextBlock FontSize="25" Foreground="DarkGreen" Height="40" HorizontalAlignment="Center" MaxWidth="170" TextWrapping="Wrap" Text="1000" VerticalAlignment="Bottom" x:Name="UserBonus"/>
+                    <TextBlock FontSize="25" Foreground="DarkGreen" Height="40" HorizontalAlignment="Center" MaxWidth="170" TextWrapping="Wrap" Text="0" VerticalAlignment="Bottom" x:Name="UserBonus"/>
                 </Grid>
             </Grid>
             <StackPanel Grid.Row="3" Orientation="Horizontal">
@@ -75,66 +114,15 @@
                 </Border>
             </StackPanel>
             <CheckBox x:Name="silentCheckBox" Content="Отправить &#x0a; уведомление" 
-                      IsChecked="False" Grid.Row="4" Margin="10 0 0 0"
+                      IsChecked="True" Grid.Row="4" Margin="10 0 0 0"
                       HorizontalAlignment="Left" VerticalAlignment="Center"/>
-            <Button Background="LightBlue" Width="200" FontSize="15"
-                BorderBrush="DarkBlue" Margin="10" Click="Button_Click_Accept" 
-                Grid.Row="5" Content="Списать баллы" HorizontalAlignment="Right">
-                <Button.Style>
-                    <Style TargetType="Button">
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="Button">
-                                    <Border CornerRadius="5" 
-                        Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" 
-                        BorderThickness=".5" >
-                                        <ContentPresenter x:Name="contentPresenter" 
-                                      ContentTemplate="{TemplateBinding ContentTemplate}" 
-                                      Content="{TemplateBinding Content}" 
-                                      HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                      Margin="{TemplateBinding Padding}" 
-                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                        <Style.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Opacity" Value="0.8" />
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
-            </Button>
-            <Button Background="LightBlue" Width="200" FontSize="15"
-                BorderBrush="DarkBlue" Margin="10" Click="Button_Click_Accept" 
-                Grid.Row="5" Content="Начислить баллы" HorizontalAlignment="Left">
-                <Button.Style>
-                    <Style TargetType="Button">
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="Button">
-                                    <Border CornerRadius="5" 
-                        Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" 
-                        BorderThickness=".5" >
-                                        <ContentPresenter x:Name="contentPresenter" 
-                                      ContentTemplate="{TemplateBinding ContentTemplate}" 
-                                      Content="{TemplateBinding Content}" 
-                                      HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                      Margin="{TemplateBinding Padding}" 
-                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                        <Style.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Opacity" Value="0.8" />
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
-            </Button>
+            <Button Uid="0" Click="Button_Click_Accept"
+                Grid.Row="5" Content="Списать баллы" 
+                    HorizontalAlignment="Right"/>
+            <Button Uid="1"
+                    Click="Button_Click_Accept" 
+                Grid.Row="5" Content="Начислить баллы" 
+                    HorizontalAlignment="Left"/>
         </Grid>
     </Border>
 </Window>

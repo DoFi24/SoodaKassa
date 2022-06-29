@@ -23,34 +23,29 @@ namespace GitMarket
 
         protected override async void OnStartup(StartupEventArgs e)
         {
-            //new ChecksHistoryDialogWindow().Show();
-
-
-
-            new UDSDialogWindow().Show();
-            //if (IsOnce())
-            //{
-            //    if (Setts.Default.IsSaveLoginPassword)
-            //    {
-            //        if (await APIRequests.GetIsValidAsync())
-            //        {
-            //            new MainNavigationWindow().Show();
-            //        }
-            //        else
-            //        {
-            //            new LoginWindow().Show();
-            //            MessageBox.Show("Не валидный токен!");
-            //        }
-            //    }
-            //    else
-            //    {
-            //    new LoginWindow().Show();
-            //    }
-            //}
-            //else
-            //{
-            //    MessageBox.Show("Программа уже была открыта!", "Окно", MessageBoxButton.OK, MessageBoxImage.Error);
-            //}
+            if (IsOnce())
+            {
+                if (Setts.Default.IsSaveLoginPassword)
+                {
+                    if (await APIRequests.GetIsValidAsync())
+                    {
+                        new MainNavigationWindow().Show();
+                    }
+                    else
+                    {
+                        new LoginWindow().Show();
+                        MessageBox.Show("Не валидный токен!");
+                    }
+                }
+                else
+                {
+                    new LoginWindow().Show();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Программа уже была открыта!", "Окно", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
 
             base.OnStartup(e);
         }

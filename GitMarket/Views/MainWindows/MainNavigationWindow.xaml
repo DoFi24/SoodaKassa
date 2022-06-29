@@ -5,7 +5,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:GitMarket.ViewModels.WindowsViewModels"
-        mc:Ignorable="d" 
+        mc:Ignorable="d" AllowsTransparency="True"
         d:DataContext="{d:DesignInstance vm:MainNavigationWindowViewModel}"
         Title="{Binding WindowTitle}" Height="650" Width="900" MouseDown="Window_MouseDown"
         WindowStyle="None" WindowStartupLocation="CenterScreen" 
@@ -226,7 +226,7 @@
                                         <Button  IsTabStop="False" x:Name="Btn1" Background="#4AD178" Height="50" FontSize="14" Content="Бонус и скидка (-)" Command="{Binding GetBonusCommand}" Grid.Row="1"/>
                                         <!--<Button Background="#3B9AAE" Height="40" Content="Напечатать чек&#x0a; ()" Command="{Binding CheckPaymentEndCommand}" Grid.Row="3"/>-->
                                         <Button  IsTabStop="False" Background="#3B9AAE" Height="50" FontSize="15" Content="UDS" Command="{Binding UDSSettingsCommand}" Grid.Row="2"/>
-                                        <Button  IsTabStop="False" Background="#FE5A5B" Height="50" FontSize="15" Content="Очистить&#x0a; (Ctrl + Delete)" Command="{Binding ClearSelectedProductsCommand}" Grid.Row="5"/>
+                                        <Button  IsTabStop="False" Background="#FE5A5B" Height="50" FontSize="15" Content="    Очистить&#x0a; (Ctrl + Delete)" Command="{Binding ClearSelectedProductsCommand}" Grid.Row="5"/>
                                     </Grid>
                                 </StackPanel>
                             </Grid>

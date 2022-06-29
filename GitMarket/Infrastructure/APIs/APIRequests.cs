@@ -258,9 +258,8 @@ namespace GitMarket.Infrastructure.APIs
 
                     var responeString = await response.Content.ReadAsStringAsync();
 
-                    var result = JObject.Parse(responeString).ToObject<uToperationResult>();
+                    return JObject.Parse(responeString).ToObject<uToperationResult>();
 
-                    return result;
                 }
                 catch
                 {

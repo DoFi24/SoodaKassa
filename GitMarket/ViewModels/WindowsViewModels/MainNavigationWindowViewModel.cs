@@ -106,6 +106,13 @@ namespace GitMarket.ViewModels.WindowsViewModels
             get => _ReceiptPrice;
             set => Set(ref _ReceiptPrice, value);
         }
+        private decimal _ReceiptUDSPrice = 0m;
+        public decimal ReceiptUDSPrice
+        {
+            get => _ReceiptUDSPrice;
+            set => Set(ref _ReceiptUDSPrice, value);
+        }
+
         private decimal _ReceiptDiscount = 0m;
         public decimal ReceiptDiscount
         {
@@ -205,7 +212,16 @@ namespace GitMarket.ViewModels.WindowsViewModels
             _UDSSettingsCommand ??= new RelayCommand(ExecuteUDSSettingsCommand, (object obj) => { if (SelectedProductsCollection!.Any()) return true; return false; });
         private void ExecuteUDSSettingsCommand(object obj)
         {
-            new UDSDialogWindow().ShowDialog();
+            new UDSDialogWindow(ReceiptPrice)
+            {
+                sendPrice = ChangePriceWithUDS
+            }.ShowDialog();
+        }
+
+        private void ChangePriceWithUDS(decimal price) 
+        {
+            ReceiptUDSPrice = price;
+            GetCalculate();
         }
 
         private RelayCommand? _openMenuCommand;
@@ -402,6 +418,9 @@ namespace GitMarket.ViewModels.WindowsViewModels
                 case "7":
                     new ServiceSaleWindow(this).ShowDialog();
                     break;
+                case "4":
+                    new ChecksHistoryDialogWindow().Show();
+                    break;
                 case "8":
                     new OptionWindow().ShowDialog();
                     break;
@@ -531,17 +550,18 @@ namespace GitMarket.ViewModels.WindowsViewModels
         {
             if (SelectedProductsCollection.Count > 0)
             {
-                ReceiptPrice = SelectedProductsCollection.Select(t => t.Itog).Sum() - ReceiptDiscount - ReceiptBonus;
+                ReceiptPrice = SelectedProductsCollection.Select(t => t.Itog).Sum() - ReceiptDiscount - ReceiptBonus - ReceiptUDSPrice;
                 GetCalculateOverPrice();
             }
             else
             {
-                ReceiptPrice = 0;
-                ReceiptDiscount = 0;
-                ReceiptBonus = 0;
-                ReceiptOverpay = 0;
-                ReceiptPaid = 0;
-                ReceiptPaidCard = 0;
+                ReceiptPrice = 0m;
+                ReceiptDiscount = 0m;
+                ReceiptBonus = 0m;
+                ReceiptOverpay = 0m;
+                ReceiptPaid = 0m;
+                ReceiptPaidCard = 0m;
+                ReceiptUDSPrice = 0m;
             }
 
         }

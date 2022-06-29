@@ -1,5 +1,6 @@
 ﻿using GitMarket.Domain.Models.UDSModels;
 using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -8,10 +9,13 @@ namespace GitMarket.Views.Dialogs
 {
     public partial class UDSDialogWindow : Window
     {
+        public delegate void UDSPrice(decimal totalPrice);
+        public UDSPrice sendPrice;
         private ResponseUserInfoModel? user;
-        public UDSDialogWindow()
+        public UDSDialogWindow(decimal totalPrice)
         {
             InitializeComponent();
+            TotalTextBlock.Text = totalPrice.ToString();
         }
         private void CloseWindowClick(object sender, RoutedEventArgs e)
         {
@@ -37,12 +41,12 @@ namespace GitMarket.Views.Dialogs
                 UserBonus.Text = user!.user!.participant!.points!.ToString() ?? "Нету баллов";
             }
         }
-        private async void Button_Click_Accept(object sender, RoutedEventArgs e)
+        private void Button_Click_Accept(object sender, RoutedEventArgs e)
         {
             decimal point = 0;
-            if ((sender as Button).Content == "Списать баллы")
+            if ((sender as Button)!.Uid == "0")
                 point = Convert.ToDecimal(UdsSpisanieBonus.Text);
-            
+
             var cashh = Infrastructure.APIs.APIRequests.GetCashRequest(
                                 new RequestInfoModel
                                 {
@@ -76,6 +80,26 @@ namespace GitMarket.Views.Dialogs
                     });
 
             Setts.Default.Save();
+            if (operInfo is null)
+            {
+                MessageBox.Show("Ошибка! \nНеверно введены данные");
+                return;
+            }
+            sendPrice(operInfo!.Result!.oneOf.First().cash);
+            MessageBox.Show("Успешно!");
+            Close();
+        }
+
+        private async void Button_Click_SearchClient(object sender, RoutedEventArgs e)
+        {
+            user = await Infrastructure.APIs.APIRequests.GetUDSUserInfoRequest(TotalTextBlock.Text, UdsTextCode.Text);
+            if (user is null)
+            {
+                MessageBox.Show("Неправильный код!", "Непрвильный ввод", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            UserName.Text = user.user.displayName;
+            UserBonus.Text = user!.user!.participant!.points!.ToString() ?? "Нету баллов";
         }
     }
 }
