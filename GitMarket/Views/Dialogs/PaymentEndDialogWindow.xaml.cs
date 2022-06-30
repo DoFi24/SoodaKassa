@@ -1,22 +1,9 @@
-﻿using GitMarket.Domain.Models.TitiModels.ProductsModel;
-using GitMarket.Infrastructure;
+﻿using GitMarket.Infrastructure;
 using GitMarket.ViewModels.DialogsViewModel;
-using GitMarket.ViewModels.PagesViewModels;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Printing;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace GitMarket.Views.Dialogs
 {
@@ -33,7 +20,7 @@ namespace GitMarket.Views.Dialogs
             DataContext = new PaymentEndDialogWindowViewModel(model);
             UserName.Text = StatisticalResources.UserName;
             DateTimeStr.Text = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToShortTimeString();
-            CheckNumber.Text = model.Prodaja.Check_Id.ToString();
+            CheckNumber.Text = model.Prodaja.check_no;
         }
 
         private void PrintMethod()

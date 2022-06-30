@@ -1,4 +1,5 @@
-﻿using GitMarket.Domain.Models.UDSModels;
+﻿using GitMarket.Domain.Models.TitiModels.ProductsModel;
+using GitMarket.Domain.Models.UDSModels;
 using System;
 using System.Linq;
 using System.Windows;
@@ -11,6 +12,7 @@ namespace GitMarket.Views.Dialogs
     {
         public delegate void UDSPrice(decimal totalPrice);
         public UDSPrice sendPrice;
+        public LastCheckResponce lastCheck = new LastCheckResponce();
         private ResponseUserInfoModel? user;
         public UDSDialogWindow(decimal totalPrice)
         {
@@ -74,7 +76,7 @@ namespace GitMarket.Views.Dialogs
                             points = point,
                             skipLoyaltyTotal = String.IsNullOrEmpty(UdsSkipLoyaltyTotal.Text) ? 1 : Convert.ToDecimal(UdsSkipLoyaltyTotal.Text),
                             cash = cashh!.purchase!.cashTotal,
-                            number = null
+                            number = lastCheck.data.check_no
                         },
                         tags = null
                     });

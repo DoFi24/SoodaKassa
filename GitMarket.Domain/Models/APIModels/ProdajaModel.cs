@@ -13,10 +13,12 @@ namespace GitMarket.Domain.Models.APIModels
     }
     public class data
     {
-        public ulong sklad_id { get; set; }
-        public ulong shop_id { get; set; }
-        public ulong staff_id { get; set; }
-        public ulong? kontragent_id { get; set; }
+        public uint? sklad_id { get; set; }
+        public uint? shop_id { get; set; }
+        public uint? staff_id { get; set; }
+        public uint? kassa_id { get; set; }
+        public long? prodaja_id { get; set; } = null;
+        public long? kontragent_id { get; set; }
         public decimal? pay_sum { get; set; }
         public string? comment { get; set; }
         public IEnumerable<ProdajaProduct>? rows { get; set; }

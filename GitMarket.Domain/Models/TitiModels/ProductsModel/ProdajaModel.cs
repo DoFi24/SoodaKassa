@@ -2,10 +2,10 @@
 {
     public class ProdajaModel
     {
-        public int Prodaja_Id { get; set; }
-        public int Check_Id { get; set; }
-        public int Smena_Id { get; set; }
-        public int Staff_Id { get; set; }
-
+        public long? Prodaja_Id { get; set; }
+        public long? Check_Id { get; set; }
+        public long? Smena_Id { get; set; }
+        public long? Staff_Id { get; set; }
+        public string? check_no { get; set; }
     }
 }

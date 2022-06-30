@@ -118,5 +118,17 @@ namespace GitMarket.Properties {
                 this["NonceUuid"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public uint KassaId {
+            get {
+                return ((uint)(this["KassaId"]));
+            }
+            set {
+                this["KassaId"] = value;
+            }
+        }
     }
 }

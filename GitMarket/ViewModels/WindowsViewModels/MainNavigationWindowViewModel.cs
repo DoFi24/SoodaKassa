@@ -20,21 +20,25 @@ namespace GitMarket.ViewModels.WindowsViewModels
 {
     public class MainNavigationWindowViewModel : Base.BaseViewModel
     {
-        public delegate void CloseMainWindow();
-        public CloseMainWindow? closeMainWindow;
         public MainNavigationWindowViewModel(MainNavigationWindow _mainWindow)
         {
             GetHotKeys();
         }
+        public MainNavigationWindowViewModel()
+        {
+
+        }
+
+        public delegate void CloseMainWindow();
+        public CloseMainWindow? closeMainWindow;
+
+        public LastCheckResponce lastCheck = new LastCheckResponce();
+
         private async void GetHotKeys()
         {
             HotKeysStructure.HotKeysDictionary = await HotKeysStructure.GetHotKeys();
         }
 
-        public MainNavigationWindowViewModel()
-        {
-
-        }
 
         #region Properties
 
@@ -210,15 +214,25 @@ namespace GitMarket.ViewModels.WindowsViewModels
         private RelayCommand? _UDSSettingsCommand;
         public RelayCommand? UDSSettingsCommand =>
             _UDSSettingsCommand ??= new RelayCommand(ExecuteUDSSettingsCommand, (object obj) => { if (SelectedProductsCollection!.Any()) return true; return false; });
-        private void ExecuteUDSSettingsCommand(object obj)
+        private async void ExecuteUDSSettingsCommand(object obj)
         {
+            lastCheck = await Infrastructure.APIs.APIRequests.GetFromAPIAsyncSingle<LastCheckResponce>(
+                new GetLastCheckModel
+                {
+                    data = null,
+                    sum = ReceiptPaid,
+                    esum = ReceiptPaidCard,
+                    parameter = "windows"
+                }, "FC_PRODAJA_GET_LAST_CHECK");
+
             new UDSDialogWindow(ReceiptPrice)
             {
-                sendPrice = ChangePriceWithUDS
+                sendPrice = ChangePriceWithUDS,
+                lastCheck = lastCheck
             }.ShowDialog();
         }
 
-        private void ChangePriceWithUDS(decimal price) 
+        private void ChangePriceWithUDS(decimal price)
         {
             ReceiptUDSPrice = price;
             GetCalculate();
@@ -507,6 +521,7 @@ namespace GitMarket.ViewModels.WindowsViewModels
             DeleteProductsInJournal();
             Thread.Sleep(200);
             SelectedProductsCollection?.Clear();
+            lastCheck = new LastCheckResponce();
             discount.Clear();
             bonuses.Clear();
             taxes.Clear();
@@ -577,6 +592,8 @@ namespace GitMarket.ViewModels.WindowsViewModels
                         parameter = "windows",
                         data = new data
                         {
+                            prodaja_id = lastCheck == new LastCheckResponce() ? null : lastCheck.data.prodaja_id,
+                            kassa_id = Setts.Default.KassaId,
                             shop_id = Setts.Default.ShopId,
                             sklad_id = Setts.Default.StaffId,
                             staff_id = Setts.Default.SkladId,
@@ -614,6 +631,8 @@ namespace GitMarket.ViewModels.WindowsViewModels
                         parameter = "windows",
                         data = new data
                         {
+                            prodaja_id = lastCheck == new LastCheckResponce() ? null : lastCheck.data.prodaja_id,
+                            kassa_id = Setts.Default.KassaId,
                             shop_id = Setts.Default.ShopId,
                             sklad_id = Setts.Default.StaffId,
                             staff_id = Setts.Default.SkladId,
@@ -649,6 +668,8 @@ namespace GitMarket.ViewModels.WindowsViewModels
                         parameter = "windows",
                         data = new data
                         {
+                            prodaja_id = lastCheck == new LastCheckResponce() ? null : lastCheck.data.prodaja_id,
+                            kassa_id = Setts.Default.KassaId,
                             shop_id = Setts.Default.ShopId,
                             sklad_id = Setts.Default.StaffId,
                             staff_id = Setts.Default.SkladId,

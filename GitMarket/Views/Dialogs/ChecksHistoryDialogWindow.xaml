@@ -27,7 +27,7 @@
                     <ListView.View>
                         <GridView AllowsColumnReorder="False" 
                                   ColumnHeaderContainerStyle="{DynamicResource HistoryListViewHeaderStyle}">
-                            <GridViewColumn Width="110" DisplayMemberBinding="{Binding id}" Header="Номер чека"/>
+                            <GridViewColumn Width="110" DisplayMemberBinding="{Binding docnum}" Header="Номер чека"/>
                             <GridViewColumn Width="150" DisplayMemberBinding="{Binding prodaja_started,StringFormat=dd:MM:yyyy HH:mm}" Header="Дата"/>
                             <GridViewColumn Width="100" DisplayMemberBinding="{Binding total_sum}" Header="На сумму"/>
                             <GridViewColumn Width="150" DisplayMemberBinding="{Binding comment}" Header="Коментарий"/>
@@ -87,7 +87,7 @@
                                 <TextBlock Text="Кассир:" Grid.Row="2" FontSize="13" HorizontalAlignment="Left" Margin="15 0 0 0"/>
                                 <TextBlock Text="{Binding staff.full_name}" Grid.Row="2" FontSize="13" HorizontalAlignment="Right" Margin="0 0 15 0"/>
                                 <TextBlock Text="Чек №:" Grid.Row="3" FontSize="13" HorizontalAlignment="Left" Margin="15 0 0 0"/>
-                                <TextBlock Text="{Binding id}" x:Name="CheckNumber" Grid.Row="3" FontSize="15" HorizontalAlignment="Left" Margin="65 0 0 0"/>
+                                <TextBlock Text="{Binding docnum}" x:Name="CheckNumber" Grid.Row="3" FontSize="15" HorizontalAlignment="Left" Margin="65 0 0 0"/>
                                 <TextBlock x:Name="DateTimeStr" Text="23:00 5 Января 2022г" Grid.Row="3" FontSize="13" HorizontalAlignment="Right" Margin="0 0 15 0"/>
 
                                 <Rectangle Margin="15 1 15 0" Grid.Row="4" Stroke="#FF000000" Height="1" StrokeThickness="1" StrokeDashArray="2 2" SnapsToDevicePixels="True"/>

@@ -5,6 +5,7 @@ namespace GitMarket.Domain.Models.APIResponseRequest
     public class CheckModel
     {
         public ulong id { get; set; }
+        public string? docnum { get; set; }
         public PrihodShopModel? shop { get; set; }
         public PrihodSkladModel? sklad { get; set; }
         public Staff? staff { get; set; }

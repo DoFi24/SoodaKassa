@@ -92,6 +92,23 @@ namespace GitMarket.Infrastructure.APIs
                 return result.data?.rows != null ? result.data.rows.ToList() : new List<T>();
             }
         }
+        public static async Task<T> GetFromAPIAsyncSingle<T>(object rmodel, string requestFunction = "FC_PRODAJA_GET_PRODUCT")
+        {
+            using (HttpClient httpClient = new())
+            {
+                var data = new StringContent(JsonConvert.SerializeObject(rmodel).ToString(), Encoding.UTF8, "application/json");
+
+                httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + Setts.Default.AuthorizationToken);
+
+                var response = await httpClient.PostAsync($"{API_PATH}/functions/{requestFunction}", data);
+
+                var responeString = await response.Content.ReadAsStringAsync();
+
+                var result = JObject.Parse(responeString).ToObject<SingleResponceModel<T>>();
+
+                return result.data != null ? result.data : default(T);
+            }
+        }
 
         #region TaxesDiscountBonuses
         public static IEnumerable<DiscountProduct> GetDiscountSum(DiscountModel taxes, int page = 1)
