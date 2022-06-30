@@ -6,6 +6,7 @@ using System;
 using System.Collections;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows;
 
 namespace GitMarket.ViewModels.PagesViewModels
 {
@@ -63,9 +64,13 @@ namespace GitMarket.ViewModels.PagesViewModels
                     else
                     {
                         var product = _model.SelectedProductsCollection.First(s => s.Prihod_Detail_Id == value.Prihod_Detail_Id);
-                        product.QuantityCount++;
-                        _model.SelectedProductsCollection.Remove(product);
-                        _model.SelectedProductsCollection.Add(product);
+                        if (product.QuantityCount < product.Quantity)
+                        {
+                            product.QuantityCount++;
+                            _model.SelectedProductsCollection.Remove(product);
+                            _model.SelectedProductsCollection.Add(product);
+                        }
+                        MessageBox.Show("Не достаточно товаров!");
                     }
                     _model.SelectedProductItem = _model.SelectedProductsCollection.Last();
                     _model.GetCalculate();

@@ -309,9 +309,13 @@ namespace GitMarket.ViewModels.WindowsViewModels
             else
             {
                 var product = SelectedProductsCollection.First(s => s.Prihod_Detail_Id == SearchSelectedProduct.Prihod_Detail_Id);
-                product.QuantityCount++;
-                SelectedProductsCollection.Remove(product);
-                SelectedProductsCollection.Add(product);
+                if (product.QuantityCount < product.Quantity)
+                {
+                    product.QuantityCount++;
+                    SelectedProductsCollection.Remove(product);
+                    SelectedProductsCollection.Add(product);
+                }
+                MessageBox.Show("Не достаточно товаров!");
             }
             SelectedProductItem = SelectedProductsCollection.Last();
             SearchSelectedProduct = null;
@@ -393,9 +397,13 @@ namespace GitMarket.ViewModels.WindowsViewModels
                     else
                     {
                         var product = SelectedProductsCollection.First(s => s.Prihod_Detail_Id == prod.Prihod_Detail_Id);
-                        product.QuantityCount++;
-                        SelectedProductsCollection.Remove(product);
-                        SelectedProductsCollection.Add(product);
+                        if (product.QuantityCount < product.Quantity)
+                        {
+                            product.QuantityCount++;
+                            SelectedProductsCollection.Remove(product);
+                            SelectedProductsCollection.Add(product);
+                        }
+                        MessageBox.Show("Не достаточно товаров!");
                     }
                 }
                 else
@@ -792,9 +800,13 @@ namespace GitMarket.ViewModels.WindowsViewModels
                     else
                     {
                         var product = SelectedProductsCollection.First(s => s.Prihod_Detail_Id == firstproduct.Prihod_Detail_Id);
-                        product.QuantityCount++;
-                        SelectedProductsCollection.Remove(product);
-                        SelectedProductsCollection.Add(product);
+                        if (product.QuantityCount < product.Quantity)
+                        {
+                            product.QuantityCount++;
+                            SelectedProductsCollection.Remove(product);
+                            SelectedProductsCollection.Add(product);
+                        }
+                        MessageBox.Show("Не достаточно товаров!");
                     }
                     SelectedProductItem = SelectedProductsCollection.Last();
                 }

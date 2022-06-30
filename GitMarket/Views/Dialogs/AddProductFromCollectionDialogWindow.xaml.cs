@@ -36,9 +36,13 @@ namespace GitMarket.Views.Dialogs
                 else
                 {
                     var product = model.SelectedProductsCollection.First(s => s.Prihod_Detail_Id == prod.Prihod_Detail_Id);
-                    product.QuantityCount++;
-                    model.SelectedProductsCollection.Remove(product);
-                    model.SelectedProductsCollection.Add(product);
+                    if (product.QuantityCount < product.Quantity)
+                    {
+                        product.QuantityCount++;
+                        model.SelectedProductsCollection.Remove(product);
+                        model.SelectedProductsCollection.Add(product);
+                    }
+                    MessageBox.Show("Не достаточно товаров!");
                 }
                 model.GetCalculate();
                 Close();
