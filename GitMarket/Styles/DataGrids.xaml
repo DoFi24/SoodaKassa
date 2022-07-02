@@ -58,16 +58,51 @@
         </Setter>
     </Style>
 
+    <Style TargetType="{x:Type DataGridColumnHeader}" x:Key="ProductHeaderStyle" >
+        <Setter Property="FontSize" Value="1"/>
+        <Setter Property="Height" Value="0"/>
+        <Setter Property="BorderBrush" Value="Gray"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="5"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="ContentTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" Text="{Binding}"/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style TargetType="{x:Type DataGridColumnHeader}" x:Key="ColumnHeaderStyleCategoryProduct" >
         <Setter Property="FontSize" Value="15"/>
-        <Setter Property="Height" Value="50"/>
+        <Setter Property="Height" Value="30"/>
         <Setter Property="BorderBrush" Value="Gray"/>
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Padding" Value="5"/>
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="Foreground" Value="DarkBlue"/>
+        <Setter Property="Foreground" Value="Black"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="ContentTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" Text="{Binding}"/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type DataGridColumnHeader}" x:Key="ColumnHeaderChecks" >
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="Height" Value="50"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="FontWeight" Value="DemiBold"/>
         <Setter Property="ContentTemplate">
             <Setter.Value>
                 <DataTemplate>
@@ -228,6 +263,31 @@
         <Setter Property="HeadersVisibility" Value="Column" />
         <Setter Property="CanUserSortColumns" Value="False" />
     </Style>
+    
+    <Style TargetType="DataGrid" x:Key="CheckHistoryDataGrid">
+        <Setter Property="IsReadOnly" Value="True" />
+        <Setter Property="Margin" Value="10 8 10 10" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="Background" Value="White" />
+        <Setter Property="AlternatingRowBackground" Value="#EBF5FB" />
+        <Setter Property="SelectionMode" Value="Single" />
+        <Setter Property="CanUserReorderColumns" Value="False" />
+        <Setter Property="VerticalScrollBarVisibility" Value="Hidden" />
+        <Setter Property="VerticalGridLinesBrush" Value="Transparent" />
+        <Setter Property="HorizontalGridLinesBrush" Value="Transparent" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="RowHeight" Value="25" />
+        <Setter Property="AutoGenerateColumns" Value="False" />
+        <Setter Property="CanUserResizeRows" Value="False" />
+        <Setter Property="CanUserDeleteRows" Value="False" />
+        <Setter Property="CanUserResizeColumns" Value="False" />
+        <Setter Property="CanUserAddRows" Value="False" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="HeadersVisibility" Value="Column" />
+        <Setter Property="CanUserSortColumns" Value="False" />
+    </Style>
+
 
     <Style x:Key="requestProductCell" TargetType="{x:Type DataGridCell}">
         <Setter Property="FontSize" Value="13" />

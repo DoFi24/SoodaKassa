@@ -15,14 +15,17 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media.Effects;
 
 namespace GitMarket.ViewModels.WindowsViewModels
 {
     public class MainNavigationWindowViewModel : Base.BaseViewModel
     {
+        public MainNavigationWindow mainWindow;
         public MainNavigationWindowViewModel(MainNavigationWindow _mainWindow)
         {
             GetHotKeys();
+            mainWindow = _mainWindow;
         }
         public MainNavigationWindowViewModel()
         {
@@ -280,7 +283,7 @@ namespace GitMarket.ViewModels.WindowsViewModels
                 }
             });
             new LoginWindow().Show();
-            closeMainWindow();
+            closeMainWindow!.Invoke();
         }
 
         private RelayCommand? _closeApplicationCommand;
@@ -301,7 +304,7 @@ namespace GitMarket.ViewModels.WindowsViewModels
             if (SearchSelectedProduct is null || SearchSelectedProduct != new SaleProduct())
                 return;
 
-            if (!SelectedProductsCollection.Any(s => s.Prihod_Detail_Id == SearchSelectedProduct.Prihod_Detail_Id))
+            if (!SelectedProductsCollection!.Any(s => s.Prihod_Detail_Id == SearchSelectedProduct.Prihod_Detail_Id))
             {
                 SearchSelectedProduct.QuantityCount = 1;
                 SelectedProductsCollection.Add(SearchSelectedProduct);
@@ -315,10 +318,11 @@ namespace GitMarket.ViewModels.WindowsViewModels
                     SelectedProductsCollection.Remove(product);
                     SelectedProductsCollection.Add(product);
                 }
-                MessageBox.Show("Не достаточно товаров!");
+                else
+                    MessageBox.Show("Не достаточно товаров!");
             }
             SelectedProductItem = SelectedProductsCollection.Last();
-            SearchSelectedProduct = null;
+            SearchSelectedProduct = new SaleProduct();
             GetCalculate();
             IsOpenPopup = false;
             SearchText = string.Empty;
@@ -403,7 +407,8 @@ namespace GitMarket.ViewModels.WindowsViewModels
                             SelectedProductsCollection.Remove(product);
                             SelectedProductsCollection.Add(product);
                         }
-                        MessageBox.Show("Не достаточно товаров!");
+                        else
+                            MessageBox.Show("Не достаточно товаров!");
                     }
                 }
                 else
@@ -432,6 +437,8 @@ namespace GitMarket.ViewModels.WindowsViewModels
 
             ExecuteOpenMenuCommand(null);
 
+            mainWindow.Effect = new BlurEffect();
+
             switch (but)
             {
                 case "1":
@@ -441,10 +448,16 @@ namespace GitMarket.ViewModels.WindowsViewModels
                     new ServiceSaleWindow(this).ShowDialog();
                     break;
                 case "4":
-                    new ChecksHistoryDialogWindow().Show();
+                    new ChecksHistoryDialogWindow()
+                    {
+                        InBlurMain = () => { mainWindow.Effect = null; }
+                    }.Show();
                     break;
                 case "8":
-                    new OptionWindow().ShowDialog();
+                    new OptionWindow()
+                    {
+                        InBlurMain = () => { mainWindow.Effect = null; }
+                    }.ShowDialog();
                     break;
             }
         }
@@ -454,7 +467,8 @@ namespace GitMarket.ViewModels.WindowsViewModels
             _changeProductQuantityCommand ?? (_changeProductQuantityCommand = new RelayCommand(ExecutedChangeProductQuantityCommand, (object obj) => true));
         private void ExecutedChangeProductQuantityCommand(object obj)
         {
-            if (!(bool)obj)
+            bool isUn = (bool)obj;
+            if (isUn)
             {
                 if (SelectedProductItem.Unpack > 1)
                 {
@@ -464,10 +478,18 @@ namespace GitMarket.ViewModels.WindowsViewModels
                         SelectedProductItem.QuantityCount = ((decimal)(Convert.ToDecimal(x.ToString()) / SelectedProductItem.Unpack));
                         SelectedProductItem.IsUnpack = true;
                         SelectedProductsCollection = new ObservableCollection<SaleProduct>(SelectedProductsCollection);
-
                     };
                     addCount.ShowDialog();
-                    GetCalculate();
+                }
+                else 
+                {
+                    AddCountDialogWindow addCount = new(SelectedProductItem.Product_Name, SelectedProductItem.Quantity);
+                    addCount.ReturnProductCountEvent += (x) =>
+                    {
+                        SelectedProductItem.QuantityCount = Convert.ToDecimal(x.ToString());
+                        SelectedProductsCollection = new ObservableCollection<SaleProduct>(SelectedProductsCollection);
+                    };
+                    addCount.ShowDialog();
                 }
             }
             else
@@ -479,8 +501,8 @@ namespace GitMarket.ViewModels.WindowsViewModels
                     SelectedProductsCollection = new ObservableCollection<SaleProduct>(SelectedProductsCollection);
                 };
                 addCount.ShowDialog();
-                GetCalculate();
             }
+            GetCalculate();
         }
         private RelayCommand _toPayCommand;
         public RelayCommand ToPayCommand =>
@@ -806,7 +828,8 @@ namespace GitMarket.ViewModels.WindowsViewModels
                             SelectedProductsCollection.Remove(product);
                             SelectedProductsCollection.Add(product);
                         }
-                        MessageBox.Show("Не достаточно товаров!");
+                        else
+                            MessageBox.Show("Не достаточно товаров!");
                     }
                     SelectedProductItem = SelectedProductsCollection.Last();
                 }

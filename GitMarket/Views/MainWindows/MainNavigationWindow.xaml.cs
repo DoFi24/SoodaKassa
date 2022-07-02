@@ -3,6 +3,7 @@ using GitMarket.Domain.Models.TitiModels.ProductsModel;
 using GitMarket.Infrastructure;
 using GitMarket.Infrastructure.APIs;
 using GitMarket.ViewModels.WindowsViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media.Animation;
 
 namespace GitMarket.Views.MainWindows
 {
@@ -33,6 +35,7 @@ namespace GitMarket.Views.MainWindows
             WindowComboBox.SelectedIndex = 0;
             if (_isMain)
                 ProgramStartWriteToJournal();
+            DateTextBlock.Text = DateTime.UtcNow.ToString("dd.MM.yyyy");
         }
 
         private async void ProgramStartWriteToJournal()
@@ -114,14 +117,14 @@ namespace GitMarket.Views.MainWindows
                 case System.Windows.Input.Key.Divide:
                     if (main.SelectedProductItem != new SaleProduct())
                     {
-                        main.ChangeProductQuantityCommand.Execute(false);
+                        main.ChangeProductQuantityCommand.Execute(true);
                     }
                     itogTextBox.Focus();
                     return;
                 case System.Windows.Input.Key.Multiply:
                     if (main.SelectedProductItem != new SaleProduct())
                     {
-                        main.ChangeProductQuantityCommand.Execute(true);
+                        main.ChangeProductQuantityCommand.Execute(false);
                     }
                     itogTextBox.Focus();
                     return;
@@ -234,6 +237,17 @@ namespace GitMarket.Views.MainWindows
                     Owner = this,
                     _isMain = false
                 };
+        }
+
+        private void OpenMenuClick(object sender, RoutedEventArgs e)
+        {
+            DoubleAnimation openAnimation = new DoubleAnimation();
+            if (MenuGrid.Width < 250)
+                openAnimation.To = 250;
+             if (MenuGrid.Width >= 250)
+                openAnimation.To = 0;
+            openAnimation.Duration = new Duration(new TimeSpan(0,0,1));
+            MenuGrid.BeginAnimation(Grid.WidthProperty, openAnimation);
         }
     }
 }

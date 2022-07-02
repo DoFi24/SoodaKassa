@@ -6,34 +6,36 @@
         xmlns:local="clr-namespace:GitMarket.Views.Dialogs"
         xmlns:vm="clr-namespace:GitMarket.ViewModels.DialogsViewModel"
         mc:Ignorable="d" Background="{x:Null}" AllowsTransparency="True"
-        WindowStyle="None" MouseDown="Window_KeyDown"  Icon="/Resources/Base/logo2.png"
+        WindowStyle="None" MouseDown="Window_KeyDown" 
+        ResizeMode="NoResize" Icon="/Resources/Base/logo2.png"
         d:DataContext="{d:DesignInstance Type=vm:ChecksHistoryDialogWindowViewModel}"
-        Title="ChecksHistoryDialogWindow" Height="800" Width="1200">
+        Title="ChecksHistoryDialogWindow" Height="600" Width="900">
     <Border BorderBrush="Black" BorderThickness="1"
             CornerRadius="10" Background="White">
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*" />
                 <ColumnDefinition Width="1.2*" />
+                <ColumnDefinition Width="1*" />
             </Grid.ColumnDefinitions>
             <StackPanel Margin="15 5 15 5">
-                <TextBlock Text="Выберите чек" FontSize="23" 
+                <TextBlock Text="Выберите чек" Padding="0 15 10 0" FontSize="23" 
                            Foreground="DarkBlue" FontWeight="DemiBold"
-                           HorizontalAlignment="Center" Height="40"/>
-                <ListView ItemsSource="{Binding ChecksCollection}"
-                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                          SelectedItem="{Binding SelectedCheck}"
-                          Style="{DynamicResource HistoryListView}">
-                    <ListView.View>
-                        <GridView AllowsColumnReorder="False" 
-                                  ColumnHeaderContainerStyle="{DynamicResource HistoryListViewHeaderStyle}">
-                            <GridViewColumn Width="110" DisplayMemberBinding="{Binding docnum}" Header="Номер чека"/>
-                            <GridViewColumn Width="150" DisplayMemberBinding="{Binding prodaja_started,StringFormat=dd:MM:yyyy HH:mm}" Header="Дата"/>
-                            <GridViewColumn Width="100" DisplayMemberBinding="{Binding total_sum}" Header="На сумму"/>
-                            <GridViewColumn Width="150" DisplayMemberBinding="{Binding comment}" Header="Коментарий"/>
-                        </GridView>
-                    </ListView.View>
-                </ListView>
+                           HorizontalAlignment="Center" Height="65"/>
+                <Border CornerRadius="15" BorderThickness="1" BorderBrush="Black">
+                    <DataGrid   Margin="5" ItemsSource="{Binding ChecksCollection}"
+                                Height="500"
+                                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                SelectedItem="{Binding SelectedCheck}" BorderThickness="0"
+                                Style="{DynamicResource CheckHistoryDataGrid}"
+                                ColumnHeaderStyle="{DynamicResource ColumnHeaderChecks}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Width="*" Binding="{Binding docnum}"  Header="Номер чека"/>
+                            <DataGridTextColumn Width="1.5*" Binding="{Binding prodaja_started,StringFormat=dd:MM:yyyy HH:mm}" Header="Дата"/>
+                            <DataGridTextColumn Width="*" Binding="{Binding total_sum}" Header="На сумму"/>
+                            <DataGridTextColumn Width="*" Binding="{Binding comment}" Header="Коментарий"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Border>
             </StackPanel>
             <Grid Grid.Column="1" >
                 <Grid.RowDefinitions>
@@ -45,10 +47,10 @@
                         HorizontalAlignment="Right" VerticalAlignment="Top">
                     <Image Source="/Resources/DefaultIcons/close.png"/>
                 </Button>
-                <Border Width="300" Height="600" BorderBrush="Black"
-                        BorderThickness="2" CornerRadius="3">
+                <Border Width="300" Height="450" BorderBrush="Black"
+                        BorderThickness="2" CornerRadius="15">
                     <Grid DataContext="{Binding SelectedCheck}" Background="White" 
-                            Margin="1">
+                            Margin="4">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="30" />
                             <RowDefinition Height="1.5*" />
@@ -186,13 +188,11 @@
                         </ScrollViewer>
                     </Grid>
                 </Border>
-                <Grid Grid.Row="1" Width="300">
-                    <TextBlock Text="Напечатать чек" FontSize="22" Foreground="#3B9AAF" FontWeight="DemiBold" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                    <Button Foreground="White" Margin="0 20 0 0" Style="{DynamicResource CheckButton}"
-                            FontSize="18" FontWeight="DemiBold" Content="Напечатать"
-                            HorizontalAlignment="Center"
-                            Background="#3B9AAF" BorderThickness="0" Width="120"  Grid.Row="2"
-                            Command="{Binding PrintCheckCommand}" CommandParameter="{Binding ElementName=printGrid}" Height="55"/>
+                <Grid Grid.Row="1">
+                    <Button Style="{DynamicResource CheckButton}"
+                            Content="Напечатать" Grid.Row="2"
+                            Command="{Binding PrintCheckCommand}" 
+                            CommandParameter="{Binding ElementName=printGrid}"/>
                 </Grid>
             </Grid>
         </Grid>

@@ -68,7 +68,7 @@ namespace GitMarket.Views.Dialogs
                     {
                         code = user!.code!,
                         participant = null,
-                        nonce = null,
+                        nonce = Guid.NewGuid().ToString(),
                         cashier = null,
                         receipt = new Receipt
                         {

@@ -5,14 +5,25 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/Styles/ButtonImageIcons.xaml" />
     </ResourceDictionary.MergedDictionaries>
-    
-    <Style TargetType="Button" x:Key="CheckButton">
 
-        <Setter Property="Margin" Value="9 8 9 8"/>
+    <Style TargetType="Button" x:Key="CheckButton">
+        <Setter Property="Margin" Value="0"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="FontSize" Value="22"/>
+        <Setter Property="FontWeight" Value="DemiBold"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Background" Value="#40CC6F"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Width" Value="220"/>
+        <Setter Property="Height" Value="50"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
-                    <Border Name="ButtonBorder" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Button.Background}" CornerRadius="6">
+                    <Border Name="ButtonBorder" BorderThickness="{TemplateBinding BorderThickness}"
+                            BorderBrush="{TemplateBinding BorderBrush}" 
+                            Background="{TemplateBinding Button.Background}" 
+                            CornerRadius="25">
                         <TextBlock TextAlignment="Center" Margin="0 0 0 6" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{TemplateBinding Button.Content}"/>
                     </Border>
                     <ControlTemplate.Triggers>
@@ -115,6 +126,25 @@
                 <ControlTemplate>
                     <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" CornerRadius="4">
 
+                        <TextBlock TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{TemplateBinding Button.Content}"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <Style TargetType="Button" x:Key="DiscountDialogButton">
+        <Setter Property="Margin" Value="10 0 0 0"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Width" Value="120" />
+        <Setter Property="Height" Value="40" />
+        <Setter Property="FontWeight" Value="DemiBold"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"
+                            Background="{TemplateBinding Background}" CornerRadius="15">
                         <TextBlock TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{TemplateBinding Button.Content}"/>
                     </Border>
                 </ControlTemplate>
@@ -253,22 +283,25 @@
 
     <Style TargetType="Button" x:Key="MenuItemsButton">
         <Setter Property="Background" Value="White" />
+        <Setter Property="BorderBrush" Value="#40CC6F" />
         <Setter Property="BorderThickness" Value="0 0 0 1"/>
-        <Setter Property="Height" Value="40"/>
-        <Setter Property="Margin" Value="0 10 0 10"/>
-        <Setter Property="FontWeight" Value="DemiBold"/>
+        <Setter Property="Height" Value="55"/>
+        <Setter Property="Margin" Value="4 10 4 0"/>
+        <Setter Property="FontWeight" Value="Bold"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
-                    <Border Background="{TemplateBinding Button.Background}" BorderThickness="{TemplateBinding Button.BorderThickness}" BorderBrush="{TemplateBinding Button.BorderBrush}">
+                    <Border Background="{TemplateBinding Button.Background}" Margin="{TemplateBinding Margin}"
+                            BorderThickness="{TemplateBinding Button.BorderThickness}" CornerRadius="5"
+                            BorderBrush="{TemplateBinding Button.BorderBrush}">
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="60" />
+                                <ColumnDefinition Width="40" />
                                 <ColumnDefinition Width="1*" />
                             </Grid.ColumnDefinitions>
-                            <Image Margin="10 5 5 5" SnapsToDevicePixels="False" Stretch="Uniform" Name="limgButton"/>
-                            <Image Margin="10 5 5 5" SnapsToDevicePixels="False"  Stretch="Uniform" Name="imgButton"/>
+                            <Image Margin="10 5 10 5" SnapsToDevicePixels="False" Stretch="Uniform" Name="limgButton"/>
+                            <Image Margin="10 5 10 5" SnapsToDevicePixels="False"  Stretch="Uniform" Name="imgButton"/>
                             <ContentPresenter Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="center" Content="{TemplateBinding Button.Content}"/>
                         </Grid>
                     </Border>
@@ -279,11 +312,7 @@
                                 <Condition Property="Uid" Value="0" />
                             </MultiTrigger.Conditions>
                             <MultiTrigger.Setters>
-                                <Setter TargetName="imgButton" Property="Margin" Value="8"/>
                                 <Setter TargetName="limgButton" Property="Visibility" Value="Collapsed"/>
-
-                                <Setter Property="FontSize" Value="16" />
-                                <Setter Property="FontWeight" Value="Bold" />
                             </MultiTrigger.Setters>
                         </MultiTrigger>
                         <MultiTrigger>
@@ -426,6 +455,7 @@
     <Style TargetType="Button" x:Key="SalePageButton">
         <Setter Property="Margin" Value="5"/>
         <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Width" Value="200"/>
         <Setter Property="Background" Value="#2B2A2A"/>
         <Setter Property="Foreground" Value="White"/>
         <Setter Property="FontWeight" Value="DemiBold"/>

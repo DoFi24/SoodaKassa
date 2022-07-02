@@ -42,7 +42,8 @@ namespace GitMarket.Views.Dialogs
                         model.SelectedProductsCollection.Remove(product);
                         model.SelectedProductsCollection.Add(product);
                     }
-                    MessageBox.Show("Не достаточно товаров!");
+                    else
+                        MessageBox.Show("Не достаточно товаров!");
                 }
                 model.GetCalculate();
                 Close();

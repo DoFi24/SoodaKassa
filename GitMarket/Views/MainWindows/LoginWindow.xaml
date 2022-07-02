@@ -13,10 +13,8 @@
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.WPF;component/Themes/MaterialDesignTheme.Dark.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.WPF;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.LightBlue.xaml"/>
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Lime.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
@@ -37,7 +35,9 @@
                     <RowDefinition Height="1.5*" />
                 </Grid.RowDefinitions>
 
-                <Image Height="100" Width="230" Source="/Resources/Base/logo1.png" VerticalAlignment="Bottom"/>
+                <Image Height="120" Source="/Resources/Base/soodaLogo.png" Margin="0 30 0 0" VerticalAlignment="Center"/>
+                
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="1" FontSize="25" FontWeight="DemiBold" Text="Добро пожаловать!"/>
 
                 <Grid Grid.Row="1" VerticalAlignment="Center">
                     <Grid.RowDefinitions>
@@ -46,45 +46,29 @@
                         <RowDefinition Height="*" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-
-                    <!--<TextBlock Grid.Row="0" Text="Выберите пользователя" FontSize="28" HorizontalAlignment="Center" Opacity="0.6" FontWeight="Regular"/>
-
-                    <ComboBox Grid.Row="1" x:Name="UsersComboBox" 
-                              Style="{DynamicResource UsersChangeComboBox}" 
-                              ItemsSource="{Binding UsersCollection,UpdateSourceTrigger=PropertyChanged}">
-                        
-                    </ComboBox>-->
                     
+
                     <Border Style="{DynamicResource LoginWidowBorder}" 
-                            Grid.Row="0" Margin="80 0 80 0">
+                            Grid.Row="0" Margin="80 0 72 0">
                         <StackPanel  Orientation="Horizontal">
-                            <mt:PackIcon Kind="Account" Width="32" 
-                                         Margin="5 4 0 0" Foreground="#5e94ff" Height="32"/>
+                            <mt:PackIcon Kind="Account" Width="32" Foreground="#40CC6F"
+                                         Margin="5 0 0 0" Height="32"/>
                             <TextBox MinWidth="300" VerticalContentAlignment="Center" FontSize="15"
                              Foreground="#03006b"
                              Text="{Binding LoginText}"/>
                         </StackPanel>
                     </Border>
                     <Border Style="{DynamicResource LoginWidowBorder}" 
-                            Margin="80 20 80 0" Grid.Row="1">
+                            Margin="80 20 72 0" Grid.Row="1">
                         <StackPanel  Orientation="Horizontal">
-                            <mt:PackIcon Kind="Password" Width="32" 
-                                         Margin="5 4 0 0" Foreground="#5e94ff" Height="32"/>
+                            <mt:PackIcon Kind="Password" Width="32" Foreground="#40CC6F"
+                                         Margin="5 0 0 0" Height="32"/>
                             <TextBox MinWidth="300" VerticalContentAlignment="Center" FontSize="15"
                              Foreground="#03006b" HorizontalContentAlignment="Left" KeyUp="TextBox_KeyUp"
                              Text="{Binding PasswordText,UpdateSourceTrigger=PropertyChanged}"/>
                         </StackPanel>
                     </Border>
 
-                    <Border Visibility="Collapsed" x:Name="AnimatedBorder"
-                            Grid.Row="2" Style="{DynamicResource AnimatedBorder}">
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <Button Style="{DynamicResource PasswordButton}"/>
-                            <Button Style="{DynamicResource PasswordButton}"/>
-                            <Button Style="{DynamicResource PasswordButton}"/>
-                            <Button Style="{DynamicResource PasswordButton}"/>
-                        </StackPanel>
-                    </Border>
                     <Border Width="150" Margin="0 20 60 0" 
                               HorizontalAlignment="Right" Grid.Row="2" >
                         <CheckBox Style="{x:Null}" Background="White" 
@@ -92,7 +76,8 @@
                                   IsChecked="{Binding IsSaveLP}"
                                   Content="Остаться в системе"/>
                     </Border>
-                    <Button Grid.Row="3" Margin="0 30 0 0" Content="Войти" Command="{Binding SignInCommand}" Foreground="White" Width="200"/>
+                    <Button Grid.Row="3" Margin="0 30 0 0" Content="Войти" Command="{Binding SignInCommand}"
+                            Foreground="White" Width="200" Background="#40CC6F"/>
                 </Grid>
 
                 <StackPanel Grid.Row="4" VerticalAlignment="Bottom" Margin="0 0 0 15">

@@ -5,15 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GitMarket.Views.Dialogs" WindowStartupLocation="CenterScreen"
         mc:Ignorable="d" KeyUp="Win_KeyUp" Icon="/Resources/Base/logo2.png"
-        WindowStyle="None" ResizeMode="NoResize"
+        WindowStyle="None" ResizeMode="NoResize" AllowsTransparency="True"
         Title="EndSaleDialogWindow" Height="300" Width="280">
-    <Border BorderThickness="0.8" MouseDown="Border_MouseDown" BorderBrush="Black">
-        <Grid Background="White">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width=".5*" />
-                <ColumnDefinition Width="2*" />
-                <ColumnDefinition Width=".51*" />
-            </Grid.ColumnDefinitions>
+    <Border BorderThickness="0.1" Background="White" MouseDown="Border_MouseDown" CornerRadius="10" BorderBrush="Black">
+        <Grid Margin="4" Background="White">
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*" />
                 <RowDefinition Height="1*" />
@@ -21,24 +16,29 @@
                 <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
             <Image x:Name="Gif" Width="200" Stretch="Fill"
-                   Height="60" Margin="0 5 0 0" Grid.ColumnSpan="3"/>
+                   Height="60" Grid.ColumnSpan="3"/>
             <Grid Grid.Column="1" Grid.Row="1">
                 <TextBox Style="{DynamicResource SpecialDiscountDialogTextBox}" x:Name="DiscountLabel"
-                     Text=".00" Height="50" Width="160"/>
-                <Image Opacity="0.5" Height="25" Width="25" Margin="-110,20,0,0" Source="/Resources/DefaultIcons/discount.png"/>
-                <TextBlock Opacity="0.6" Width="150" Height="50" FontSize="15"
+                     Text=".00" Height="50" Width="230"/>
+                <Image Opacity="0.5" Height="25" Width="25" Margin="-170,20,0,0" Source="/Resources/DefaultIcons/discount.png"/>
+                <TextBlock Opacity="0.6" HorizontalAlignment="Left" 
+                           Margin="30 0 0 0" Width="50" Height="50" FontSize="15"
                    Text="Скидка" FontWeight="Light"/>
             </Grid>
             <Grid Grid.Column="1" Grid.Row="2">
                 <TextBox Style="{DynamicResource SpecialDiscountDialogTextBox}" x:Name="BonusLabel"
-                     Text=".00" Height="50" Width="160"/>
-                <Image Opacity="0.5" Height="25" Width="25" Margin="-110,20,0,0" Source="/Resources/DefaultIcons/discount.png"/>
-                <TextBlock Opacity="0.6" Width="150" Height="50" FontSize="15"
-                   Text="Бонус" FontWeight="Light"/>
+                     Text=".00" Height="50" Width="230"/>
+                <Image Opacity="0.5" Height="25" Width="25" Margin="-170,20,0,0" Source="/Resources/DefaultIcons/discount.png"/>
+                <TextBlock Opacity="0.6" Width="50" Height="50" FontSize="15"
+                           Text="Бонус" FontWeight="Light"
+                           HorizontalAlignment="Left" Margin="30 0 0 0"/>
             </Grid>
             <StackPanel Orientation="Horizontal" Grid.ColumnSpan="3" Grid.Row="3">
-                <Button Padding="5" Content="Выполнить (Enter)" FontSize="12" Click="Button_Click" Style="{DynamicResource DeleteProductDialogButton}"/>
-                <Button Content="Выйти (Esc)" Click="Button_Click_1" Background="IndianRed" Style="{DynamicResource DeleteProductDialogButton}"/>
+                <Button Padding="5" Content="Выполнить (Enter)" 
+                        Background="#40CC6F" FontSize="12" 
+                        Click="Button_Click" Style="{DynamicResource DiscountDialogButton}"/>
+                <Button Content="Выйти (Esc)" Click="Button_Click_1" 
+                        Background="#FE5555" Style="{DynamicResource DiscountDialogButton}"/>
             </StackPanel>
         </Grid>
     </Border>

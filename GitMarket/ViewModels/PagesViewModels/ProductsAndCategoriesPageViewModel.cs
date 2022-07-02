@@ -49,7 +49,7 @@ namespace GitMarket.ViewModels.PagesViewModels
         private SaleProduct? _selectedProduct = new();
         public SaleProduct SelectedProduct
         {
-            get { return _selectedProduct; }
+            get { return _selectedProduct!; }
             set
             {
                 Set(ref _selectedProduct, value);
@@ -70,12 +70,12 @@ namespace GitMarket.ViewModels.PagesViewModels
                             _model.SelectedProductsCollection.Remove(product);
                             _model.SelectedProductsCollection.Add(product);
                         }
+                        else 
                         MessageBox.Show("Не достаточно товаров!");
                     }
                     _model.SelectedProductItem = _model.SelectedProductsCollection.Last();
                     _model.GetCalculate();
-                    CloseAction();
-                    //_model.ChangePage(_model._productsSalePage);
+                    CloseAction!.Invoke();
                 }
             }
         }

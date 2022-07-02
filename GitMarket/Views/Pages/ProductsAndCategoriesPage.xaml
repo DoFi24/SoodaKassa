@@ -4,10 +4,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:GitMarket.ViewModels.PagesViewModels"
-        mc:Ignorable="d" Background="White" Title="Выбор товаров"
-        Icon="/Resources/Base/logo2.png"
+        mc:Ignorable="d" Background="{x:Null}" Title="Выбор товаров" AllowsTransparency="True"
+        Icon="/Resources/Base/logo2.png" WindowStyle="None" ResizeMode="NoResize"
         d:DataContext="{d:DesignInstance Type=vm:ProductsAndCategoriesPageViewModel}"
-        d:DesignHeight="800" d:DesignWidth="1200" WindowStartupLocation="CenterOwner">
+        d:DesignHeight="600" d:DesignWidth="900" WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -16,64 +16,61 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="1*" />
-        </Grid.RowDefinitions>
-        <!--<Grid Background="#3B9AAF">
-            <StackPanel Margin="0 3 0 0" Orientation="Horizontal" Width="451" Height="42" VerticalAlignment="Center" HorizontalAlignment="Center">
-                <TextBox Style="{DynamicResource PaCTextBox}" IsReadOnly="False" Text="{Binding SearchTextBox, UpdateSourceTrigger=PropertyChanged}" Foreground="White" Width="400"/>
-                <Border Margin="-5 0 0 0" CornerRadius="4" Background="#376E7A">
-                    <mt:PackIcon Height="42" Width="28" Kind="Search" Foreground="White"/>
-                </Border>
-            </StackPanel>
-        </Grid>-->
-        <Grid Grid.Row="0" Background="#F7F7F7">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" MaxWidth="400"/>
-                <ColumnDefinition Width="2*" />
-            </Grid.ColumnDefinitions>
-            <StackPanel>
-                <TextBlock Height="30" TextAlignment="Center" Foreground="DarkBlue" FontSize="18" Text="Выберите категорию"/>
-                <DataGrid Margin="3" Height="560" SelectionMode="Single" BorderThickness=".8" BorderBrush="LightBlue" FontSize="12" 
+    <Border CornerRadius="8" Background="White" BorderThickness=".5" BorderBrush="Black">
+        <Grid Margin="10 20 10 10" Background="White">
+            <Grid Background="White" Grid.Row="0" Grid.RowSpan="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" MaxWidth="400"/>
+                    <ColumnDefinition Width="2*" />
+                </Grid.ColumnDefinitions>
+                <StackPanel>
+                    <TextBlock Background="#40CC6F" Height="25" Margin="0 0 3 0"
+                               TextAlignment="Center" Foreground="White" FontSize="18" Text="Выберите категорию"/>
+                    <DataGrid Margin="3" Height="540" SelectionMode="Single" BorderThickness=".8" BorderBrush="LightBlue" FontSize="12" 
                           Style="{DynamicResource grid_Kuxne}"
-                          ColumnHeaderStyle="{DynamicResource hederstyle_Kuxne1}"
+                          ColumnHeaderStyle="{DynamicResource ProductHeaderStyle}"
                           HeadersVisibility="Column"
                           RowStyle="{DynamicResource SaleDataGridRow}"
                           VerticalGridLinesBrush="Transparent"
                           VerticalScrollBarVisibility="Hidden"
                           CanUserAddRows="False" AutoGenerateColumns="False"
                           CanUserResizeColumns="True" SelectedItem="{Binding SelectedCategoryItem, UpdateSourceTrigger=PropertyChanged}"
-                          ItemsSource="{Binding CategoryItems, UpdateSourceTrigger=PropertyChanged}" Background="Transparent" >
-                    <DataGrid.Columns>
-                        <DataGridTemplateColumn>
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <TextBlock Margin="30 0 0 0" FontWeight="DemiBold" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding NAME}" FontSize="17"/>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-                    </DataGrid.Columns>
-                    <DataGrid.Resources>
-                        <Style TargetType="{x:Type DataGridCell}">
-                            <Style.Triggers>
-                                <Trigger Property="DataGridCell.IsSelected" Value="True">
-                                    <Setter Property="Background" Value="Gray" />
-                                    <Setter Property="DataGridCell.Foreground" Value="White"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </DataGrid.Resources>
-                </DataGrid>
-            </StackPanel>
-            <StackPanel Grid.Column="1" Grid.Row="1">
-                <TextBlock Height="50" Text="Выберите товар" TextAlignment="Center" Padding="0 10 0 0" FontSize="20" Foreground="DarkBlue"/>
-                <ScrollViewer Height="543" VerticalAlignment="Stretch" 
+                          ItemsSource="{Binding CategoryItems, UpdateSourceTrigger=PropertyChanged}"
+                          Background="Transparent" >
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Margin="30 0 0 0" FontWeight="DemiBold" HorizontalAlignment="Left"
+                                                   VerticalAlignment="Center" Text="{Binding NAME}" FontSize="17"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                        <DataGrid.Resources>
+                            <Style TargetType="{x:Type DataGridCell}">
+                                <Style.Triggers>
+                                    <Trigger Property="DataGridCell.IsSelected" Value="True">
+                                        <Setter Property="Background" Value="LightGray" />
+                                        <Setter Property="DataGridCell.Foreground" Value="White"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGrid.Resources>
+                    </DataGrid>
+                </StackPanel>
+                <StackPanel Grid.Column="1" Grid.Row="1">
+                    <Grid>
+                        <TextBlock Height="25" Text="Выберите товар" Background="#40CC6F"
+                                   TextAlignment="Center" Margin="3 0 3 0"
+                                   FontSize="18" Foreground="White"/>
+                        
+                    </Grid>
+                    <ScrollViewer Height="545" VerticalAlignment="Stretch" 
                               HorizontalAlignment="Stretch" 
                               VerticalScrollBarVisibility="Hidden"
                               PanningMode="Both">
-                    
-                    <DataGrid Focusable="True" Margin="15,15,15,0" BorderThickness=".8"
+                        <DataGrid Focusable="True" Margin="3 3 3 3" BorderThickness=".8"
                           BorderBrush="LightBlue" Background="Transparent"                 
                           CanUserAddRows="False" HeadersVisibility="Column"
                           RowHeight="50" VerticalScrollBarVisibility="Visible"
@@ -84,41 +81,46 @@
                           RowStyle="{DynamicResource SaleDataGridRow}"
                           ItemsSource="{Binding ProductsCollection}"
                           SelectedItem="{Binding SelectedProduct}">
-                        <DataGrid.Columns>
-                            <DataGridTemplateColumn Header="Название" Width="4*">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <Viewbox>
-                                            <TextBlock Foreground="Black" Text="{Binding Product_Name}" FontSize="20"/>
-                                        </Viewbox>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                            <DataGridTemplateColumn Header="Количество" Width="2*">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <TextBlock TextAlignment="Center" Text="{Binding Quantity}" Foreground="Black"  FontSize="20"/>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                            <DataGridTemplateColumn Header="Цена" Width="2*">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Grid.Column="2" TextAlignment="Center" Text="{Binding Sale_Price}" Foreground="Black"  FontSize="20"/>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                            <DataGridTemplateColumn Header="Коментарий" Width="4*">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Grid.Column="3" TextAlignment="Center" Text="{Binding Comment}" Foreground="Black"  FontSize="20"/>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </ScrollViewer>
-            </StackPanel>
+                            <DataGrid.Columns>
+                                <DataGridTemplateColumn Header="Название" Width="4*">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Viewbox>
+                                                <TextBlock Foreground="Black" Text="{Binding Product_Name}" FontSize="20"/>
+                                            </Viewbox>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="Кол-во" Width="1.5*">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock TextAlignment="Center" Text="{Binding Quantity}" Foreground="Black"  FontSize="20"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="Цена" Width="1.5*">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Grid.Column="2" TextAlignment="Center" Text="{Binding Sale_Price}" Foreground="Black"  FontSize="20"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="Коментарий" Width="4*">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Grid.Column="3" TextAlignment="Center" Text="{Binding Comment}" Foreground="Black"  FontSize="20"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </ScrollViewer>
+                </StackPanel>
+            </Grid>
+            <Button Style="{x:Null}" Height="20" Width="20" Background="White" BorderThickness="0"
+                                HorizontalAlignment="Right" Click="Button_Click" VerticalAlignment="Top" Margin="0 -20 -2 0">
+                <Image Source="/Resources/DefaultIcons/close.png"/>
+            </Button>
         </Grid>
-    </Grid>
+    </Border>
 </Window>

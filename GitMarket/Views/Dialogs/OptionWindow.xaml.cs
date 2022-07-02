@@ -21,6 +21,7 @@ namespace GitMarket.Views.Dialogs
     /// </summary>
     public partial class OptionWindow : Window
     {
+        public Action InBlurMain;
         public OptionWindow()
         {
             InitializeComponent();
@@ -52,11 +53,13 @@ namespace GitMarket.Views.Dialogs
 
             myPrinters.SetDefaultPrinter(printers.Text.ToString());
             MessageBox.Show("Успешно сохранено!");
+            InBlurMain();
             Close();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            InBlurMain();
             Close();
         }
 

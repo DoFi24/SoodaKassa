@@ -4,74 +4,88 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GitMarket.Views.Dialogs"
+        AllowsTransparency="True"
         mc:Ignorable="d" WindowStyle="None" Icon="/Resources/Base/logo2.png"
-        Title="Настройки" Height="270" Width="360">
-    <Grid Background="Transparent">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="45" />
-            <RowDefinition Height="1*" />
-            <RowDefinition Height="90" />
-        </Grid.RowDefinitions>
-        <Grid Background="White" MouseDown="Grid_MouseDown" Opacity="0.96"/>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="30" />
-                <ColumnDefinition Width="30" />
-            </Grid.ColumnDefinitions>
-            <TextBlock Text="Настройки программы" Foreground="DarkBlue" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <Button Click="Button_Click_2" BorderThickness=".5" Grid.Column="1" Width="22" Height="22">
-                <Image Source="/Resources/DefaultIcons/subtract.png"/>
-            </Button>
-            <Button Click="Button_Click" BorderThickness=".5" Grid.Column="2" Width="22" Height="22">
-                <Image Source="/Resources/DefaultIcons/close.png"/>
-            </Button>
-        </Grid>
-        <Grid Grid.Row="1" Grid.RowSpan="2" Background="White" Opacity="0.91"/>
-        <Grid Grid.Row="1">
-            <TextBlock Foreground="DarkBlue" FontSize="14" FontWeight="DemiBold" Margin="0 15 80 0" Text="КKМ" HorizontalAlignment="Right" VerticalAlignment="Top"/>
-            <TextBlock Foreground="DarkBlue" FontSize="14" FontWeight="DemiBold" Margin="25 15 0 0" Text="Чековый принтер" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-            <ComboBox x:Name="printers" Margin="10 50 0 0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="160" Height="25"/>
-            <ComboBox x:Name="printerskkm" Margin="0 50 10 0" HorizontalAlignment="Right" VerticalAlignment="Top" Width="160" Height="25"/>
-        </Grid>
-        <Grid Grid.Row="2">
-            <Grid.Resources>
-                <Style TargetType="Button">
-                    <Setter Property="Foreground" Value="White"/>
-                    <Setter Property="FontSize" Value="16"/>
-                    <Setter Property="FontWeight" Value="DemiBold"/>
-                    <Setter Property="Width" Value="135"/>
-                    <Setter Property="Height" Value="40"/>
-                    <Setter Property="Background" Value="#3B9AAE" />
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate>
-                                <Border CornerRadius="2" Background="{TemplateBinding Background}" BorderThickness="0">
-                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Content="{TemplateBinding Button.Content}"/>
-                                </Border>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Opacity" Value="0.6" />
-                        </Trigger>
-                        <Trigger Property="IsPressed" Value="True">
-                            <Setter Property="Opacity" Value="0.8" />
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </Grid.Resources>
+        Title="Настройки" Height="270" Width="320"
+        >
+    <Border BorderThickness=".1" Background="White"
+            BorderBrush="Black" CornerRadius="10">
+        <Grid Margin="4" Background="Transparent">
             <Grid.RowDefinitions>
+                <RowDefinition Height="45" />
                 <RowDefinition Height="1*" />
+                <RowDefinition Height="90" />
             </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="1*" />
-            </Grid.ColumnDefinitions>
+            <Grid Background="White" MouseDown="Grid_MouseDown" Opacity="0.96"/>
+            <Grid>
+                <TextBlock Text="Настройки программы" Foreground="Black" 
+                           FontWeight="DemiBold" FontSize="18" 
+                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Button HorizontalAlignment="Right" Click="Button_Click"
+                        BorderThickness="0" VerticalAlignment="Top" Background="White" Grid.Column="2" Width="22" Height="22">
+                    <Image Source="/Resources/DefaultIcons/close.png"/>
+                </Button>
+            </Grid>
+            <StackPanel Orientation="Vertical" Grid.Row="1">
+                <StackPanel Height="60"  Orientation="Vertical" >
+                    <TextBlock Foreground="#828282" FontSize="14" Margin="0 3 0 0"
+                               FontWeight="DemiBold" Text="Чековый принтер" 
+                               HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                    <ComboBox Style="{DynamicResource ComboBoxStyle1}" x:Name="printerskkm" 
+                              HorizontalAlignment="Center" BorderThickness="0" VerticalAlignment="Center"
+                              Width="200" Height="30" Margin="0 2 0 0"/>
+                </StackPanel>
+                <StackPanel Orientation="Vertical" >
+                    <TextBlock Foreground="#828282" FontSize="14" 
+                               FontWeight="DemiBold" Text="КKМ" 
+                               HorizontalAlignment="Center" Margin="0 3 0 0" VerticalAlignment="Top"/>
+                    <ComboBox  Style="{DynamicResource ComboBoxStyle1}" 
+                               BorderThickness="0"
+                               x:Name="printers" HorizontalAlignment="Center" Margin="0 2 0 0"
+                               VerticalAlignment="Center" Width="200" Height="30"/>
+                </StackPanel>
+            </StackPanel>
+            <Grid Grid.Row="2">
+                <Grid.Resources>
+                    <Style TargetType="Button">
+                        <Setter Property="Foreground" Value="White"/>
+                        <Setter Property="FontSize" Value="16"/>
+                        <Setter Property="FontWeight" Value="DemiBold"/>
+                        <Setter Property="Width" Value="135"/>
+                        <Setter Property="Height" Value="40"/>
+                        <Setter Property="Background" Value="#3B9AAE" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate>
+                                    <Border CornerRadius="12" Background="{TemplateBinding Background}"
+                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                            BorderBrush="{TemplateBinding BorderBrush}">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Content="{TemplateBinding Button.Content}"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Opacity" Value="0.6" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Opacity" Value="0.8" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Resources>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
 
-            <Button Content="Сохранить" Grid.Row="1" Grid.Column="0" Click="Button_Click_1"/>
-            <Button Content="Отмена" Grid.Row="1" Grid.Column="2" Click="Button_Click"/>
+                <Button Content="Сохранить" Grid.Row="1" Background="#40CC6F"
+                        Grid.Column="0" Click="Button_Click_1" BorderThickness="0"/>
+                <Button Content="Отмена" Grid.Row="1" 
+                        Foreground="#828282" Grid.Column="2" BorderBrush="Black"
+                        Click="Button_Click" Background="White" BorderThickness="0.1"/>
+            </Grid>
         </Grid>
-    </Grid>
+    </Border>
 </Window>
