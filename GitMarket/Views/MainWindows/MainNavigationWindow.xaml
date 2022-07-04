@@ -46,7 +46,7 @@
                         </Border>
                         <Popup Style="{x:Null}" IsOpen="{Binding IsOpenPopup}" Width="320" MaxHeight="200">
                             <Grid Width="320" Style="{x:Null}" Height="200" Background="White">
-                                <DataGrid SelectedIndex="0"
+                                <DataGrid AlternatingRowBackground="Transparent"
                           ColumnHeaderStyle="{DynamicResource hederstyle_Kuxne}"
                           Background="White" Height="Auto" RowHeight="35"                           
                           ItemsSource="{Binding SearchProductCollection,UpdateSourceTrigger=PropertyChanged}"
@@ -239,7 +239,9 @@
                                     <Button  IsTabStop="False" Background="#40CC6F" Height="50" FontSize="15" Content="Оплатить (+)" Command="{Binding ToPayCommand}" Grid.Row="0"/>
                                     <Button  IsTabStop="False" x:Name="Btn1" Background="#40CC6F" Height="50" FontSize="14" Content="Бонус и скидка (-)" Command="{Binding GetBonusCommand}" Grid.Row="1"/>
                                     <!--<Button Background="#3B9AAE" Height="40" Content="Напечатать чек&#x0a; ()" Command="{Binding CheckPaymentEndCommand}" Grid.Row="3"/>-->
-                                    <Button  IsTabStop="False" Background="#9F40CC" Height="50" FontSize="15" Content="UDS" Command="{Binding UDSSettingsCommand}" Grid.Row="2"/>
+                                    <Button  IsTabStop="False" Background="#9F40CC"
+                                             Height="50" FontSize="15" Content="UDS"
+                                             Command="{Binding UDSSettingsCommand}" Grid.Row="2"/>
                                     <Button  IsTabStop="False" Background="#FE5555" Height="50" FontSize="15" Content="    Очистить&#x0a; (Ctrl + Delete)" Command="{Binding ClearSelectedProductsCommand}" Grid.Row="5"/>
                                 </Grid>
                             </StackPanel>

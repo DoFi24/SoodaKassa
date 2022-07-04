@@ -42,7 +42,7 @@ namespace GitMarket.Views.MainWindows
         {
             await APIRequests.SaveChangesAsync(new JournalApiModel
             {
-                parameter = "window",
+                parameter = "windows",
                 data = new JournalApiModelData
                 {
                     shop_id = Setts.Default.ShopId,
@@ -85,8 +85,42 @@ namespace GitMarket.Views.MainWindows
         }
         private void Window_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
         {
+            if (e.KeyboardDevice.Modifiers == ModifierKeys.Control && e.Key == System.Windows.Input.Key.Up)
+            {
+                itogTextBox.Focus();
+                main.SearchUpDown(true);
+                return;
+            }
+            else if (e.KeyboardDevice.Modifiers == ModifierKeys.Control && e.Key == System.Windows.Input.Key.Down)
+            {
+                itogTextBox.Focus();
+                main.SearchUpDown(false);
+                return;
+            }
+            else if (e.KeyboardDevice.Modifiers == ModifierKeys.Control && e.Key == System.Windows.Input.Key.Delete)
+            {
+                if (main.ClearSelectedProductsCommand.CanExecute(null)) main.ClearSelectedProductsCommand.Execute(null);
+                itogTextBox.Focus();
+                return;
+            }
+            if (e.KeyboardDevice.Modifiers == ModifierKeys.Shift && HotKeysStructure.HotKeysDictionary.Any(s => s.Key == e.Key.ToString()))
+            {
+                main.AddWithHotKey(HotKeysStructure.HotKeysDictionary.First(s => s.Key == e.Key.ToString()));
+                itogTextBox.Focus();
+                return;
+            }
+            else if (e.KeyboardDevice.Modifiers == ModifierKeys.Control && e.Key == System.Windows.Input.Key.F)
+            {
+                main.GetProductwithAPI();
+                return;
+            }
+
             switch (e.Key)
             {
+                case System.Windows.Input.Key.Return:
+                    main.AddSelectedProduct();
+                    itogTextBox.Focus();
+                    return;
                 case System.Windows.Input.Key.Add:
                     if (main.ToPayCommand.CanExecute(null)) main.ToPayCommand.Execute(null);
                     itogTextBox.Focus();
@@ -133,11 +167,6 @@ namespace GitMarket.Views.MainWindows
                         main.DeleteSelectedProduct();
                     itogTextBox.Focus();
                     return;
-                case System.Windows.Input.Key.Return:
-                    main.AddSelectedProduct();
-                    itogTextBox.Focus();
-                    return;
-
             }
 
             if (e.Key.ToString().Length > 1 && e.Key.ToString()[0] == 'D' && e.Key.ToString() != "Decimal")
@@ -145,35 +174,6 @@ namespace GitMarket.Views.MainWindows
                 if (inputDeviceText == "")
                     CheckIsDevice();
                 inputDeviceText += e.Key.ToString()[1];
-                return;
-            }
-            if (e.KeyboardDevice.Modifiers == ModifierKeys.Control && e.Key == System.Windows.Input.Key.Up)
-            {
-                itogTextBox.Focus();
-                main.SearchUpDown(false);
-                return;
-            }
-            else if (e.KeyboardDevice.Modifiers == ModifierKeys.Control && e.Key == System.Windows.Input.Key.Down)
-            {
-                itogTextBox.Focus();
-                main.SearchUpDown(true);
-                return;
-            }
-            else if (e.KeyboardDevice.Modifiers == ModifierKeys.Control && e.Key == System.Windows.Input.Key.Delete)
-            {
-                if (main.ClearSelectedProductsCommand.CanExecute(null)) main.ClearSelectedProductsCommand.Execute(null);
-                itogTextBox.Focus();
-                return;
-            }
-            if (e.KeyboardDevice.Modifiers == ModifierKeys.Shift && HotKeysStructure.HotKeysDictionary.Any(s => s.Key == e.Key.ToString()))
-            {
-                main.AddWithHotKey(HotKeysStructure.HotKeysDictionary.First(s => s.Key == e.Key.ToString()));
-                itogTextBox.Focus();
-                return;
-            }
-            else if (e.KeyboardDevice.Modifiers == ModifierKeys.Control && e.Key == System.Windows.Input.Key.F)
-            {
-                main.GetProductwithAPI();
                 return;
             }
         }

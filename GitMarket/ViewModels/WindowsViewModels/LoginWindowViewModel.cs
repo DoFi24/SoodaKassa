@@ -2,6 +2,7 @@
 using GitMarket.Infrastructure.APIs;
 using GitMarket.Views.MainWindows;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace GitMarket.ViewModels.WindowsViewModels
@@ -31,7 +32,7 @@ namespace GitMarket.ViewModels.WindowsViewModels
         }
         public async void ExecuteSignInCommand(object obj)
         {
-            if (await APIRequests.RegisterAsync(LoginText, PasswordText))
+            if (await APIRequests.RegisterAsync(LoginText, (obj as PasswordBox)!.Password))
             {
                 if (IsSaveLP)
                 {
@@ -39,7 +40,7 @@ namespace GitMarket.ViewModels.WindowsViewModels
                     Setts.Default.Save();
                 }
                 new MainNavigationWindow().Show();
-                closeWindow();
+                closeWindow!.Invoke();
             }
             else
                 MessageBox.Show("Логин или пароль введены неправильно!", "Неверные данные!", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -50,16 +51,6 @@ namespace GitMarket.ViewModels.WindowsViewModels
         #endregion
 
         #region Props
-
-        private string? _passwordText = "";
-        public string? PasswordText
-        {
-            get { return _passwordText; }
-            set
-            {
-                Set(ref _passwordText, value);
-            }
-        }
 
         private string? _loginText;
         public string? LoginText

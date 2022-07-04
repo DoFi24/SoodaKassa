@@ -47,7 +47,7 @@ namespace GitMarket.Views.Dialogs
         {
             decimal point = 0;
             if ((sender as Button)!.Uid == "0")
-                point = Convert.ToDecimal(UdsSpisanieBonus.Text);
+                point = Convert.ToDecimal(UdsSpisanieBonus.Text.Replace(",","."));
 
             var cashh = Infrastructure.APIs.APIRequests.GetCashRequest(
                                 new RequestInfoModel
@@ -57,7 +57,7 @@ namespace GitMarket.Views.Dialogs
                                     receipt = new Receipt
                                     {
                                         total = Convert.ToDecimal(TotalTextBlock.Text),
-                                        skipLoyaltyTotal = String.IsNullOrEmpty(UdsSkipLoyaltyTotal.Text) ? 1 : Convert.ToDecimal(UdsSkipLoyaltyTotal.Text),
+                                        skipLoyaltyTotal = String.IsNullOrEmpty(UdsSkipLoyaltyTotal.Text.Replace(",", ".")) ? 1 : Convert.ToDecimal(UdsSkipLoyaltyTotal.Text.Replace(",", ".")),
                                         points = point
                                     }
                                 });
@@ -74,19 +74,22 @@ namespace GitMarket.Views.Dialogs
                         {
                             total = Convert.ToDecimal(TotalTextBlock.Text),
                             points = point,
-                            skipLoyaltyTotal = String.IsNullOrEmpty(UdsSkipLoyaltyTotal.Text) ? 1 : Convert.ToDecimal(UdsSkipLoyaltyTotal.Text),
+                            skipLoyaltyTotal = String.IsNullOrEmpty(UdsSkipLoyaltyTotal.Text.Replace(",", ".")) ? 1 : Convert.ToDecimal(UdsSkipLoyaltyTotal.Text.Replace(",",".")),
                             cash = cashh!.purchase!.cashTotal,
                             number = lastCheck.data.check_no
                         },
                         tags = null
                     });
 
+            `
             Setts.Default.Save();
+
             if (operInfo is null)
             {
                 MessageBox.Show("Ошибка! \nНеверно введены данные");
                 return;
             }
+
             sendPrice(operInfo!.Result!.oneOf.First().cash);
             MessageBox.Show("Успешно!");
             Close();

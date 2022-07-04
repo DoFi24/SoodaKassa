@@ -27,6 +27,7 @@
                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                 SelectedItem="{Binding SelectedCheck}" BorderThickness="0"
                                 Style="{DynamicResource CheckHistoryDataGrid}"
+                                CellStyle="{DynamicResource CheckHistoryDataGridCell}"
                                 ColumnHeaderStyle="{DynamicResource ColumnHeaderChecks}">
                         <DataGrid.Columns>
                             <DataGridTextColumn Width="*" Binding="{Binding docnum}"  Header="Номер чека"/>

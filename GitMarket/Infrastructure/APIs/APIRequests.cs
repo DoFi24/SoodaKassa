@@ -12,6 +12,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace GitMarket.Infrastructure.APIs
 {
@@ -20,128 +21,176 @@ namespace GitMarket.Infrastructure.APIs
         public static readonly string API_PATH = @"http://127.0.0.1:3001/api/v1";
         public static async Task<bool> RegisterAsync(string? login, string? password)
         {
-            using (HttpClient httpClient = new())
+            try
             {
-                var data = new Dictionary<string, string?>
+                using (HttpClient httpClient = new())
                 {
-                    {"LOGIN", login },
-                    {"PASSWORD", password }
-                };
+                    var data = new Dictionary<string, string?>
+                    {
+                        {"LOGIN", login },
+                        {"PASSWORD", password }
+                    };
 
-                var response = await httpClient.PostAsync($"{API_PATH}/auth/login", new FormUrlEncodedContent(data));
+                    var response = await httpClient.PostAsync($"{API_PATH}/auth/login", new FormUrlEncodedContent(data));
 
-                var responeString = await response.Content.ReadAsStringAsync();
+                    var responeString = await response.Content.ReadAsStringAsync();
 
-                var result = JObject.Parse(responeString).ToObject<AuthorizationToken>();
+                    var result = JObject.Parse(responeString).ToObject<AuthorizationToken>();
 
-                if (result.success)
-                {
-                    Setts.Default.AuthorizationToken = result.data.remember_token;
-                    Setts.Default.StaffId = result.data.USER.Id;
-                    Setts.Default.Save();
+                    if (result.success)
+                    {
+                        Setts.Default.AuthorizationToken = result.data.remember_token;
+                        Setts.Default.StaffId = result.data.USER.Id;
+                        Setts.Default.Save();
 
+                    }
+
+                    return result.success;
                 }
-
-                return result.success;
+            }
+            catch
+            {
+                MessageBox.Show("Нет соединения с базой!\nПовторите попытку позже.");
+                return false;
             }
         }
         public static async Task<bool> GetIsValidAsync()
         {
-            using (HttpClient httpClient = new())
+            try
             {
-                var data = new Dictionary<string, string?>
+                using (HttpClient httpClient = new())
+                {
+                    var data = new Dictionary<string, string?>
                 {
                     {"remember_token",Setts.Default.AuthorizationToken}
                 };
 
-                var response = await httpClient.PostAsync($"{API_PATH}/auth/valid-token", new FormUrlEncodedContent(data));
+                    var response = await httpClient.PostAsync($"{API_PATH}/auth/valid-token", new FormUrlEncodedContent(data));
 
-                var responeString = await response.Content.ReadAsStringAsync();
+                    var responeString = await response.Content.ReadAsStringAsync();
 
-                var result = JObject.Parse(responeString).ToObject<IsValidModel>();
+                    var result = JObject.Parse(responeString).ToObject<IsValidModel>();
 
-                return result.success;
+                    return result.success;
+                }
+            }
+            catch
+            {
+                MessageBox.Show("Нет соединения с базой!\nПовторите попытку позже.");
+                return false;
             }
         }
         public static async Task SaveChangesAsync(JournalApiModel journal)
         {
-            using HttpClient httpClient = new();
+            try
+            {
+                using HttpClient httpClient = new();
 
-            var data = new StringContent(JsonConvert.SerializeObject(journal).ToString(), Encoding.UTF8, "application/json");
+                var data = new StringContent(JsonConvert.SerializeObject(journal).ToString(), Encoding.UTF8, "application/json");
 
-            httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + Setts.Default.AuthorizationToken);
+                httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + Setts.Default.AuthorizationToken);
 
-            var response = await httpClient.PostAsync($"{API_PATH}/functions/FC_JOURNAL_COMMIT", data);
+                var response = await httpClient.PostAsync($"{API_PATH}/functions/FC_JOURNAL_COMMIT", data);
 
-            await response.Content.ReadAsStringAsync();
+                await response.Content.ReadAsStringAsync();
+            }
+            catch
+            {
+                MessageBox.Show("Нет соединения с базой!\nПовторите попытку позже.");
+            }
         }
         public static async Task<List<T>> GetFromAPIAsync<T>(RequestModelGet rmodel, string requestFunction = "FC_PRODAJA_GET_PRODUCT")
         {
-            using (HttpClient httpClient = new())
+            try
             {
-                var data = new StringContent(JsonConvert.SerializeObject(rmodel).ToString(), Encoding.UTF8, "application/json");
+                using (HttpClient httpClient = new())
+                {
+                    var data = new StringContent(JsonConvert.SerializeObject(rmodel).ToString(), Encoding.UTF8, "application/json");
 
-                httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + Setts.Default.AuthorizationToken);
+                    httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + Setts.Default.AuthorizationToken);
 
-                var response = await httpClient.PostAsync($"{API_PATH}/functions/{requestFunction}", data);
+                    var response = await httpClient.PostAsync($"{API_PATH}/functions/{requestFunction}", data);
 
-                var responeString = await response.Content.ReadAsStringAsync();
+                    var responeString = await response.Content.ReadAsStringAsync();
 
-                var result = JObject.Parse(responeString).ToObject<ResponseModel<T>>();
+                    var result = JObject.Parse(responeString).ToObject<ResponseModel<T>>();
 
-                return result.data?.rows != null ? result.data.rows.ToList() : new List<T>();
+                    return result.data?.rows != null ? result.data.rows.ToList() : new List<T>();
+                }
+            }
+            catch
+            {
+                MessageBox.Show("Нет соединения с базой!\nПовторите попытку позже.");
+                return new List<T>();
             }
         }
-        public static async Task<T> GetFromAPIAsyncSingle<T>(object rmodel, string requestFunction = "FC_PRODAJA_GET_PRODUCT")
+        public static LastCheckResponce? GetFromAPIAsyncSingle(object rmodel, string requestFunction)
         {
-            using (HttpClient httpClient = new())
+            try
             {
-                var data = new StringContent(JsonConvert.SerializeObject(rmodel).ToString(), Encoding.UTF8, "application/json");
+                using (HttpClient httpClient = new())
+                {
+                    var data = new StringContent(JsonConvert.SerializeObject(rmodel).ToString(), Encoding.UTF8, "application/json");
 
-                httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + Setts.Default.AuthorizationToken);
+                    httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + Setts.Default.AuthorizationToken);
 
-                var response = await httpClient.PostAsync($"{API_PATH}/functions/{requestFunction}", data);
+                    var response = httpClient.PostAsync($"{API_PATH}/functions/{requestFunction}", data);
 
-                var responeString = await response.Content.ReadAsStringAsync();
+                    var responeString = response.Result.Content.ReadAsStringAsync();
 
-                var result = JObject.Parse(responeString).ToObject<SingleResponceModel<T>>();
+                    var result = JObject.Parse(responeString.Result).ToObject<LastCheckResponce>();
 
-                return result.data != null ? result.data : default(T);
+                    return result != null ? result : new LastCheckResponce();
+                }
+            }
+            catch
+            {
+                MessageBox.Show("Нет соединения с базой!\nПовторите попытку позже.");
+                return new LastCheckResponce();
             }
         }
 
         #region TaxesDiscountBonuses
         public static IEnumerable<DiscountProduct> GetDiscountSum(DiscountModel taxes, int page = 1)
         {
-            List<DiscountProduct> product = new();
-            var url = $"{API_PATH}/functions/FC_CALC_DISCOUNTS_SUM";
-
-            var httpRequest = (HttpWebRequest)WebRequest.Create(url);
-
-            httpRequest.Method = "POST";
-
-            httpRequest.Headers["Authorization"] = $"Bearer {Setts.Default.AuthorizationToken}";
-
-            httpRequest.ContentType = "application/json";
-
-            var data = JsonConvert.SerializeObject(taxes).ToString();
-
-            using (var streamWriter = new StreamWriter(httpRequest.GetRequestStream()))
+            try
             {
-                streamWriter.Write(data);
-            }
+                List<DiscountProduct> product = new();
+                var url = $"{API_PATH}/functions/FC_CALC_DISCOUNTS_SUM";
 
-            var httpResponse = (HttpWebResponse)httpRequest.GetResponse();
-            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                var httpRequest = (HttpWebRequest)WebRequest.Create(url);
+
+                httpRequest.Method = "POST";
+
+                httpRequest.Headers["Authorization"] = $"Bearer {Setts.Default.AuthorizationToken}";
+
+                httpRequest.ContentType = "application/json";
+
+                var data = JsonConvert.SerializeObject(taxes).ToString();
+
+                using (var streamWriter = new StreamWriter(httpRequest.GetRequestStream()))
+                {
+                    streamWriter.Write(data);
+                }
+
+                var httpResponse = (HttpWebResponse)httpRequest.GetResponse();
+                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                {
+                    var result = JObject.Parse(streamReader.ReadToEnd()).ToObject<ResponseModel<DiscountProduct>>();
+
+                    product = result.data.rows.ToList();
+                }
+                return product;
+            }
+            catch
             {
-                var result = JObject.Parse(streamReader.ReadToEnd()).ToObject<ResponseModel<DiscountProduct>>();
-
-                product = result.data.rows.ToList();
+                MessageBox.Show("Нет соединения с базой!\nПовторите попытку позже.");
+                return new List<DiscountProduct>();
             }
-            return product;
         }
         public static IEnumerable<BonusProducts> GetBonusSum(TaxesModel model)
         {
+            try { 
             IEnumerable<BonusProducts> pro = new List<BonusProducts>();
             var url = $"{API_PATH}/functions/FC_CALC_BONUS_SUM";
 
@@ -169,72 +218,103 @@ namespace GitMarket.Infrastructure.APIs
             }
             return pro;
         }
+            catch
+            {
+                MessageBox.Show("Нет соединения с базой!\nПовторите попытку позже.");
+                return new List<BonusProducts>();
+            }
+}
         public static (IEnumerable<ProductTaxes>, decimal) GetTaxesSum(TaxesModel param)
         {
-            IEnumerable<ProductTaxes> pro = new List<ProductTaxes>();
-
-            var url = $"{API_PATH}/functions/FC_CALC_TAXES_SUM";
-
-            var httpRequest = (HttpWebRequest)WebRequest.Create(url);
-
-            httpRequest.Method = "POST";
-
-            httpRequest.Headers["Authorization"] = $"Bearer {Setts.Default.AuthorizationToken}";
-
-            httpRequest.ContentType = "application/json";
-
-            var data = JsonConvert.SerializeObject(param).ToString();
-
-            using (var streamWriter = new StreamWriter(httpRequest.GetRequestStream()))
+            try
             {
-                streamWriter.Write(data);
+                IEnumerable<ProductTaxes> pro = new List<ProductTaxes>();
+
+                var url = $"{API_PATH}/functions/FC_CALC_TAXES_SUM";
+
+                var httpRequest = (HttpWebRequest)WebRequest.Create(url);
+
+                httpRequest.Method = "POST";
+
+                httpRequest.Headers["Authorization"] = $"Bearer {Setts.Default.AuthorizationToken}";
+
+                httpRequest.ContentType = "application/json";
+
+                var data = JsonConvert.SerializeObject(param).ToString();
+
+                using (var streamWriter = new StreamWriter(httpRequest.GetRequestStream()))
+                {
+                    streamWriter.Write(data);
+                }
+
+                var httpResponse = (HttpWebResponse)httpRequest.GetResponse();
+
+                decimal NDS = 0;
+
+                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                {
+                    var result = JObject.Parse(streamReader.ReadToEnd()).ToObject<TaxesResponseModel<ProductTaxes>>();
+                    pro = result.data.rows.ToList();
+                    NDS = result.data.nds;
+                }
+                return (pro, NDS);
             }
-
-            var httpResponse = (HttpWebResponse)httpRequest.GetResponse();
-
-            decimal NDS = 0;
-
-            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+            catch
             {
-                var result = JObject.Parse(streamReader.ReadToEnd()).ToObject<TaxesResponseModel<ProductTaxes>>();
-                pro = result.data.rows.ToList();
-                NDS = result.data.nds;
+                MessageBox.Show("Нет соединения с базой!\nПовторите попытку позже.");
+                return  (new List<ProductTaxes>() ,0);
             }
-            return (pro, NDS);
         }
+
         #endregion
         public static async Task<ProdajaModel> GetSale(ProdajaModels param, int page = 1)
         {
-            using (HttpClient httpClient = new())
+            try
             {
-                var data = new StringContent(JsonConvert.SerializeObject(param).ToString(), Encoding.UTF8, "application/json");
+                using (HttpClient httpClient = new())
+                {
+                    var data = new StringContent(JsonConvert.SerializeObject(param).ToString(), Encoding.UTF8, "application/json");
 
-                httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + Setts.Default.AuthorizationToken);
+                    httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + Setts.Default.AuthorizationToken);
 
-                var response = await httpClient.PostAsync($"{API_PATH}/functions/FC_PRODAJA_COMMIT", data);
+                    var response = await httpClient.PostAsync($"{API_PATH}/functions/FC_PRODAJA_COMMIT", data);
 
-                var responeString = await response.Content.ReadAsStringAsync();
+                    var responeString = await response.Content.ReadAsStringAsync();
 
-                var result = JObject.Parse(responeString).ToObject<SaleResponseModel>();
+                    var result = JObject.Parse(responeString).ToObject<SaleResponseModel>();
 
-                return result is not null ? result.data : new ProdajaModel();
+                    return result is not null ? result.data : new ProdajaModel();
+                }
+            }
+            catch
+            {
+                MessageBox.Show("Нет соединения с базой!\nПовторите попытку позже.");
+                return new ProdajaModel();
             }
         }
         public static async Task<string> ReturnCardTypeAsync(RequestModelGet rmodel)
         {
-            using (HttpClient httpClient = new())
+            try
             {
-                var data = new StringContent(JsonConvert.SerializeObject(rmodel).ToString(), Encoding.UTF8, "application/json");
+                using (HttpClient httpClient = new())
+                {
+                    var data = new StringContent(JsonConvert.SerializeObject(rmodel).ToString(), Encoding.UTF8, "application/json");
 
-                httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + Setts.Default.AuthorizationToken);
+                    httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + Setts.Default.AuthorizationToken);
 
-                var response = await httpClient.PostAsync($"{API_PATH}/functions/FC_VERIFY_BARCODES", data);
+                    var response = await httpClient.PostAsync($"{API_PATH}/functions/FC_VERIFY_BARCODES", data);
 
-                var responeString = await response.Content.ReadAsStringAsync();
+                    var responeString = await response.Content.ReadAsStringAsync();
 
-                var result = JObject.Parse(responeString).ToObject<ResponseModel<VerifyModel>>();
+                    var result = JObject.Parse(responeString).ToObject<ResponseModel<VerifyModel>>();
 
-                return result?.message == "success" ? result?.data?.rows.First().data.First().full_name : "not";
+                    return result?.message == "success" ? result?.data?.rows.First().data.First().full_name : "not";
+                }
+            }
+            catch
+            {
+                MessageBox.Show("Нет соединения с базой!\nПовторите попытку позже.");
+                return "not";
             }
         }
 
@@ -242,30 +322,39 @@ namespace GitMarket.Infrastructure.APIs
 
         public static async Task<ResponseUserInfoModel?> GetUDSUserInfoRequest(string total, string code)
         {
-            using (HttpClient httpClient = new())
+            try
             {
-                httpClient.DefaultRequestHeaders.Add("Authorization", "Basic " + Convert.ToBase64String(Encoding.UTF8.GetBytes(Setts.Default.CompanyId + ":" + Setts.Default.ApiKey)));
-                try
+                using (HttpClient httpClient = new())
                 {
-                    var response = await httpClient.GetStringAsync($"https://api.uds.app/partner/v2/customers/find?exchangeCode=true&total={total}&code={code}");
-                    if (String.IsNullOrEmpty(response))
-                        return null;
-                    var result = JObject.Parse(response).ToObject<ResponseUserInfoModel>();
+                    httpClient.DefaultRequestHeaders.Add("Authorization", "Basic " + Convert.ToBase64String(Encoding.UTF8.GetBytes(Setts.Default.CompanyId + ":" + Setts.Default.ApiKey)));
+                    try
+                    {
+                        var response = await httpClient.GetStringAsync($"https://api.uds.app/partner/v2/customers/find?exchangeCode=true&total={total}&code={code}");
+                        if (String.IsNullOrEmpty(response))
+                            return null;
+                        var result = JObject.Parse(response).ToObject<ResponseUserInfoModel>();
 
-                    return result;
+                        return result;
+                    }
+                    catch
+                    {
+                        return null;
+                    }
                 }
-                catch 
-                {
-                    return null;
-                }
+            }
+            catch
+            {
+                MessageBox.Show("Нет соединения с базой!\nПовторите попытку позже.");
+                return null;
             }
         }
 
         public static async Task<uToperationResult?> MakeUDSOperationRequest(object param)
         {
-            using (HttpClient httpClient = new())
+            try
             {
-                try
+
+                using (HttpClient httpClient = new())
                 {
                     var data = new StringContent(JsonConvert.SerializeObject(param).ToString(), Encoding.UTF8, "application/json");
 
@@ -277,19 +366,21 @@ namespace GitMarket.Infrastructure.APIs
 
                     return JObject.Parse(responeString).ToObject<uToperationResult>();
 
+
                 }
-                catch
-                {
-                    return null;
-                }
+            }
+            catch
+            {
+                MessageBox.Show("Нет соединения с базой!\nПовторите попытку позже.");
+                return null;
             }
         }
 
         public static ResponseInfoModel? GetCashRequest(object param)
         {
-            using (HttpClient httpClient = new())
+            try
             {
-                try
+                using (HttpClient httpClient = new())
                 {
                     var data = new StringContent(JsonConvert.SerializeObject(param).ToString(), Encoding.UTF8, "application/json");
 
@@ -302,20 +393,24 @@ namespace GitMarket.Infrastructure.APIs
                     var result = JObject.Parse(responeString.Result).ToObject<ResponseInfoModel>();
 
                     return result;
+
                 }
-                catch
-                {
-                    return null;
-                }
+
+            }
+            catch
+            {
+                MessageBox.Show("Нет соединения с базой!\nПовторите попытку позже.");
+                return null;
             }
         }
 
         public static async Task<ResponseBonus?> GetBonusRequest(object param)
         {
-            using (HttpClient httpClient = new())
+            try
             {
-                try
+                using (HttpClient httpClient = new())
                 {
+
                     var data = new StringContent(JsonConvert.SerializeObject(param).ToString(), Encoding.UTF8, "application/json");
 
                     httpClient.DefaultRequestHeaders.Add("Authorization", "Basic " + Setts.Default.AuthorizationToken);
@@ -328,10 +423,11 @@ namespace GitMarket.Infrastructure.APIs
 
                     return result;
                 }
-                catch
-                {
-                    return null;
-                }
+            }
+            catch
+            {
+                MessageBox.Show("Нет соединения с базой!\nПовторите попытку позже.");
+                return null;
             }
         }
 

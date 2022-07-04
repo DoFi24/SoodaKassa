@@ -36,7 +36,6 @@ namespace GitMarket.ViewModels.WindowsViewModels
         public CloseMainWindow? closeMainWindow;
 
         public LastCheckResponce lastCheck = new LastCheckResponce();
-
         private async void GetHotKeys()
         {
             HotKeysStructure.HotKeysDictionary = await HotKeysStructure.GetHotKeys();
@@ -176,7 +175,6 @@ namespace GitMarket.ViewModels.WindowsViewModels
         private SaleProduct _selectedProductItem = new();
         public async void DeleteSelectedProduct()
         {
-
             await APIRequests.SaveChangesAsync(new JournalApiModel
             {
                 parameter = "window",
@@ -217,16 +215,24 @@ namespace GitMarket.ViewModels.WindowsViewModels
         private RelayCommand? _UDSSettingsCommand;
         public RelayCommand? UDSSettingsCommand =>
             _UDSSettingsCommand ??= new RelayCommand(ExecuteUDSSettingsCommand, (object obj) => { if (SelectedProductsCollection!.Any()) return true; return false; });
-        private async void ExecuteUDSSettingsCommand(object obj)
+        private void ExecuteUDSSettingsCommand(object obj)
         {
-            lastCheck = await Infrastructure.APIs.APIRequests.GetFromAPIAsyncSingle<LastCheckResponce>(
+            lastCheck = APIRequests.GetFromAPIAsyncSingle(
                 new GetLastCheckModel
                 {
-                    data = null,
+                    data = new LastCheckData  
+                    {
+                        shop_id = Setts.Default.ShopId,
+                        staff_id = Setts.Default.StaffId,
+                        sklad_id = Setts.Default.SkladId,
+                        kassa_id = Setts.Default.KassaId,
+                        kontragent_id = 0
+                    },
                     sum = ReceiptPaid,
-                    esum = ReceiptPaidCard,
+                    esum = ReceiptPaidCard!,
                     parameter = "windows"
-                }, "FC_PRODAJA_GET_LAST_CHECK");
+                }
+                , "FC_PRODAJA_GET_LAST_CHECK")!;
 
             new UDSDialogWindow(ReceiptPrice)
             {
@@ -235,7 +241,7 @@ namespace GitMarket.ViewModels.WindowsViewModels
             }.ShowDialog();
         }
 
-        private void ChangePriceWithUDS(decimal price)
+        public void ChangePriceWithUDS(decimal price)
         {
             ReceiptUDSPrice = price;
             GetCalculate();
@@ -301,7 +307,7 @@ namespace GitMarket.ViewModels.WindowsViewModels
         #region Search
         public void AddSelectedProduct()
         {
-            if (SearchSelectedProduct is null || SearchSelectedProduct != new SaleProduct())
+            if (SearchSelectedProduct is null && String.IsNullOrEmpty(SearchSelectedProduct!.Product_Name!))
                 return;
 
             if (!SelectedProductsCollection!.Any(s => s.Prihod_Detail_Id == SearchSelectedProduct.Prihod_Detail_Id))
@@ -334,9 +340,9 @@ namespace GitMarket.ViewModels.WindowsViewModels
             {
                 parameter = "get",
                 page = 1,
-                pageSize = 10,
-                shopId = 78,
-                staffId = 1,
+                pageSize = 10000,
+                shopId = Setts.Default.ShopId,
+                staffId = Setts.Default.StaffId,
                 data = new
                 {
                     search = new ArrayList { "=", SearchText }
@@ -346,6 +352,8 @@ namespace GitMarket.ViewModels.WindowsViewModels
             {
                 IsOpenPopup = true;
             }
+            if (SearchProductCollection.Count > 0)
+                SearchSelectedProduct = SearchProductCollection.First();
         }
         public void SearchUpDown(bool v)
         {
@@ -380,9 +388,9 @@ namespace GitMarket.ViewModels.WindowsViewModels
                 {
                     parameter = "get",
                     page = 1,
-                    shopId = 78,
-                    staffId = 1,
-                    pageSize = 10,
+                    shopId = Setts.Default.ShopId,
+                    staffId = Setts.Default.SkladId,
+                    pageSize = 100,
                     data = new
                     {
                         barcode = new ArrayList { "=", inputDeviceText }
@@ -481,7 +489,7 @@ namespace GitMarket.ViewModels.WindowsViewModels
                     };
                     addCount.ShowDialog();
                 }
-                else 
+                else
                 {
                     AddCountDialogWindow addCount = new(SelectedProductItem.Product_Name, SelectedProductItem.Quantity);
                     addCount.ReturnProductCountEvent += (x) =>
@@ -512,7 +520,7 @@ namespace GitMarket.ViewModels.WindowsViewModels
             var alltaxes = new TaxesModel
             {
                 parameter = "",
-                pageSize = 10,
+                pageSize = 100,
                 page = 1,
                 data = new List<taxeData>()
             };
@@ -530,8 +538,9 @@ namespace GitMarket.ViewModels.WindowsViewModels
 
             Thread.Sleep(300);
 
-            if (Prodaja is null || Prodaja == new ProdajaModel())
+            if (Prodaja is null)
                 return;
+
             new PaymentEndDialogWindow(this).Show();
         }
 
@@ -610,9 +619,8 @@ namespace GitMarket.ViewModels.WindowsViewModels
             }
 
         }
-        private async Task<ProdajaModel> PayMethodAsync() //при uds оплате изменить структуру
+        private async Task<ProdajaModel?> PayMethodAsync() //при uds оплате изменить структуру
         {
-
             if (ReceiptPaid + ReceiptPaidCard >= ReceiptPrice)
             {
                 ProdajaModels lasteses;
@@ -622,7 +630,7 @@ namespace GitMarket.ViewModels.WindowsViewModels
                         parameter = "windows",
                         data = new data
                         {
-                            prodaja_id = lastCheck == new LastCheckResponce() ? null : lastCheck.data.prodaja_id,
+                            prodaja_id = null, /*lastCheck.data == null ? null : lastCheck.data.prodaja_id,*/
                             kassa_id = Setts.Default.KassaId,
                             shop_id = Setts.Default.ShopId,
                             sklad_id = Setts.Default.StaffId,
@@ -655,13 +663,13 @@ namespace GitMarket.ViewModels.WindowsViewModels
                         pageSize = 2,
                         page = 1
                     };
-                else if (!bonuses.Any() && !discount.Any())
+                else if (bonuses.Any() && !discount.Any())
                     lasteses = new ProdajaModels
                     {
                         parameter = "windows",
                         data = new data
                         {
-                            prodaja_id = lastCheck == new LastCheckResponce() ? null : lastCheck.data.prodaja_id,
+                            prodaja_id = null, /*lastCheck.data == null ? null : lastCheck.data.prodaja_id,*/
                             kassa_id = Setts.Default.KassaId,
                             shop_id = Setts.Default.ShopId,
                             sklad_id = Setts.Default.StaffId,
@@ -670,21 +678,20 @@ namespace GitMarket.ViewModels.WindowsViewModels
                             pay_sum = ReceiptPrice,
                             kontragent_id = 0,
                             rows = (from s in SelectedProductsCollection
+                                    join d in bonuses on s.Prihod_Detail_Id equals d.Prihod_Detail_Id
                                     join t in taxes on s.Prihod_Detail_Id equals t.prihod_detail_id
                                     select new ProdajaProduct
                                     {
                                         prihod_detail_id = (int)s.Prihod_Detail_Id,
-                                        bonus_id = 0,
+                                        bonus_id = d.Bonus_Id,
                                         discount_id = 0,
                                         sale_price = (decimal)((bool)!s.IsUnpack ? s.Sale_Price : s.Unpack_Sale_Price),
                                         quantity = s.QuantityCount,
                                         discount_sum = 0,
-                                        bonus_sum = 0,
+                                        bonus_sum = d.Bonus_Sum,
                                         pay_bonus_sum = 0,
                                         taxe_sum = t.taxe_sum,
-                                        comment = s.Comment,
-                                        service_id = (int)s.Service_id,
-                                        is_service = (bool)s.Is_service
+                                        comment = s.Comment
                                     }).ToList()
                         },
                         sum = ReceiptPaid,
@@ -692,13 +699,14 @@ namespace GitMarket.ViewModels.WindowsViewModels
                         pageSize = 10,
                         page = 1
                     };
+
                 else if (!bonuses.Any() && discount.Any())
                     lasteses = new ProdajaModels
                     {
                         parameter = "windows",
                         data = new data
                         {
-                            prodaja_id = lastCheck == new LastCheckResponce() ? null : lastCheck.data.prodaja_id,
+                            prodaja_id = null ,/*lastCheck.data == null ? null : lastCheck.data.prodaja_id,*/
                             kassa_id = Setts.Default.KassaId,
                             shop_id = Setts.Default.ShopId,
                             sklad_id = Setts.Default.StaffId,
@@ -736,6 +744,8 @@ namespace GitMarket.ViewModels.WindowsViewModels
                         parameter = "windows",
                         data = new data
                         {
+                            prodaja_id = null, /*lastCheck.data == null ? null : lastCheck.data.prodaja_id,*/
+                            kassa_id = Setts.Default.KassaId,
                             shop_id = Setts.Default.ShopId,
                             sklad_id = Setts.Default.StaffId,
                             staff_id = Setts.Default.SkladId,
@@ -743,20 +753,21 @@ namespace GitMarket.ViewModels.WindowsViewModels
                             pay_sum = ReceiptPrice,
                             kontragent_id = 0,
                             rows = (from s in SelectedProductsCollection
-                                    join d in bonuses on s.Prihod_Detail_Id equals d.Prihod_Detail_Id
                                     join t in taxes on s.Prihod_Detail_Id equals t.prihod_detail_id
                                     select new ProdajaProduct
                                     {
                                         prihod_detail_id = (int)s.Prihod_Detail_Id,
-                                        bonus_id = d.Bonus_Id,
+                                        bonus_id = 0,
                                         discount_id = 0,
                                         sale_price = (decimal)((bool)!s.IsUnpack ? s.Sale_Price : s.Unpack_Sale_Price),
                                         quantity = s.QuantityCount,
                                         discount_sum = 0,
-                                        bonus_sum = d.Bonus_Sum,
+                                        bonus_sum = 0,
                                         pay_bonus_sum = 0,
                                         taxe_sum = t.taxe_sum,
-                                        comment = s.Comment
+                                        comment = s.Comment,
+                                        service_id = (int)s.Service_id,
+                                        is_service = (bool)s.Is_service
                                     }).ToList()
                         },
                         sum = ReceiptPaid,
@@ -764,15 +775,14 @@ namespace GitMarket.ViewModels.WindowsViewModels
                         pageSize = 10,
                         page = 1
                     };
+                if (lasteses is null)
+                {
+                    MessageBox.Show("Ошибка!");
+                    return null;
+                }
                 return await APIRequests.GetSale(lasteses);
             }
-            return new ProdajaModel();
-            //}
-            //catch (Exception e)
-            //{
-            //    MessageBox.Show("Не правильный формат данных " + e.Message);
-            //    return new ProdajaModel();
-            //}
+            return null;
         }
         public void UpDownCommand(bool v)
         {

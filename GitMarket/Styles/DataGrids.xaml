@@ -332,7 +332,22 @@
             </Trigger>
         </Style.Triggers>
     </Style>
-    
+
+    <Style x:Key="CheckHistoryDataGridCell" TargetType="{x:Type DataGridCell}">
+        <Setter Property="Background" Value="{x:Null}" />
+        <Setter Property="BorderBrush" Value="{x:Null}" />
+        <Setter Property="Padding" Value="20 0 0 0"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Style.Triggers>
+            <Trigger Property="IsSelected" Value="True">
+                <Setter Property="Background" Value="#AED6F1 " />
+                <Setter Property="BorderBrush" Value="#AED6F1  " />
+                <Setter Property="FontWeight" Value="DemiBold" />
+                <Setter Property="Foreground" Value="Black" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
     <Style TargetType="{x:Type DataGridRow}" x:Key="OrderPageDataGridRow">
         <Setter Property="HorizontalAlignment" Value="Center"/>
         <Setter Property="Padding" Value="20 0 0 0"/>

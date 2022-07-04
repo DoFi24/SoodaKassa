@@ -52,7 +52,7 @@
                             Grid.Row="0" Margin="80 0 72 0">
                         <StackPanel  Orientation="Horizontal">
                             <mt:PackIcon Kind="Account" Width="32" Foreground="#40CC6F"
-                                         Margin="5 0 0 0" Height="32"/>
+                                         Margin="5 4 0 0" Height="32"/>
                             <TextBox MinWidth="300" VerticalContentAlignment="Center" FontSize="15"
                              Foreground="#03006b"
                              Text="{Binding LoginText}"/>
@@ -62,10 +62,10 @@
                             Margin="80 20 72 0" Grid.Row="1">
                         <StackPanel  Orientation="Horizontal">
                             <mt:PackIcon Kind="Password" Width="32" Foreground="#40CC6F"
-                                         Margin="5 0 0 0" Height="32"/>
-                            <TextBox MinWidth="300" VerticalContentAlignment="Center" FontSize="15"
-                             Foreground="#03006b" HorizontalContentAlignment="Left" KeyUp="TextBox_KeyUp"
-                             Text="{Binding PasswordText,UpdateSourceTrigger=PropertyChanged}"/>
+                                         Margin="5 4 0 0" Height="32"/>
+                            <PasswordBox x:Name="password" MinWidth="300" VerticalContentAlignment="Center" FontSize="15"
+                                         Foreground="#03006b" HorizontalContentAlignment="Left" BorderBrush="DarkGray"
+                                         KeyUp="TextBox_KeyUp" PasswordChar="*" BorderThickness="0 0 0 1"/>
                         </StackPanel>
                     </Border>
 
@@ -77,6 +77,7 @@
                                   Content="Остаться в системе"/>
                     </Border>
                     <Button Grid.Row="3" Margin="0 30 0 0" Content="Войти" Command="{Binding SignInCommand}"
+                            CommandParameter="{Binding ElementName=password}"
                             Foreground="White" Width="200" Background="#40CC6F"/>
                 </Grid>
 
