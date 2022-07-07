@@ -1,7 +1,7 @@
 ﻿using GitMarket.Domain.Models.TitiModels.ProductsModel;
 using GitMarket.Domain.Models.UDSModels;
+using GitMarket.ViewModels.WindowsViewModels;
 using System;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -10,14 +10,14 @@ namespace GitMarket.Views.Dialogs
 {
     public partial class UDSDialogWindow : Window
     {
-        public delegate void UDSPrice(decimal totalPrice);
-        public UDSPrice sendPrice;
         public LastCheckResponce lastCheck = new LastCheckResponce();
         private ResponseUserInfoModel? user;
-        public UDSDialogWindow(decimal totalPrice)
+        MainNavigationWindowViewModel _vmodel;
+        public UDSDialogWindow(MainNavigationWindowViewModel vmodel)
         {
             InitializeComponent();
-            TotalTextBlock.Text = totalPrice.ToString();
+            _vmodel = vmodel;
+            TotalTextBlock.Text = vmodel.ReceiptPrice.ToString();
         }
         private void CloseWindowClick(object sender, RoutedEventArgs e)
         {
@@ -29,70 +29,85 @@ namespace GitMarket.Views.Dialogs
         }
         private async void TextKeyUp(object sender, KeyEventArgs e)
         {
-            if (UdsTextCode.Text.Length < 6)
-                return;
-            if (e.Key == Key.Return)
+            try
             {
-                user = await Infrastructure.APIs.APIRequests.GetUDSUserInfoRequest(TotalTextBlock.Text, UdsTextCode.Text);
-                if (user is null)
-                {
-                    MessageBox.Show("Неправильный код!", "Непрвильный ввод", MessageBoxButton.OK, MessageBoxImage.Warning);
+                if (UdsTextCode.Text.Length < 6)
                     return;
+                if (e.Key == Key.Return)
+                {
+                    user = await Infrastructure.APIs.APIRequests.GetUDSUserInfoRequest(TotalTextBlock.Text, UdsTextCode.Text);
+                    if (user is null)
+                    {
+                        MessageBox.Show("Неправильный код!", "Непрвильный ввод", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return;
+                    }
+                    UserName.Text = user.user.displayName;
+                    UserBonus.Text = user!.user!.participant!.points!.ToString() ?? "Нету баллов";
                 }
-                UserName.Text = user.user.displayName;
-                UserBonus.Text = user!.user!.participant!.points!.ToString() ?? "Нету баллов";
+            }
+            catch (Exception w)
+            {
+                MessageBox.Show("TextKeyUp \n" + w.Message);
             }
         }
-        private void Button_Click_Accept(object sender, RoutedEventArgs e)
+        private async void Button_Click_Accept(object sender, RoutedEventArgs e)
         {
-            decimal point = 0;
-            if ((sender as Button)!.Uid == "0")
-                point = Convert.ToDecimal(UdsSpisanieBonus.Text.Replace(",","."));
-
-            var cashh = Infrastructure.APIs.APIRequests.GetCashRequest(
-                                new RequestInfoModel
-                                {
-                                    code = user!.code!,
-                                    participant = null,
-                                    receipt = new Receipt
-                                    {
-                                        total = Convert.ToDecimal(TotalTextBlock.Text),
-                                        skipLoyaltyTotal = String.IsNullOrEmpty(UdsSkipLoyaltyTotal.Text.Replace(",", ".")) ? 1 : Convert.ToDecimal(UdsSkipLoyaltyTotal.Text.Replace(",", ".")),
-                                        points = point
-                                    }
-                                });
-
-            var operInfo = Infrastructure.APIs.APIRequests.
-                MakeUDSOperationRequest(
-                    new RequestOperationModel
-                    {
-                        code = user!.code!,
-                        participant = null,
-                        nonce = Guid.NewGuid().ToString(),
-                        cashier = null,
-                        receipt = new Receipt
-                        {
-                            total = Convert.ToDecimal(TotalTextBlock.Text),
-                            points = point,
-                            skipLoyaltyTotal = String.IsNullOrEmpty(UdsSkipLoyaltyTotal.Text.Replace(",", ".")) ? 1 : Convert.ToDecimal(UdsSkipLoyaltyTotal.Text.Replace(",",".")),
-                            cash = cashh!.purchase!.cashTotal,
-                            number = lastCheck.data.check_no
-                        },
-                        tags = null
-                    });
-
-            `
-            Setts.Default.Save();
-
-            if (operInfo is null)
+            try
             {
-                MessageBox.Show("Ошибка! \nНеверно введены данные");
-                return;
-            }
+                decimal point = 0;
+                if ((sender as Button)!.Uid == "0")
+                    point = Convert.ToDecimal(UdsSpisanieBonus.Text.Replace(",", "."));
 
-            sendPrice(operInfo!.Result!.oneOf.First().cash);
-            MessageBox.Show("Успешно!");
-            Close();
+                var cashh = Infrastructure.APIs.APIRequests.GetCashRequest(
+                                    new RequestInfoModel
+                                    {
+                                        code = user!.code!,
+                                        participant = null,
+                                        receipt = new Receipt
+                                        {
+                                            total = Convert.ToDecimal(TotalTextBlock.Text),
+                                            skipLoyaltyTotal = String.IsNullOrEmpty(UdsSkipLoyaltyTotal.Text.Replace(",", ".")) ? 1 : Convert.ToDecimal(UdsSkipLoyaltyTotal.Text.Replace(",", ".")),
+                                            points = point
+                                        }
+                                    });
+
+                var operInfo = await Infrastructure.APIs.APIRequests.
+                    MakeUDSOperationRequest(
+                        new RequestOperationModel
+                        {
+                            code = user!.code!,
+                            participant = null,
+                            nonce = Guid.NewGuid().ToString(),
+                            cashier = null,
+                            receipt = new Receipt
+                            {
+                                total = Convert.ToDecimal(TotalTextBlock.Text),
+                                points = point,
+                                skipLoyaltyTotal = String.IsNullOrEmpty(UdsSkipLoyaltyTotal.Text) ? 1 : Convert.ToDecimal(UdsSkipLoyaltyTotal.Text.Replace(",", ".")),
+                                cash = cashh!.purchase!.cashTotal,
+                                number = lastCheck?.data?.check_no ?? null
+                            },
+                            tags = null
+                        });
+
+                if (operInfo is null || operInfo == new uToperationResult())
+                {
+                    MessageBox.Show("Ошибка! \nНеверно введены данные!");
+                    return;
+                }
+
+                Setts.Default.Save();
+
+                _vmodel.ChangePriceWithUDS(Convert.ToDecimal(UdsSpisanieBonus.Text.Replace(",", ".")));
+
+                MessageBox.Show("Успешно!");
+
+                this.Close();
+            }
+            catch (Exception w)
+            {
+                MessageBox.Show("Button_Click_Accept \n" + w.Message);
+            }
         }
 
         private async void Button_Click_SearchClient(object sender, RoutedEventArgs e)

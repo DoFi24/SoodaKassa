@@ -22,7 +22,7 @@ namespace GitMarket.Views.MainWindows
         private void TextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
         {
             if (e.Key == System.Windows.Input.Key.Return)
-                loginVM.SignInCommand.Execute(password.Password);
+                loginVM.SignInCommand.Execute(password);
         }
     }
 }

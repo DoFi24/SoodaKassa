@@ -28,19 +28,19 @@ namespace GitMarket.Views.Dialogs
             if (mainGrid.SelectedItem != null && mainGrid.SelectedItem.GetType() == typeof(SaleProduct))
             {
                 var prod = mainGrid.SelectedItem as SaleProduct;
-                if (!model.SelectedProductsCollection.Any(s => s.Prihod_Detail_Id == prod.Prihod_Detail_Id))
+                if (!model.SelectedProductsCollection!.Any(s => s.Prihod_Detail_Id == prod!.Prihod_Detail_Id))
                 {
-                    prod.QuantityCount = 1;
-                    model.SelectedProductsCollection.Add(prod);
+                    prod!.QuantityCount = 1;
+                    model!.SelectedProductsCollection!.Add(prod);
                 }
                 else
                 {
-                    var product = model.SelectedProductsCollection.First(s => s.Prihod_Detail_Id == prod.Prihod_Detail_Id);
+                    var product = model.SelectedProductsCollection!.First(s => s.Prihod_Detail_Id == prod!.Prihod_Detail_Id);
                     if (product.QuantityCount < product.Quantity)
                     {
                         product.QuantityCount++;
-                        model.SelectedProductsCollection.Remove(product);
-                        model.SelectedProductsCollection.Add(product);
+                        model.SelectedProductsCollection!.Remove(product);
+                        model.SelectedProductsCollection!.Add(product);
                     }
                     else
                         MessageBox.Show("Не достаточно товаров!");

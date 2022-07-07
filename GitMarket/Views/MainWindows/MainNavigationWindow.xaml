@@ -10,8 +10,7 @@
         d:DataContext="{d:DesignInstance vm:MainNavigationWindowViewModel}"
         Title="{Binding WindowTitle}" Height="800" Width="1200" MouseDown="Window_MouseDown"
         WindowStyle="None" WindowStartupLocation="CenterScreen"  Icon="/Resources/Base/logo2.png"
-        WindowState="Maximized" Background="{x:Null}" KeyUp="Window_KeyUp" Loaded="Window_Loaded"
-    xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2">
+        WindowState="Maximized" Background="{x:Null}" KeyUp="Window_KeyUp" Loaded="Window_Loaded">
     <Border BorderBrush="Black" BorderThickness="1" Background="Transparent">
         <Grid Background="Transparent">
             <Grid.RowDefinitions>
@@ -28,7 +27,7 @@
                             IsTabStop="False" Background="{x:Null}" BorderThickness="0"
                             Height="50" Width="50" Grid.RowSpan="2"  HorizontalAlignment="Left" 
                             Command="{Binding OpenMenuCommand}" Grid.Column="0">
-                                <icon:PackIcon Height="40" Width="40" Kind="Menu" Foreground="White"/>
+                        <icon:PackIcon Height="40" Width="40" Kind="Menu" Foreground="White"/>
                     </Button>
                     <StackPanel Margin="25 5 0 0" VerticalAlignment="Center">
                         <Border CornerRadius="5" Background="White">
@@ -122,7 +121,7 @@
                 </Grid>
             </Grid>
             <Grid Grid.Row="1" Panel.ZIndex="0">
-                <Grid Grid.Row="1" Background="White">
+                <Grid Background="White">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1*" />
                         <ColumnDefinition Width="300" />
@@ -135,48 +134,100 @@
                                 <Setter Property="Foreground" Value="#140021" />
                             </Style>
                         </Grid.Resources>
-                        <DataGrid RowStyle="{DynamicResource SaleDataGridRow}" 
-                          Style="{DynamicResource SalePageDataGrid_2}"
-                          SelectedIndex="{Binding SelectedProductIndex,UpdateSourceTrigger=PropertyChanged}"
-                          x:Name="DataGridKassaReal" IsTabStop="False"
-                          ColumnHeaderStyle="{DynamicResource hederstyle_Kuxne}"
-                          ItemsSource="{Binding SelectedProductsCollection, UpdateSourceTrigger=PropertyChanged}"
-                          SelectedItem="{Binding SelectedProductItem, UpdateSourceTrigger=PropertyChanged}" Margin="10,8,4,10">
-                            <DataGrid.Columns>
-                                <DataGridTemplateColumn IsReadOnly="True" Header="Наименование" Width="2*">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Style="{DynamicResource CenterText}" Text="{Binding Product_Name}"/>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-                                <DataGridTemplateColumn  IsReadOnly="True" Header="Цена" Width="*">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Style="{DynamicResource CenterText}"  Text="{Binding Sale_Price,StringFormat=0.00}"/>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-                                <DataGridTemplateColumn  Width="*" Header="Количество">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <Button IsTabStop="False" FontSize="18" Background="Transparent" BorderThickness="0" 
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="{Binding HotKeyGridVisibility,UpdateSourceTrigger=PropertyChanged}" />
+                                <ColumnDefinition Width="3*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="30" />
+                                    <RowDefinition Height="1*" />
+                                </Grid.RowDefinitions>
+                                <TextBlock Text="Горячие клавиши" Margin="0 10 0 0"
+                                           HorizontalAlignment="Center" FontWeight="DemiBold" />
+                                <DataGrid Margin="3" Grid.Row="1" IsReadOnly="True" Style="{DynamicResource HotKeyDataGrid}"
+                                          ItemsSource="{Binding HotKeyCollection,UpdateSourceTrigger=PropertyChanged}" >
+                                    <DataGrid.Columns>
+                                        <DataGridTemplateColumn IsReadOnly="True" Width="2*" Header="Наименование">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Viewbox HorizontalAlignment="Left">
+                                                        <TextBlock Foreground="Black" FontWeight="DemiBold" HorizontalAlignment="Left" TextAlignment="Left" Text="{Binding Product_Name}"  VerticalAlignment="Center"/>
+                                                    </Viewbox>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        <DataGridTemplateColumn Width="*" IsReadOnly="True"  Header="Клавиша">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Foreground="Black" FontWeight="DemiBold" HorizontalAlignment="Center" TextAlignment="Center" Text="{Binding Key}" VerticalAlignment="Center"/>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Grid>
+                            <DataGrid Grid.Column="1" RowStyle="{DynamicResource SaleDataGridRow}" 
+                                      Style="{DynamicResource SalePageDataGrid_2}" Background="Transparent"
+                                      IsTabStop="False" Width="Auto" 
+                                      ColumnHeaderStyle="{DynamicResource hederstyle_Kuxne}"
+                                      ItemsSource="{Binding FakeInfoCollection, UpdateSourceTrigger=PropertyChanged}">
+                                <DataGrid.Columns>
+                                    <DataGridTemplateColumn IsReadOnly="True" Header=" " Width="2*">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Style="{DynamicResource CenterText}" Text="{Binding}"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                            <DataGrid Grid.Column="1" RowStyle="{DynamicResource SaleDataGridRow}" 
+                                      Style="{DynamicResource SalePageDataGrid_2}" Background="Transparent"
+                                      SelectedIndex="{Binding SelectedProductIndex,UpdateSourceTrigger=PropertyChanged}"
+                                      x:Name="DataGridKassaReal" IsTabStop="False"
+                                      Width="Auto"
+                                      ColumnHeaderStyle="{DynamicResource hederstyle_Kuxne}"
+                                      ItemsSource="{Binding SelectedProductsCollection, UpdateSourceTrigger=PropertyChanged}"
+                                      SelectedItem="{Binding SelectedProductItem, UpdateSourceTrigger=PropertyChanged}">
+
+                                <DataGrid.Columns>
+                                    <DataGridTemplateColumn IsReadOnly="True" Header="Наименование" Width="2*">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Style="{DynamicResource CenterText}" Text="{Binding Product_Name}"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn  IsReadOnly="True" Header="Цена" Width="*">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Style="{DynamicResource CenterText}"  Text="{Binding Sale_Price,StringFormat=0.00}"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn  Width="*" Header="Количество">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button IsTabStop="False" FontSize="18" Background="Transparent" BorderThickness="0" 
                                                         CommandParameter="{Binding IsUnpack}"
                                             Command="{Binding DataContext.ChangeProductQuantityCommand,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type DataGrid}}}" 
                                             Content="{Binding QuantityCount,StringFormat=0.00}" HorizontalContentAlignment="Center"/>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
 
-                                <DataGridTemplateColumn  IsReadOnly="True" Header="Итого" Width="*">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Style="{DynamicResource CenterText}"  Text="{Binding Itog,StringFormat=0.00}"/>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-                            </DataGrid.Columns>
-                        </DataGrid>
+                                    <DataGridTemplateColumn  IsReadOnly="True" Header="Итого" Width="*">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Foreground="Black" Style="{DynamicResource CenterText}"  Text="{Binding Itog,StringFormat=0.00}"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
                     </Grid>
                     <Grid Grid.Column="2">
                         <Grid.RowDefinitions>
@@ -239,9 +290,9 @@
                                     <Button  IsTabStop="False" Background="#40CC6F" Height="50" FontSize="15" Content="Оплатить (+)" Command="{Binding ToPayCommand}" Grid.Row="0"/>
                                     <Button  IsTabStop="False" x:Name="Btn1" Background="#40CC6F" Height="50" FontSize="14" Content="Бонус и скидка (-)" Command="{Binding GetBonusCommand}" Grid.Row="1"/>
                                     <!--<Button Background="#3B9AAE" Height="40" Content="Напечатать чек&#x0a; ()" Command="{Binding CheckPaymentEndCommand}" Grid.Row="3"/>-->
-                                    <Button  IsTabStop="False" Background="#9F40CC"
+                                    <!--<Button  IsTabStop="False" Background="#9F40CC"
                                              Height="50" FontSize="15" Content="UDS"
-                                             Command="{Binding UDSSettingsCommand}" Grid.Row="2"/>
+                                             Command="{Binding UDSSettingsCommand}" Grid.Row="2"/>-->
                                     <Button  IsTabStop="False" Background="#FE5555" Height="50" FontSize="15" Content="    Очистить&#x0a; (Ctrl + Delete)" Command="{Binding ClearSelectedProductsCommand}" Grid.Row="5"/>
                                 </Grid>
                             </StackPanel>
@@ -275,6 +326,7 @@
                     <Button Uid="7" Content="Передать магазину"/>-->
                             <Button Uid="7" Content="Услуги"/>
                             <Button Uid="4" Content="История чеков"/>
+                            <Button Uid="2" Content="Горячие клавиши"/>
                             <Button Uid="8" Content="Настройки"/>
                         </StackPanel>
                     </Grid>

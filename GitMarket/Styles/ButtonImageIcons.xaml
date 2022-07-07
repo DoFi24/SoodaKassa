@@ -4,7 +4,7 @@
 
     <BitmapImage x:Key="Uid0" UriSource="/Resources/ButtonIcons/Shape.png" />
     <BitmapImage x:Key="Uid1" UriSource="/Resources/ButtonIcons/Materials.png" />
-    <BitmapImage x:Key="Uid2" UriSource="/Resources/MenuButtonIcons/Shape.png" />
+    <BitmapImage x:Key="Uid2" UriSource="/Resources/ButtonIcons/hotkeys.png" />
     <BitmapImage x:Key="Uid3" UriSource="/Resources/MenuButtonIcons/Iconography - Caesarzkn-2.png" />
     <BitmapImage x:Key="Uid4" UriSource="/Resources/ButtonIcons/Shape (1).png" />
     <BitmapImage x:Key="Uid5" UriSource="/Resources/MenuButtonIcons/Form.png" />
@@ -15,7 +15,7 @@
 
     <BitmapImage x:Key="lUid0" UriSource="/Resources/ButtonIcons/Shape.png" />
     <BitmapImage x:Key="lUid1" UriSource="/Resources/ButtonIcons/Materials.png" />
-    <BitmapImage x:Key="lUid2" UriSource="/Resources/MenuButtonIcons/Iconography - Caesarzkn.png" />
+    <BitmapImage x:Key="lUid2" UriSource="/Resources/ButtonIcons/hotkeys.png" />
     <BitmapImage x:Key="lUid3" UriSource="/Resources/MenuButtonIcons/Shape-1.png" />
     <BitmapImage x:Key="lUid4" UriSource="/Resources/ButtonIcons/Shape (1).png" />
     <BitmapImage x:Key="lUid5" UriSource="/Resources/MenuButtonIcons/whiteIcons/Iconography - Caesarzkn-1.png" />

@@ -29,7 +29,7 @@ namespace GitMarket.ViewModels.WindowsViewModels
         }
         public MainNavigationWindowViewModel()
         {
-
+            GetHotKeys();
         }
 
         public delegate void CloseMainWindow();
@@ -39,6 +39,11 @@ namespace GitMarket.ViewModels.WindowsViewModels
         private async void GetHotKeys()
         {
             HotKeysStructure.HotKeysDictionary = await HotKeysStructure.GetHotKeys();
+            HotKeyCollection = new ObservableCollection<HotKeyModel>(HotKeysStructure.HotKeysDictionary!);
+            for (int i = 0; i < 22; i++)
+            {
+                FakeInfoCollection.Add("");
+            }
         }
 
 
@@ -78,12 +83,29 @@ namespace GitMarket.ViewModels.WindowsViewModels
             get { return _menuGridVisibility; }
             set { Set(ref _menuGridVisibility, value); }
         }
+
+        private double _HotKeyGridVisibility = 0;
+        public double HotKeyGridVisibility
+        {
+            get { return _HotKeyGridVisibility; }
+            set { Set(ref _HotKeyGridVisibility, value); }
+        }
+
         private bool _IsOpenPopup = false;
         public bool IsOpenPopup
         {
             get { return _IsOpenPopup; }
             set { Set(ref _IsOpenPopup, value); }
         }
+
+        private ObservableCollection<HotKeyModel> _HotKeyCollection;
+        public ObservableCollection<HotKeyModel> HotKeyCollection
+        {
+            get { return _HotKeyCollection; }
+            set { Set(ref _HotKeyCollection, value); }
+        }
+
+        public ObservableCollection<string> FakeInfoCollection { get; set; } = new ObservableCollection<string>();
 
         private ObservableCollection<SaleProduct> _searchProductCollection;
         public ObservableCollection<SaleProduct> SearchProductCollection
@@ -175,6 +197,8 @@ namespace GitMarket.ViewModels.WindowsViewModels
         private SaleProduct _selectedProductItem = new();
         public async void DeleteSelectedProduct()
         {
+            if (SelectedProductItem is null) return;
+
             await APIRequests.SaveChangesAsync(new JournalApiModel
             {
                 parameter = "window",
@@ -189,7 +213,9 @@ namespace GitMarket.ViewModels.WindowsViewModels
                 }
             });
 
-            SelectedProductsCollection.Remove(SelectedProductItem);
+            SelectedProductsCollection!.Remove(SelectedProductItem);
+            if (SelectedProductsCollection.Count > 0)
+                SelectedProductItem = SelectedProductsCollection.Last();
         }
 
         public SaleProduct SelectedProductItem
@@ -220,7 +246,7 @@ namespace GitMarket.ViewModels.WindowsViewModels
             lastCheck = APIRequests.GetFromAPIAsyncSingle(
                 new GetLastCheckModel
                 {
-                    data = new LastCheckData  
+                    data = new LastCheckData
                     {
                         shop_id = Setts.Default.ShopId,
                         staff_id = Setts.Default.StaffId,
@@ -234,11 +260,10 @@ namespace GitMarket.ViewModels.WindowsViewModels
                 }
                 , "FC_PRODAJA_GET_LAST_CHECK")!;
 
-            new UDSDialogWindow(ReceiptPrice)
+            new UDSDialogWindow(this)
             {
-                sendPrice = ChangePriceWithUDS,
                 lastCheck = lastCheck
-            }.ShowDialog();
+            }.Show();
         }
 
         public void ChangePriceWithUDS(decimal price)
@@ -298,8 +323,7 @@ namespace GitMarket.ViewModels.WindowsViewModels
 
         private void ExecuteCloseApplicationCommand(object obj)
         {
-            Dispose();
-            Application.Current.Shutdown();
+            new ErrorMessegeDialogWindow().ShowDialog();
         }
 
         #endregion
@@ -307,27 +331,28 @@ namespace GitMarket.ViewModels.WindowsViewModels
         #region Search
         public void AddSelectedProduct()
         {
-            if (SearchSelectedProduct is null && String.IsNullOrEmpty(SearchSelectedProduct!.Product_Name!))
+            if (SearchSelectedProduct is null || String.IsNullOrWhiteSpace(SearchSelectedProduct!.Product_Name!))
                 return;
 
             if (!SelectedProductsCollection!.Any(s => s.Prihod_Detail_Id == SearchSelectedProduct.Prihod_Detail_Id))
             {
                 SearchSelectedProduct.QuantityCount = 1;
-                SelectedProductsCollection.Add(SearchSelectedProduct);
+                SelectedProductsCollection!.Add(SearchSelectedProduct);
             }
             else
             {
-                var product = SelectedProductsCollection.First(s => s.Prihod_Detail_Id == SearchSelectedProduct.Prihod_Detail_Id);
+                var product = SelectedProductsCollection!.First(s => s.Prihod_Detail_Id == SearchSelectedProduct.Prihod_Detail_Id);
+                if (string.IsNullOrWhiteSpace(product.Product_Name)) return;
                 if (product.QuantityCount < product.Quantity)
                 {
                     product.QuantityCount++;
-                    SelectedProductsCollection.Remove(product);
+                    SelectedProductsCollection!.Remove(product);
                     SelectedProductsCollection.Add(product);
                 }
                 else
                     MessageBox.Show("Не достаточно товаров!");
             }
-            SelectedProductItem = SelectedProductsCollection.Last();
+            SelectedProductItem = SelectedProductsCollection!.Last();
             SearchSelectedProduct = new SaleProduct();
             GetCalculate();
             IsOpenPopup = false;
@@ -398,21 +423,23 @@ namespace GitMarket.ViewModels.WindowsViewModels
                 });
             if (products.Any())
             {
-                if (products.Count() == 1)
+                if (products.Count == 1)
                 {
                     var prod = products[0];
-                    if (!SelectedProductsCollection.Any(s => s.Prihod_Detail_Id == prod.Prihod_Detail_Id))
+                    if (String.IsNullOrWhiteSpace(prod.Product_Name))
+                        return;
+                    if (!SelectedProductsCollection!.Any(s => s.Prihod_Detail_Id == prod.Prihod_Detail_Id))
                     {
                         prod.QuantityCount = 1;
-                        SelectedProductsCollection.Add(prod);
+                        SelectedProductsCollection!.Add(prod);
                     }
                     else
                     {
-                        var product = SelectedProductsCollection.First(s => s.Prihod_Detail_Id == prod.Prihod_Detail_Id);
+                        var product = SelectedProductsCollection!.First(s => s.Prihod_Detail_Id == prod.Prihod_Detail_Id);
                         if (product.QuantityCount < product.Quantity)
                         {
                             product.QuantityCount++;
-                            SelectedProductsCollection.Remove(product);
+                            SelectedProductsCollection!.Remove(product);
                             SelectedProductsCollection.Add(product);
                         }
                         else
@@ -424,7 +451,8 @@ namespace GitMarket.ViewModels.WindowsViewModels
                     new AddProductFromCollectionDialogWindow(products.ToList(), this).ShowDialog();
                 }
 
-                SelectedProductIndex = SelectedProductsCollection.Count - 1;
+                SelectedProductIndex = SelectedProductsCollection!.Count - 1;
+
                 GetCalculate();
             }
             else
@@ -445,28 +473,35 @@ namespace GitMarket.ViewModels.WindowsViewModels
 
             ExecuteOpenMenuCommand(null);
 
-            mainWindow.Effect = new BlurEffect();
-
             switch (but)
             {
                 case "1":
                     new ProductsAndCategoriesPage(this).ShowDialog();
                     break;
+                case "2":
+                    ChangeHotKeysVisibility();
+                    break;
                 case "7":
                     new ServiceSaleWindow(this).ShowDialog();
                     break;
                 case "4":
-                    new ChecksHistoryDialogWindow()
-                    {
-                        InBlurMain = () => { mainWindow.Effect = null; }
-                    }.Show();
+                    new ChecksHistoryDialogWindow().Show();
                     break;
                 case "8":
-                    new OptionWindow()
-                    {
-                        InBlurMain = () => { mainWindow.Effect = null; }
-                    }.ShowDialog();
+                    new OptionWindow().ShowDialog();
                     break;
+            }
+        }
+
+        private void ChangeHotKeysVisibility()
+        {
+            if (HotKeyGridVisibility == 0)
+            {
+                HotKeyGridVisibility = 200;
+            }
+            else
+            {
+                HotKeyGridVisibility = 0;
             }
         }
 
@@ -602,7 +637,7 @@ namespace GitMarket.ViewModels.WindowsViewModels
         }
         public void GetCalculate()
         {
-            if (SelectedProductsCollection.Count > 0)
+            if (SelectedProductsCollection!.Count > 0)
             {
                 ReceiptPrice = SelectedProductsCollection.Select(t => t.Itog).Sum() - ReceiptDiscount - ReceiptBonus - ReceiptUDSPrice;
                 GetCalculateOverPrice();
@@ -617,7 +652,7 @@ namespace GitMarket.ViewModels.WindowsViewModels
                 ReceiptPaidCard = 0m;
                 ReceiptUDSPrice = 0m;
             }
-
+            mainWindow.Focus();
         }
         private async Task<ProdajaModel?> PayMethodAsync() //при uds оплате изменить структуру
         {
@@ -706,7 +741,7 @@ namespace GitMarket.ViewModels.WindowsViewModels
                         parameter = "windows",
                         data = new data
                         {
-                            prodaja_id = null ,/*lastCheck.data == null ? null : lastCheck.data.prodaja_id,*/
+                            prodaja_id = null,/*lastCheck.data == null ? null : lastCheck.data.prodaja_id,*/
                             kassa_id = Setts.Default.KassaId,
                             shop_id = Setts.Default.ShopId,
                             sklad_id = Setts.Default.StaffId,
@@ -823,7 +858,8 @@ namespace GitMarket.ViewModels.WindowsViewModels
                 if (hotKeyModel.Type)
                 {
                     var firstproduct = prod.First();
-
+                    if (String.IsNullOrWhiteSpace(firstproduct.Product_Name))
+                        return;
                     if (!SelectedProductsCollection.Any(s => s.Prihod_Detail_Id == firstproduct.Prihod_Detail_Id))
                     {
                         firstproduct.QuantityCount = 1;

@@ -22,8 +22,8 @@ namespace GitMarket.Views.MainWindows
     public partial class MainNavigationWindow : Window
     {
         public bool _isMain = true;
-        private MainNavigationWindowViewModel main;
-        private MainNavigationWindow SecondWindow;
+        private MainNavigationWindowViewModel? main;
+        private MainNavigationWindow? SecondWindow;
         public MainNavigationWindow()
         {
             InitializeComponent();
@@ -57,7 +57,7 @@ namespace GitMarket.Views.MainWindows
 
         public void CloseWindow()
         {
-            main.Dispose();
+            main!.Dispose();
             this.Close();
         }
 
@@ -74,7 +74,7 @@ namespace GitMarket.Views.MainWindows
             {
                 this.Dispatcher.Invoke(() =>
                 {
-                    main.SearchByBarcode(inputDeviceText);//дополнительная логика, нужно обработать перегрузку0
+                    main!.SearchByBarcode(inputDeviceText);//дополнительная логика, нужно обработать перегрузку0
                 });
             }
             Thread.Sleep(5);  // это для того чтобы асинхронные изменения успели вступить в силу, а то тазалаганда улгурбойтат, астыдагы переменныйды
@@ -88,48 +88,56 @@ namespace GitMarket.Views.MainWindows
             if (e.KeyboardDevice.Modifiers == ModifierKeys.Control && e.Key == System.Windows.Input.Key.Up)
             {
                 itogTextBox.Focus();
-                main.SearchUpDown(true);
+                main!.SearchUpDown(true);
                 return;
             }
             else if (e.KeyboardDevice.Modifiers == ModifierKeys.Control && e.Key == System.Windows.Input.Key.Down)
             {
                 itogTextBox.Focus();
-                main.SearchUpDown(false);
+                main!.SearchUpDown(false);
                 return;
             }
             else if (e.KeyboardDevice.Modifiers == ModifierKeys.Control && e.Key == System.Windows.Input.Key.Delete)
             {
-                if (main.ClearSelectedProductsCommand.CanExecute(null)) main.ClearSelectedProductsCommand.Execute(null);
+                if (main!.ClearSelectedProductsCommand.CanExecute(null)) main.ClearSelectedProductsCommand.Execute(null);
                 itogTextBox.Focus();
                 return;
             }
-            if (e.KeyboardDevice.Modifiers == ModifierKeys.Shift && HotKeysStructure.HotKeysDictionary.Any(s => s.Key == e.Key.ToString()))
+            if (e.KeyboardDevice.Modifiers == ModifierKeys.Shift && HotKeysStructure.HotKeysDictionary!.Any(s => s.Key == e.Key.ToString()))
             {
-                main.AddWithHotKey(HotKeysStructure.HotKeysDictionary.First(s => s.Key == e.Key.ToString()));
+                main!.AddWithHotKey(HotKeysStructure.HotKeysDictionary!.First(s => s.Key == e.Key.ToString())!);
                 itogTextBox.Focus();
                 return;
             }
             else if (e.KeyboardDevice.Modifiers == ModifierKeys.Control && e.Key == System.Windows.Input.Key.F)
             {
-                main.GetProductwithAPI();
+                main!.GetProductwithAPI();
                 return;
             }
 
             switch (e.Key)
             {
+                case System.Windows.Input.Key.Up:
+                    main!.UpDownCommand(false);
+                    itogTextBox.Focus();
+                    return;
+                case System.Windows.Input.Key.Down:
+                    main!.UpDownCommand(true);
+                    itogTextBox.Focus();
+                    return;
                 case System.Windows.Input.Key.Return:
-                    main.AddSelectedProduct();
+                    main!.AddSelectedProduct();
                     itogTextBox.Focus();
                     return;
                 case System.Windows.Input.Key.Add:
-                    if (main.ToPayCommand.CanExecute(null)) main.ToPayCommand.Execute(null);
+                    if (main!.ToPayCommand.CanExecute(null)) main.ToPayCommand.Execute(null);
                     itogTextBox.Focus();
                     return;
                 case System.Windows.Input.Key.Insert:
                     textBoxSearch.Focus();
                     return;
                 case System.Windows.Input.Key.Escape:
-                    if (main.IsOpenPopup || main.SearchText.Length > 0)
+                    if (main!.IsOpenPopup || main.SearchText.Length > 0)
                     {
                         main.IsOpenPopup = false;
                         main.SearchText = "";
@@ -137,33 +145,25 @@ namespace GitMarket.Views.MainWindows
                     itogTextBox.Focus();
                     return;
                 case System.Windows.Input.Key.Subtract:
-                    if (main.GetBonusCommand.CanExecute(null)) main.GetBonusCommand.Execute(null);
-                    itogTextBox.Focus();
-                    return;
-                case System.Windows.Input.Key.Up:
-                    main.UpDownCommand(false);
-                    itogTextBox.Focus();
-                    return;
-                case System.Windows.Input.Key.Down:
-                    main.UpDownCommand(true);
+                    if (main!.GetBonusCommand.CanExecute(null)) main.GetBonusCommand.Execute(null);
                     itogTextBox.Focus();
                     return;
                 case System.Windows.Input.Key.Divide:
-                    if (main.SelectedProductItem != new SaleProduct())
+                    if (main!.SelectedProductItem != new SaleProduct())
                     {
                         main.ChangeProductQuantityCommand.Execute(true);
                     }
                     itogTextBox.Focus();
                     return;
                 case System.Windows.Input.Key.Multiply:
-                    if (main.SelectedProductItem != new SaleProduct())
+                    if (main!.SelectedProductItem != new SaleProduct())
                     {
                         main.ChangeProductQuantityCommand.Execute(false);
                     }
                     itogTextBox.Focus();
                     return;
                 case System.Windows.Input.Key.Delete:
-                    if (main.SelectedProductItem != new SaleProduct())
+                    if (main!.SelectedProductItem != new SaleProduct())
                         main.DeleteSelectedProduct();
                     itogTextBox.Focus();
                     return;
@@ -185,7 +185,7 @@ namespace GitMarket.Views.MainWindows
         private void LoseFocus(object sender)
         {
             var control = sender as Control;
-            var isTabStop = control.IsTabStop;
+            var isTabStop = control!.IsTabStop;
             control.IsTabStop = false;
             control.IsEnabled = false;
             control.IsEnabled = true;
@@ -216,14 +216,14 @@ namespace GitMarket.Views.MainWindows
             {
                 if (WindowComboBox.SelectedIndex == 0)
                     return;
-                SecondWindow.WindowComboBox.SelectedIndex = 1;
+                SecondWindow!.WindowComboBox.SelectedIndex = 1;
                 SecondWindow.Show();
             }
             else
             {
                 if (WindowComboBox.SelectedIndex == 1)
                     return;
-                (Owner as MainNavigationWindow).WindowComboBox.SelectedIndex = 0;
+                (Owner as MainNavigationWindow)!.WindowComboBox.SelectedIndex = 0;
                 Owner.Show();
             }
             this.Hide();

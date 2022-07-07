@@ -32,6 +32,7 @@ namespace GitMarket.ViewModels.WindowsViewModels
         }
         public async void ExecuteSignInCommand(object obj)
         {
+            if ((obj) is null || (obj as PasswordBox) is null) return;
             if (await APIRequests.RegisterAsync(LoginText, (obj as PasswordBox)!.Password))
             {
                 if (IsSaveLP)

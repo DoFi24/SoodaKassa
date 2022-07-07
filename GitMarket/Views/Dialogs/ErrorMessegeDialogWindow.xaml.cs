@@ -8,10 +8,9 @@ namespace GitMarket.Views.Dialogs
     /// </summary>
     public partial class ErrorMessegeDialogWindow : Window
     {
-        public ErrorMessegeDialogWindow(string ErrorStr)
+        public ErrorMessegeDialogWindow()
         {
             InitializeComponent();
-            ErrorLabel.Text = ErrorStr;
         }
         private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) => DragMove();
 
@@ -23,6 +22,11 @@ namespace GitMarket.Views.Dialogs
         {
             if (e.Key == Key.Return || e.Key == Key.Escape)
                 Close();
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
         }
     }
 }

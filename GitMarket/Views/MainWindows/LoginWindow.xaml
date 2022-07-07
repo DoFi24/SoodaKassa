@@ -64,8 +64,8 @@
                             <mt:PackIcon Kind="Password" Width="32" Foreground="#40CC6F"
                                          Margin="5 4 0 0" Height="32"/>
                             <PasswordBox x:Name="password" MinWidth="300" VerticalContentAlignment="Center" FontSize="15"
-                                         Foreground="#03006b" HorizontalContentAlignment="Left" BorderBrush="DarkGray"
-                                         KeyUp="TextBox_KeyUp" PasswordChar="*" BorderThickness="0 0 0 1"/>
+                                         Foreground="#03006b" HorizontalContentAlignment="Left"
+                                         KeyUp="TextBox_KeyUp" PasswordChar="*"/>
                         </StackPanel>
                     </Border>
 

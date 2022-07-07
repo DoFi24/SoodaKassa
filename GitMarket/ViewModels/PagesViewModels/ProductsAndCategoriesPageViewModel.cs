@@ -55,7 +55,6 @@ namespace GitMarket.ViewModels.PagesViewModels
                 Set(ref _selectedProduct, value);
                 if (value != null && value != new SaleProduct())
                 {
-                    value.QuantityCount = 1;
                     if (!_model.SelectedProductsCollection.Any(s => s.Prihod_Detail_Id == value.Prihod_Detail_Id))
                     {
                         value.QuantityCount = 1;

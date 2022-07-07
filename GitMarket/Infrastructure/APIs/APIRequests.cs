@@ -23,30 +23,29 @@ namespace GitMarket.Infrastructure.APIs
         {
             try
             {
-                using (HttpClient httpClient = new())
-                {
-                    var data = new Dictionary<string, string?>
+                using HttpClient httpClient = new();
+
+                var data = new Dictionary<string, string?>
                     {
                         {"LOGIN", login },
                         {"PASSWORD", password }
                     };
 
-                    var response = await httpClient.PostAsync($"{API_PATH}/auth/login", new FormUrlEncodedContent(data));
+                var response = await httpClient.PostAsync($"{API_PATH}/auth/login", new FormUrlEncodedContent(data));
 
-                    var responeString = await response.Content.ReadAsStringAsync();
+                var responeString = await response.Content.ReadAsStringAsync();
 
-                    var result = JObject.Parse(responeString).ToObject<AuthorizationToken>();
+                var result = JObject.Parse(responeString).ToObject<AuthorizationToken>();
 
-                    if (result.success)
-                    {
-                        Setts.Default.AuthorizationToken = result.data.remember_token;
-                        Setts.Default.StaffId = result.data.USER.Id;
-                        Setts.Default.Save();
+                if (result!.success)
+                {
+                    Setts.Default.AuthorizationToken = result.data.remember_token;
+                    Setts.Default.StaffId = result.data.USER.Id;
+                    Setts.Default.Save();
 
-                    }
-
-                    return result.success;
                 }
+
+                return result.success;
             }
             catch
             {
@@ -140,7 +139,7 @@ namespace GitMarket.Infrastructure.APIs
 
                     var result = JObject.Parse(responeString.Result).ToObject<LastCheckResponce>();
 
-                    return result != null ? result : new LastCheckResponce();
+                    return result ?? new LastCheckResponce();
                 }
             }
             catch
@@ -151,7 +150,7 @@ namespace GitMarket.Infrastructure.APIs
         }
 
         #region TaxesDiscountBonuses
-        public static IEnumerable<DiscountProduct> GetDiscountSum(DiscountModel taxes, int page = 1)
+        public static IEnumerable<DiscountProduct> GetDiscountSum(DiscountModel taxes)
         {
             try
             {
@@ -267,7 +266,7 @@ namespace GitMarket.Infrastructure.APIs
         }
 
         #endregion
-        public static async Task<ProdajaModel> GetSale(ProdajaModels param, int page = 1)
+        public static async Task<ProdajaModel> GetSale(ProdajaModels param)
         {
             try
             {
@@ -365,7 +364,6 @@ namespace GitMarket.Infrastructure.APIs
                     var responeString = await response.Content.ReadAsStringAsync();
 
                     return JObject.Parse(responeString).ToObject<uToperationResult>();
-
 
                 }
             }

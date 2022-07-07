@@ -5,14 +5,12 @@
         <Setter Property="FontSize" Value="16"/>
         <Setter Property="Height" Value="36"/>
         <Setter Property="BorderBrush" Value="Black" />
-        <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="Margin" Value="5,0,0,0" />
+        <Setter Property="BorderThickness" Value="0 ,0 ,.5 ,.5" />
         <Setter Property="FontWeight" Value="DemiBold"/>
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
-        <Setter Property="Padding" Value="0"/>
         <Setter Property="Background" Value="White"/>
         <Setter Property="Foreground" Value="Black"/>
-        <Setter Property="Opacity" Value="0.51" />
+        <Setter Property="FontWeight" Value="DemiBold" />
         <Setter Property="ContentTemplate">
             <Setter.Value>
                 <DataTemplate>
@@ -22,7 +20,7 @@
         </Setter>
     </Style>
     <Style TargetType="{x:Type DataGridColumnHeader}" x:Key="prods_header">
-        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="FontSize" Value="13"/>
         <Setter Property="Height" Value="36"/>
         <Setter Property="BorderBrush" Value="Black" />
         <Setter Property="BorderThickness" Value="0 0 0 0" />
@@ -40,6 +38,25 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style TargetType="{x:Type DataGridColumnHeader}" x:Key="HotKey_header">
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="Height" Value="36"/>
+        <Setter Property="BorderThickness" Value="0 0 0 0" />
+        <Setter Property="FontWeight" Value="DemiBold"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Background" Value="White"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="ContentTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding}"/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
     <Style TargetType="{x:Type DataGridColumnHeader}" x:Key="hederstyle_Kuxne1" >
         <Setter Property="FontSize" Value="1"/>
         <Setter Property="Height" Value="0"/>
@@ -195,7 +212,8 @@
     </Style>
 
     <Style TargetType="DataGrid" x:Key="SalePageDataGrid_2">
-        <Setter Property="Margin" Value="10 8 10 10" />
+        <Setter Property="Margin" Value="10 10 8 10" />
+        <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="AlternatingRowBackground" Value="#c6e0ff" />
         <Setter Property="RowBackground" Value="White" />
@@ -231,6 +249,8 @@
     <Style TargetType="{x:Type DataGridRow}" x:Key="SaleDataGridRow">
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
         <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="BorderThickness" Value="0 0 .5 0" />
+        <Setter Property="BorderBrush" Value="Black" />
         <Setter Property="IsTabStop" Value="False" />
         <Style.Triggers>
             <Trigger Property="IsSelected" Value="True">
@@ -370,6 +390,31 @@
         <Setter Property="CellStyle" Value="{DynamicResource OrderPageDataGridCell}" />
         <Setter Property="RowStyle" Value="{DynamicResource OrderPageDataGridRow}" />
         <Setter Property="ColumnHeaderStyle" Value="{DynamicResource prods_header}" />
+        <Setter Property="SelectionMode" Value="Single" />
+        <Setter Property="Height" Value="Auto" />
+        <Setter Property="CanUserReorderColumns" Value="False" />
+        <Setter Property="CanUserSortColumns" Value="False" />
+        <Setter Property="CanUserResizeColumns" Value="False" />
+        <Setter Property="CanUserAddRows" Value="False" />
+        <Setter Property="CanUserDeleteRows" Value="False" />
+        <Setter Property="CanUserResizeRows" Value="False" />
+        <Setter Property="AutoGenerateColumns" Value="False" />
+        <Setter Property="VerticalScrollBarVisibility" Value="Hidden" />
+        <Setter Property="VerticalGridLinesBrush"  Value="Transparent" />
+        <Setter Property="HorizontalGridLinesBrush"  Value="Transparent" />
+        <Setter Property="RowHeight"  Value="25" />
+        <Setter Property="HeadersVisibility" Value="Column" />
+    </Style>
+
+    <Style TargetType="DataGrid" x:Key="HotKeyDataGrid">
+        <Setter Property="BorderThickness" Value="0 0 1 0" />
+        <Setter Property="Padding" Value="5 0 0 0" />
+        <Setter Property="Background" Value="White" />
+        <Setter Property="AlternatingRowBackground" Value="#EBF5FB" />
+        <Setter Property="RowBackground" Value="White" />
+        <Setter Property="CellStyle" Value="{DynamicResource OrderPageDataGridCell}" />
+        <Setter Property="RowStyle" Value="{DynamicResource OrderPageDataGridRow}" />
+        <Setter Property="ColumnHeaderStyle" Value="{DynamicResource HotKey_header}" />
         <Setter Property="SelectionMode" Value="Single" />
         <Setter Property="Height" Value="Auto" />
         <Setter Property="CanUserReorderColumns" Value="False" />

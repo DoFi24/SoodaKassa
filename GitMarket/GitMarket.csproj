@@ -21,6 +21,7 @@
     <None Remove="Resources\Base\udsText.png" />
     <None Remove="Resources\ButtonIcons\Group 17.png" />
     <None Remove="Resources\ButtonIcons\history.png" />
+    <None Remove="Resources\ButtonIcons\hotkeys.png" />
     <None Remove="Resources\ButtonIcons\kassa.png" />
     <None Remove="Resources\ButtonIcons\Materials.png" />
     <None Remove="Resources\ButtonIcons\products.png" />
@@ -96,6 +97,9 @@
     </Resource>
     <Resource Include="Resources\ButtonIcons\Group 17.png" />
     <Resource Include="Resources\ButtonIcons\history.png" />
+    <Resource Include="Resources\ButtonIcons\hotkeys.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Resources\ButtonIcons\kassa.png" />
     <Resource Include="Resources\ButtonIcons\Materials.png" />
     <Resource Include="Resources\ButtonIcons\products.png" />

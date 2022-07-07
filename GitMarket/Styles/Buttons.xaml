@@ -414,7 +414,7 @@
                         <Trigger Property="Uid" Value="2" >
 
                             <Setter TargetName="imgButton" Property="Image.Source" Value="{StaticResource Uid2}"/>
-                            <Setter TargetName="limgButton" Property="Source" Value="{StaticResource lUid3}"/>
+                            <Setter TargetName="limgButton" Property="Source" Value="{StaticResource lUid2}"/>
 
                         </Trigger>
                         <Trigger Property="Uid" Value="3" >
