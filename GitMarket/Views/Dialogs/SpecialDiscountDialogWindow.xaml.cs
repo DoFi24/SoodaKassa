@@ -9,7 +9,7 @@ namespace GitMarket.Views.Dialogs
     /// </summary>
     public partial class SpecialDiscountDialogWindow : Window
     {
-        public delegate void GetDiscountDel(double discountValue);
+        public delegate void GetDiscountDel(decimal discountValue);
         public event GetDiscountDel? GetDiscountEvent;
         public SpecialDiscountDialogWindow()
         {
@@ -19,7 +19,7 @@ namespace GitMarket.Views.Dialogs
         {
             if (e.Key == Key.Return)
             {
-                GetDiscountEvent(Convert.ToDouble(DiscountLabel.Text.ToString().Replace('.', ',')));
+                GetDiscountEvent(Convert.ToDecimal(DiscountLabel.Text.ToString().Replace('.', ',')));
                 Close();
             }
             else if (e.Key == Key.Escape)

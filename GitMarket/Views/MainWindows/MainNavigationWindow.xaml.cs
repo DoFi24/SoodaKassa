@@ -21,12 +21,13 @@ namespace GitMarket.Views.MainWindows
     /// </summary>
     public partial class MainNavigationWindow : Window
     {
-        public bool _isMain = true;
+        public bool _isMain;
         private MainNavigationWindowViewModel? main;
         private MainNavigationWindow? SecondWindow;
-        public MainNavigationWindow()
+        public MainNavigationWindow(bool isMain)
         {
             InitializeComponent();
+            _isMain = isMain;
             main = new MainNavigationWindowViewModel(this)
             {
                 closeMainWindow = Close
@@ -112,6 +113,11 @@ namespace GitMarket.Views.MainWindows
             else if (e.KeyboardDevice.Modifiers == ModifierKeys.Control && e.Key == System.Windows.Input.Key.F)
             {
                 main!.GetProductwithAPI();
+                return;
+            }
+            else if (e.KeyboardDevice.Modifiers == ModifierKeys.Control && e.Key == System.Windows.Input.Key.C)
+            {
+                main!.OpenSpesialDiscount();
                 return;
             }
 
@@ -232,10 +238,9 @@ namespace GitMarket.Views.MainWindows
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             if (_isMain)
-                SecondWindow = new MainNavigationWindow
+                SecondWindow = new MainNavigationWindow(false)
                 {
-                    Owner = this,
-                    _isMain = false
+                    Owner = this
                 };
         }
 

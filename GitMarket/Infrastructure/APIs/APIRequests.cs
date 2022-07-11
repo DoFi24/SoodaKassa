@@ -253,7 +253,7 @@ namespace GitMarket.Infrastructure.APIs
                 using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
                 {
                     var result = JObject.Parse(streamReader.ReadToEnd()).ToObject<TaxesResponseModel<ProductTaxes>>();
-                    pro = result.data.rows.ToList();
+                    pro = result!.data!.rows!.ToList();
                     NDS = result.data.nds;
                 }
                 return (pro, NDS);

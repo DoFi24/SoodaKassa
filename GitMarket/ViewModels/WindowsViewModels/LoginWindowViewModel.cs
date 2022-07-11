@@ -40,7 +40,7 @@ namespace GitMarket.ViewModels.WindowsViewModels
                     Setts.Default.IsSaveLoginPassword = true;
                     Setts.Default.Save();
                 }
-                new MainNavigationWindow().Show();
+                new MainNavigationWindow(true).Show();
                 closeWindow!.Invoke();
             }
             else

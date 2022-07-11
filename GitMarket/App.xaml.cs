@@ -29,7 +29,7 @@ namespace GitMarket
                 {
                     if (await APIRequests.GetIsValidAsync())
                     {
-                        new MainNavigationWindow().Show();
+                        new MainNavigationWindow(true).Show();
                     }
                     else
                     {

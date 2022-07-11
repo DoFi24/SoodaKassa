@@ -15,7 +15,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Media.Effects;
 
 namespace GitMarket.ViewModels.WindowsViewModels
 {
@@ -24,12 +23,13 @@ namespace GitMarket.ViewModels.WindowsViewModels
         public MainNavigationWindow mainWindow;
         public MainNavigationWindowViewModel(MainNavigationWindow _mainWindow)
         {
-            GetHotKeys();
+            if(_mainWindow._isMain)
+                GetHotKeys();
             mainWindow = _mainWindow;
         }
         public MainNavigationWindowViewModel()
         {
-            GetHotKeys();
+                GetHotKeys();
         }
 
         public delegate void CloseMainWindow();
@@ -141,12 +141,30 @@ namespace GitMarket.ViewModels.WindowsViewModels
             set => Set(ref _ReceiptUDSPrice, value);
         }
 
+        private decimal _ReceiptSpecicalPrice = 0m;
+        public decimal ReceiptSpecicalPrice
+        {
+            get => _ReceiptSpecicalPrice;
+            set => Set(ref _ReceiptSpecicalPrice, value);
+        }
+
         private decimal _ReceiptDiscount = 0m;
         public decimal ReceiptDiscount
         {
             get => _ReceiptDiscount;
             set => Set(ref _ReceiptDiscount, value);
         }
+
+        private decimal _VisualDiscount = 0m;
+        public decimal VisualDiscount
+        {
+            get => _VisualDiscount; 
+            set 
+            {
+                Set(ref _VisualDiscount,value);
+            }
+        }
+
         private decimal _ReceiptBonus = 0m;
         public decimal ReceiptBonus
         {
@@ -552,22 +570,22 @@ namespace GitMarket.ViewModels.WindowsViewModels
             _toPayCommand ??= new RelayCommand(ExecutedToPayCommand, (object obj) => { if (SelectedProductsCollection!.Any() && (ReceiptPaid + ReceiptPaidCard) >= ReceiptPrice) return true; return false; });
         private async void ExecutedToPayCommand(object obj)
         {
-            var alltaxes = new TaxesModel
-            {
-                parameter = "",
-                pageSize = 100,
-                page = 1,
-                data = new List<taxeData>()
-            };
+            //var alltaxes = new TaxesModel
+            //{
+            //    parameter = "",
+            //    pageSize = 100,
+            //    page = 1,
+            //    data = new List<taxeData>()
+            //};
 
-            foreach (var item in SelectedProductsCollection)
-            {
-                alltaxes.data.Add(new taxeData { id = (int)item.Prihod_Detail_Id, quantity = item.QuantityCount });
-            }
+            //foreach (var item in SelectedProductsCollection)
+            //{
+            //    alltaxes.data.Add(new taxeData { id = (int)item.Prihod_Detail_Id, quantity = item.QuantityCount });
+            //}
 
-            var x = APIRequests.GetTaxesSum(alltaxes);
-            taxes = x.Item1.ToList();
-            taxSum = x.Item2;
+            //var x = APIRequests.GetTaxesSum(alltaxes);
+            //taxes = x.Item1.ToList();
+            //taxSum = x.Item2;
 
             Prodaja = await PayMethodAsync();
 
@@ -639,7 +657,8 @@ namespace GitMarket.ViewModels.WindowsViewModels
         {
             if (SelectedProductsCollection!.Count > 0)
             {
-                ReceiptPrice = SelectedProductsCollection.Select(t => t.Itog).Sum() - ReceiptDiscount - ReceiptBonus - ReceiptUDSPrice;
+                VisualDiscount = ReceiptDiscount + ReceiptBonus + ReceiptSpecicalPrice + ReceiptUDSPrice;
+                ReceiptPrice = SelectedProductsCollection.Select(t => t.Itog).Sum() - VisualDiscount;
                 GetCalculateOverPrice();
             }
             else
@@ -648,9 +667,11 @@ namespace GitMarket.ViewModels.WindowsViewModels
                 ReceiptDiscount = 0m;
                 ReceiptBonus = 0m;
                 ReceiptOverpay = 0m;
+                ReceiptSpecicalPrice = 0m;
                 ReceiptPaid = 0m;
                 ReceiptPaidCard = 0m;
                 ReceiptUDSPrice = 0m;
+                VisualDiscount = 0m;
             }
             mainWindow.Focus();
         }
@@ -665,18 +686,19 @@ namespace GitMarket.ViewModels.WindowsViewModels
                         parameter = "windows",
                         data = new data
                         {
-                            prodaja_id = null, /*lastCheck.data == null ? null : lastCheck.data.prodaja_id,*/
+                            prodaja_id = lastCheck?.data?.prodaja_id,
                             kassa_id = Setts.Default.KassaId,
                             shop_id = Setts.Default.ShopId,
                             sklad_id = Setts.Default.StaffId,
                             staff_id = Setts.Default.SkladId,
+                            discount_sum = lastCheck?.data == null ? ReceiptSpecicalPrice : ReceiptUDSPrice,
                             kontragent_id = null,
                             pay_sum = ReceiptPrice,
                             comment = "",
                             rows = (from s in SelectedProductsCollection
                                     join d in discount on s.Prihod_Detail_Id equals d.Prihod_Detail_Id
                                     join b in bonuses on s.Prihod_Detail_Id equals b.Prihod_Detail_Id
-                                    join t in taxes on s.Prihod_Detail_Id equals t.prihod_detail_id
+                                    //join t in taxes on s.Prihod_Detail_Id equals t.prihod_detail_id
                                     select new ProdajaProduct
                                     {
                                         prihod_detail_id = d.Prihod_Detail_Id,
@@ -686,7 +708,7 @@ namespace GitMarket.ViewModels.WindowsViewModels
                                         discount_sum = d.Discount_Sum,
                                         bonus_id = b.Bonus_Id,
                                         pay_bonus_sum = b.Pay_Bonus_Sum,
-                                        taxe_sum = t.taxe_sum,
+                                        taxe_sum = 0,
                                         comment = s.Comment,
                                         quantity = s.QuantityCount,
                                         service_id = (int)s.Service_id,
@@ -704,17 +726,19 @@ namespace GitMarket.ViewModels.WindowsViewModels
                         parameter = "windows",
                         data = new data
                         {
-                            prodaja_id = null, /*lastCheck.data == null ? null : lastCheck.data.prodaja_id,*/
+                            prodaja_id = lastCheck?.data?.prodaja_id,
                             kassa_id = Setts.Default.KassaId,
                             shop_id = Setts.Default.ShopId,
                             sklad_id = Setts.Default.StaffId,
                             staff_id = Setts.Default.SkladId,
+                            discount_sum = lastCheck?.data == null ? ReceiptSpecicalPrice : ReceiptUDSPrice,
+
                             comment = "",
                             pay_sum = ReceiptPrice,
                             kontragent_id = 0,
                             rows = (from s in SelectedProductsCollection
                                     join d in bonuses on s.Prihod_Detail_Id equals d.Prihod_Detail_Id
-                                    join t in taxes on s.Prihod_Detail_Id equals t.prihod_detail_id
+                                    //join t in taxes on s.Prihod_Detail_Id equals t.prihod_detail_id
                                     select new ProdajaProduct
                                     {
                                         prihod_detail_id = (int)s.Prihod_Detail_Id,
@@ -725,7 +749,7 @@ namespace GitMarket.ViewModels.WindowsViewModels
                                         discount_sum = 0,
                                         bonus_sum = d.Bonus_Sum,
                                         pay_bonus_sum = 0,
-                                        taxe_sum = t.taxe_sum,
+                                        taxe_sum = 0,
                                         comment = s.Comment
                                     }).ToList()
                         },
@@ -741,17 +765,18 @@ namespace GitMarket.ViewModels.WindowsViewModels
                         parameter = "windows",
                         data = new data
                         {
-                            prodaja_id = null,/*lastCheck.data == null ? null : lastCheck.data.prodaja_id,*/
+                            prodaja_id = lastCheck?.data?.prodaja_id,
                             kassa_id = Setts.Default.KassaId,
                             shop_id = Setts.Default.ShopId,
                             sklad_id = Setts.Default.StaffId,
                             staff_id = Setts.Default.SkladId,
+                            discount_sum = lastCheck?.data == null ? ReceiptSpecicalPrice : ReceiptUDSPrice,
                             comment = "",
                             pay_sum = ReceiptPrice,
                             kontragent_id = 0,
                             rows = (from s in SelectedProductsCollection
                                     join d in discount on s.Prihod_Detail_Id equals d.Prihod_Detail_Id
-                                    join t in taxes on s.Prihod_Detail_Id equals t.prihod_detail_id
+                                    //join t in taxes on s.Prihod_Detail_Id equals t.prihod_detail_id
                                     select new ProdajaProduct
                                     {
                                         prihod_detail_id = (int)s.Prihod_Detail_Id,
@@ -762,7 +787,7 @@ namespace GitMarket.ViewModels.WindowsViewModels
                                         discount_sum = d.Discount_Sum,
                                         bonus_sum = 0,
                                         pay_bonus_sum = 0,
-                                        taxe_sum = t.taxe_sum,
+                                        taxe_sum = 0,
                                         comment = s.Comment,
                                         service_id = (int)s.Service_id,
                                         is_service = (bool)s.Is_service
@@ -779,16 +804,17 @@ namespace GitMarket.ViewModels.WindowsViewModels
                         parameter = "windows",
                         data = new data
                         {
-                            prodaja_id = null, /*lastCheck.data == null ? null : lastCheck.data.prodaja_id,*/
+                            prodaja_id = lastCheck?.data?.prodaja_id,
                             kassa_id = Setts.Default.KassaId,
                             shop_id = Setts.Default.ShopId,
                             sklad_id = Setts.Default.StaffId,
                             staff_id = Setts.Default.SkladId,
+                            discount_sum = lastCheck?.data == null ? ReceiptSpecicalPrice : ReceiptUDSPrice,
                             comment = "",
                             pay_sum = ReceiptPrice,
                             kontragent_id = 0,
                             rows = (from s in SelectedProductsCollection
-                                    join t in taxes on s.Prihod_Detail_Id equals t.prihod_detail_id
+                                    //join t in taxes on s.Prihod_Detail_Id equals t.prihod_detail_id
                                     select new ProdajaProduct
                                     {
                                         prihod_detail_id = (int)s.Prihod_Detail_Id,
@@ -799,7 +825,7 @@ namespace GitMarket.ViewModels.WindowsViewModels
                                         discount_sum = 0,
                                         bonus_sum = 0,
                                         pay_bonus_sum = 0,
-                                        taxe_sum = t.taxe_sum,
+                                        taxe_sum = 0,
                                         comment = s.Comment,
                                         service_id = (int)s.Service_id,
                                         is_service = (bool)s.Is_service
@@ -884,6 +910,24 @@ namespace GitMarket.ViewModels.WindowsViewModels
                     new HotKeysDialogWindow(this, prod).ShowDialog();
                 }
             GetCalculate();
+        }
+        public void OpenSpesialDiscount()
+        {
+            if (SelectedProductsCollection!.Count > 0) 
+            {
+                SpecialDiscountDialogWindow window = new();
+                window.GetDiscountEvent += GetSpecialDiscount;
+                window.ShowDialog();
+            }
+        }
+
+        private void GetSpecialDiscount(decimal Price)
+        {
+            if (Price > 0)
+            {
+                ReceiptSpecicalPrice = Price;
+                GetCalculate();
+            }
         }
     }
 }

@@ -83,7 +83,7 @@ namespace GitMarket.Views.Dialogs
                             {
                                 total = Convert.ToDecimal(TotalTextBlock.Text),
                                 points = point,
-                                skipLoyaltyTotal = String.IsNullOrEmpty(UdsSkipLoyaltyTotal.Text) ? 1 : Convert.ToDecimal(UdsSkipLoyaltyTotal.Text.Replace(",", ".")),
+                                skipLoyaltyTotal = String.IsNullOrWhiteSpace(UdsSkipLoyaltyTotal.Text) ? 1 : Convert.ToDecimal(UdsSkipLoyaltyTotal.Text.Replace(",", ".")),
                                 cash = cashh!.purchase!.cashTotal,
                                 number = lastCheck?.data?.check_no ?? null
                             },

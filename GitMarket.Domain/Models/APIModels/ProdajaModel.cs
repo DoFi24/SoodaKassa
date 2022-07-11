@@ -16,6 +16,7 @@ namespace GitMarket.Domain.Models.APIModels
         public uint? sklad_id { get; set; }
         public uint? shop_id { get; set; }
         public uint? staff_id { get; set; }
+        public decimal? discount_sum { get; set; }
         public uint? kassa_id { get; set; }
         public long? prodaja_id { get; set; } = null;
         public long? kontragent_id { get; set; }

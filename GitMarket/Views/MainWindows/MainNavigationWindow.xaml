@@ -251,7 +251,7 @@
                                 <icon:PackIcon Kind="Percent"  Width="20" Height="20"/>
                                 <TextBlock Margin="10 0 0 0" Style="{DynamicResource SalePageTextBlock}" Text="Скидка:"/>
                             </StackPanel>
-                            <TextBox IsTabStop="False" Margin="10 0 10 0" Text="{Binding ReceiptDiscount,  StringFormat=N2}"/>
+                            <TextBox IsTabStop="False" Margin="10 0 10 0" Text="{Binding VisualDiscount,UpdateSourceTrigger=PropertyChanged,Mode=OneWay, StringFormat=N2}"/>
                             <StackPanel Margin="20 5 0 0" Orientation="Horizontal">
                                 <icon:PackIcon Kind="Money"  Width="20" Height="20"/>
                                 <TextBlock Margin="10 0 0 0" Style="{DynamicResource SalePageTextBlock}"  Text="Оплачено (Наличный):"/>

@@ -48,13 +48,12 @@ namespace GitMarket.Views.Dialogs
                 model.GetCalculate();
                 Close();
             }
-
         }
         private void Close_Button(object sender, RoutedEventArgs e)
         {
             Close();
         }
-        private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
+        private void Grid_MouseDown(object sender,MouseButtonEventArgs e)
         {
             DragMove();
         }
