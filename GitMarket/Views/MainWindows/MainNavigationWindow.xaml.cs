@@ -27,6 +27,7 @@ namespace GitMarket.Views.MainWindows
         public MainNavigationWindow(bool isMain)
         {
             InitializeComponent();
+
             _isMain = isMain;
             main = new MainNavigationWindowViewModel(this)
             {

@@ -610,7 +610,7 @@ namespace GitMarket.ViewModels.WindowsViewModels
             _clearSelectedProductsCommand ??= new RelayCommand(ExecutedClearSelectedProductsCommand, (object obj) => { if (SelectedProductsCollection.Any()) return true; return false; });
         public void ExecutedClearSelectedProductsCommand(object obj)
         {
-            DeleteProductsInJournal();
+            //DeleteProductsInJournal();
             Thread.Sleep(200);
             SelectedProductsCollection?.Clear();
             lastCheck = new LastCheckResponce();
@@ -620,24 +620,24 @@ namespace GitMarket.ViewModels.WindowsViewModels
             GetCalculate();
         }
 
-        private async void DeleteProductsInJournal()
-        {
-            var journal = new JournalApiModel
-            {
-                parameter = "window",
-                data = new JournalApiModelData
-                {
-                    shop_id = Setts.Default.ShopId,
-                    staff_id = Setts.Default.StaffId,
-                    rows = new List<JournalValue>()
-                }
-            };
-            foreach (var item in SelectedProductsCollection)
-            {
-                journal.data.rows.Add(new JournalValue { value = $"Удален товар из списка, без продажи ({item.Product_Name} * {item.QuantityCount} = {item.Itog})" });
-            }
-            await APIRequests.SaveChangesAsync(journal);
-        }
+        //private async void DeleteProductsInJournal()
+        //{
+        //    var journal = new JournalApiModel
+        //    {
+        //        parameter = "window",
+        //        data = new JournalApiModelData
+        //        {
+        //            shop_id = Setts.Default.ShopId,
+        //            staff_id = Setts.Default.StaffId,
+        //            rows = new List<JournalValue>()
+        //        }
+        //    };
+        //    foreach (var item in SelectedProductsCollection)
+        //    {
+        //        journal.data.rows.Add(new JournalValue { value = $"Удален товар из списка, без продажи ({item.Product_Name} * {item.QuantityCount} = {item.Itog})" });
+        //    }
+        //    await APIRequests.SaveChangesAsync(journal);
+        //}
 
         private RelayCommand _checkPaymentEndCommand;
         public RelayCommand CheckPaymentEndCommand =>

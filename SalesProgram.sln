@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GitMarket", "GitMarket\GitM
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GitMarket.Domain", "GitMarket.Domain\GitMarket.Domain.csproj", "{434EEBCD-6304-4F35-9A3E-9308A03CAB73}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GitMarket.ApiTityFramework", "GitMarket.ApiTityFramework\GitMarket.ApiTityFramework.csproj", "{F4476783-2DD0-4358-A1E5-388F399BAF96}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GitMarket.ApiTityFramework", "GitMarket.ApiTityFramework\GitMarket.ApiTityFramework.csproj", "{F4476783-2DD0-4358-A1E5-388F399BAF96}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

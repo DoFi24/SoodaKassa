@@ -189,40 +189,41 @@ namespace GitMarket.Infrastructure.APIs
         }
         public static IEnumerable<BonusProducts> GetBonusSum(TaxesModel model)
         {
-            try { 
-            IEnumerable<BonusProducts> pro = new List<BonusProducts>();
-            var url = $"{API_PATH}/functions/FC_CALC_BONUS_SUM";
-
-            var httpRequest = (HttpWebRequest)WebRequest.Create(url);
-
-            httpRequest.Method = "POST";
-
-            httpRequest.Headers["Authorization"] = $"Bearer {Setts.Default.AuthorizationToken}";
-            httpRequest.ContentType = "application/json";
-
-            var data = JsonConvert.SerializeObject(model).ToString(); ;
-
-            using (var streamWriter = new StreamWriter(httpRequest.GetRequestStream()))
+            try
             {
-                streamWriter.Write(data);
+                IEnumerable<BonusProducts> pro = new List<BonusProducts>();
+                var url = $"{API_PATH}/functions/FC_CALC_BONUS_SUM";
+
+                var httpRequest = (HttpWebRequest)WebRequest.Create(url);
+
+                httpRequest.Method = "POST";
+
+                httpRequest.Headers["Authorization"] = $"Bearer {Setts.Default.AuthorizationToken}";
+                httpRequest.ContentType = "application/json";
+
+                var data = JsonConvert.SerializeObject(model).ToString(); ;
+
+                using (var streamWriter = new StreamWriter(httpRequest.GetRequestStream()))
+                {
+                    streamWriter.Write(data);
+                }
+
+                var httpResponse = (HttpWebResponse)httpRequest.GetResponse();
+
+                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                {
+                    var result = JObject.Parse(streamReader.ReadToEnd()).ToObject<ResponseModel<BonusProducts>>();
+
+                    pro = result.data.rows.ToList();
+                }
+                return pro;
             }
-
-            var httpResponse = (HttpWebResponse)httpRequest.GetResponse();
-
-            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
-            {
-                var result = JObject.Parse(streamReader.ReadToEnd()).ToObject<ResponseModel<BonusProducts>>();
-
-                pro = result.data.rows.ToList();
-            }
-            return pro;
-        }
             catch
             {
                 MessageBox.Show("Нет соединения с базой!\nПовторите попытку позже.");
                 return new List<BonusProducts>();
             }
-}
+        }
         public static (IEnumerable<ProductTaxes>, decimal) GetTaxesSum(TaxesModel param)
         {
             try
@@ -261,12 +262,12 @@ namespace GitMarket.Infrastructure.APIs
             catch
             {
                 MessageBox.Show("Нет соединения с базой!\nПовторите попытку позже.");
-                return  (new List<ProductTaxes>() ,0);
+                return (new List<ProductTaxes>(), 0);
             }
         }
 
         #endregion
-        public static async Task<ProdajaModel> GetSale(ProdajaModels param)
+        public static async Task<ProdajaModel?> GetSale(ProdajaModels param)
         {
             try
             {
@@ -280,6 +281,9 @@ namespace GitMarket.Infrastructure.APIs
 
                     var responeString = await response.Content.ReadAsStringAsync();
 
+                    if (string.IsNullOrWhiteSpace(responeString))
+                        return null;
+
                     var result = JObject.Parse(responeString).ToObject<SaleResponseModel>();
 
                     return result is not null ? result.data : new ProdajaModel();
@@ -288,7 +292,7 @@ namespace GitMarket.Infrastructure.APIs
             catch
             {
                 MessageBox.Show("Нет соединения с базой!\nПовторите попытку позже.");
-                return new ProdajaModel();
+                return null;
             }
         }
         public static async Task<string> ReturnCardTypeAsync(RequestModelGet rmodel)
@@ -318,7 +322,6 @@ namespace GitMarket.Infrastructure.APIs
         }
 
         #region UDSRequests
-
         public static async Task<ResponseUserInfoModel?> GetUDSUserInfoRequest(string total, string code)
         {
             try
@@ -431,6 +434,37 @@ namespace GitMarket.Infrastructure.APIs
 
         #endregion
 
+        //public static async Task<ResponseModel<T>?>? GetAsyncPost<T>(string url, object shop)
+        //{
+        //    using (HttpClient httpClient = new HttpClient())
+        //    {
+        //        var data = new StringContent(JsonConvert.SerializeObject(shop).ToString(), Encoding.UTF8, "application/json");
+
+        //        httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + Setts.Default.AuthorizationToken);
+
+        //        var response = await httpClient.PostAsync($"{API_PATH}/functions/{url}", data);
+
+        //        var responeString = await response.Content.ReadAsStringAsync();
+
+        //        if ((responeString.Length == 0) || responeString == null)
+        //            return null;
+        //        else
+        //        {
+        //            var result = JObject.Parse(responeString).ToObject<ResponseModel<T>>();
+
+        //            if (result!.data?.rows == null)
+        //            {
+        //                return null;
+        //            }
+
+        //            if (result.message == "success")
+        //            {
+        //                return result;
+        //            }
+        //        }
+        //        return null;
+        //    }
+        //}
     }
 }
 

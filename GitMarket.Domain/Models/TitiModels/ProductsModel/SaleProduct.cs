@@ -6,14 +6,8 @@
         public long? Sklad_Id { get; set; }
         public long? Prihod_Detail_Id { get; set; }
         public long? Product_Id { get; set; }
-        public string? Product_Barcode_Text { get; set; }
-
-        private string? product_Name;
-        public string? Product_Name 
-        {
-            get => $"{product_Name} ({Product_Attributes_Text})";
-            set => product_Name = value; 
-        }
+        public string? Product_Barcode_Tex { get; set; }
+        public string? Product_Name { get; set; }
         public string? Product_Category { get; set; }
         public string? Product_Attributes_Text { get; set; }
         public string? Unit_Name { get; set; }

@@ -52,6 +52,8 @@ namespace GitMarket.Views.Dialogs
         }
         private async void Button_Click_Accept(object sender, RoutedEventArgs e)
         {
+            but1.IsEnabled = false;
+            but2.IsEnabled = false;
             try
             {
                 decimal point = 0;
@@ -77,7 +79,7 @@ namespace GitMarket.Views.Dialogs
                         {
                             code = user!.code!,
                             participant = null,
-                            nonce = Guid.NewGuid().ToString(),
+                            nonce = null,
                             cashier = null,
                             receipt = new Receipt
                             {
