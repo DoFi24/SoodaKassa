@@ -3,6 +3,7 @@ using GitMarket.Domain.Models.TitiModels.ProductsModel;
 using GitMarket.Infrastructure;
 using GitMarket.Infrastructure.APIs;
 using GitMarket.ViewModels.WindowsViewModels;
+using GitMarket.Views.Pages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,7 +57,6 @@ namespace GitMarket.Views.MainWindows
                 }
             });
         }
-
         public void CloseWindow()
         {
             main!.Dispose();
@@ -87,41 +87,42 @@ namespace GitMarket.Views.MainWindows
         }
         private void Window_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            if (e.KeyboardDevice.Modifiers == ModifierKeys.Control && e.Key == System.Windows.Input.Key.Up)
-            {
-                itogTextBox.Focus();
-                main!.SearchUpDown(true);
-                return;
-            }
-            else if (e.KeyboardDevice.Modifiers == ModifierKeys.Control && e.Key == System.Windows.Input.Key.Down)
-            {
-                itogTextBox.Focus();
-                main!.SearchUpDown(false);
-                return;
-            }
-            else if (e.KeyboardDevice.Modifiers == ModifierKeys.Control && e.Key == System.Windows.Input.Key.Delete)
+            //MessageBox.Show(e.Key.ToString());
+            //if (e.KeyboardDevice.Modifiers == ModifierKeys.Control && e.Key == System.Windows.Input.Key.Up)
+            //{
+            //    itogTextBox.Focus();
+            //    main!.SearchUpDown(true);
+            //    return;
+            //}
+            //else if (e.KeyboardDevice.Modifiers == ModifierKeys.Control && e.Key == System.Windows.Input.Key.Down)
+            //{
+            //    itogTextBox.Focus();
+            //    main!.SearchUpDown(false);
+            //    return;
+            //}
+            //else 
+            if (e.KeyboardDevice.Modifiers == ModifierKeys.Control && e.Key == System.Windows.Input.Key.Delete)
             {
                 if (main!.ClearSelectedProductsCommand.CanExecute(null)) main.ClearSelectedProductsCommand.Execute(null);
                 itogTextBox.Focus();
                 return;
             }
-            if (e.KeyboardDevice.Modifiers == ModifierKeys.Shift && HotKeysStructure.HotKeysDictionary!.Any(s => s.Key == e.Key.ToString()))
+            else if (HotKeysStructure.HotKeysDictionary!.Any(s => s.Key == e.Key.ToString()))
             {
-                main!.AddWithHotKey(HotKeysStructure.HotKeysDictionary!.First(s => s.Key == e.Key.ToString())!);
+                main!.AddWithHotKey(HotKeysStructure.HotKeysDictionary!.Single(s => s.Key == e.Key.ToString())!);
                 itogTextBox.Focus();
                 return;
             }
-            else if (e.KeyboardDevice.Modifiers == ModifierKeys.Control && e.Key == System.Windows.Input.Key.F)
-            {
-                main!.GetProductwithAPI();
-                return;
-            }
-            else if (e.KeyboardDevice.Modifiers == ModifierKeys.Control && e.Key == System.Windows.Input.Key.C)
-            {
-                main!.OpenSpesialDiscount();
-                return;
-            }
-
+            //else if (e.KeyboardDevice.Modifiers == ModifierKeys.Control && e.Key == System.Windows.Input.Key.F)
+            //{
+            //    main!.GetProductwithAPI();
+            //    return;
+            ////}
+            //else if (e.KeyboardDevice.Modifiers == ModifierKeys.Control && e.Key == System.Windows.Input.Key.C)
+            //{
+            //    main!.OpenSpesialDiscount();
+            //    return;
+            //}
             switch (e.Key)
             {
                 case System.Windows.Input.Key.Up:
@@ -132,8 +133,8 @@ namespace GitMarket.Views.MainWindows
                     main!.UpDownCommand(true);
                     itogTextBox.Focus();
                     return;
-                case System.Windows.Input.Key.Return:
-                    main!.AddSelectedProduct();
+                case System.Windows.Input.Key.Enter:
+                    main!.GetProductwithAPI();
                     itogTextBox.Focus();
                     return;
                 case System.Windows.Input.Key.Add:
@@ -152,18 +153,22 @@ namespace GitMarket.Views.MainWindows
                     itogTextBox.Focus();
                     return;
                 case System.Windows.Input.Key.Subtract:
-                    if (main!.GetBonusCommand.CanExecute(null)) main.GetBonusCommand.Execute(null);
+                    main!.ExecutedGetBonusCommand(null);
+                    itogTextBox.Focus();
+                    return;
+                case System.Windows.Input.Key.Decimal:
+                    textBoxSearch.Focus();
                     itogTextBox.Focus();
                     return;
                 case System.Windows.Input.Key.Divide:
-                    if (main!.SelectedProductItem != new SaleProduct())
+                    if (main!.SelectedProductItem is not null || main!.SelectedProductItem != new SaleProduct())
                     {
-                        main.ChangeProductQuantityCommand.Execute(true);
+                        main!.OpenSpesialDiscount();
                     }
                     itogTextBox.Focus();
                     return;
                 case System.Windows.Input.Key.Multiply:
-                    if (main!.SelectedProductItem != new SaleProduct())
+                    if (main!.SelectedProductItem is not null || main!.SelectedProductItem != new SaleProduct())
                     {
                         main.ChangeProductQuantityCommand.Execute(false);
                     }
@@ -173,6 +178,9 @@ namespace GitMarket.Views.MainWindows
                     if (main!.SelectedProductItem != new SaleProduct())
                         main.DeleteSelectedProduct();
                     itogTextBox.Focus();
+                    return;
+                case System.Windows.Input.Key.Oem3:
+                    new ProductsAndCategoriesPage(main!).ShowDialog();
                     return;
             }
 

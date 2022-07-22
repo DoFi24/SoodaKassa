@@ -69,13 +69,13 @@
                         </StackPanel>
                     </Border>
 
-                    <Border Width="150" Margin="0 20 60 0" 
+                    <!--<Border Width="150" Margin="0 20 60 0" 
                               HorizontalAlignment="Right" Grid.Row="2" >
                         <CheckBox Style="{x:Null}" Background="White" 
                                   VerticalContentAlignment="Center"
                                   IsChecked="{Binding IsSaveLP}"
                                   Content="Остаться в системе"/>
-                    </Border>
+                    </Border>-->
                     <Button Grid.Row="3" Margin="0 30 0 0" Content="Войти" Command="{Binding SignInCommand}"
                             CommandParameter="{Binding ElementName=password}"
                             Foreground="White" Width="200" Background="#40CC6F"/>

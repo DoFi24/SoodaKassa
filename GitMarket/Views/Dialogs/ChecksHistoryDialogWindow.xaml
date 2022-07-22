@@ -88,9 +88,11 @@
                                 <TextBlock Text="{Binding shop.name}" FontWeight="DemiBold" FontSize="22"/>
                                 <TextBlock Text="{Binding shop.addres}" Grid.Row="1" FontSize="13"/>
                                 <TextBlock Text="Кассир:" Grid.Row="2" FontSize="13" HorizontalAlignment="Left" Margin="15 0 0 0"/>
-                                <TextBlock Text="{Binding staff.full_name}" Grid.Row="2" FontSize="13" HorizontalAlignment="Right" Margin="0 0 15 0"/>
+                                <TextBlock Text="{Binding staff.full_name}" Grid.Row="2" FontSize="13" HorizontalAlignment="Left" Margin="60 0 15 0"/>
                                 <TextBlock Text="Чек №:" Grid.Row="3" FontSize="13" HorizontalAlignment="Left" Margin="15 0 0 0"/>
-                                <TextBlock Text="{Binding docnum}" x:Name="CheckNumber" Grid.Row="3" FontSize="15" HorizontalAlignment="Left" Margin="65 0 0 0"/>
+                                <Viewbox Grid.Row="3" HorizontalAlignment="Left" Margin="60 0 0 0">
+                                    <TextBlock Text="{Binding docnum}" x:Name="CheckNumber" FontSize="15"/>
+                                </Viewbox>
                                 <TextBlock x:Name="DateTimeStr" Text="23:00 5 Января 2022г" Grid.Row="3" FontSize="13" HorizontalAlignment="Right" Margin="0 0 15 0"/>
 
                                 <Rectangle Margin="15 1 15 0" Grid.Row="4" Stroke="#FF000000" Height="1" StrokeThickness="1" StrokeDashArray="2 2" SnapsToDevicePixels="True"/>
@@ -176,7 +178,7 @@
 
                                 <TextBlock Text="{Binding prepend_sum}" Grid.Row="9" FontSize="12" HorizontalAlignment="Right" Margin="0 0 15 0"/>
                                 <TextBlock Text="Итого без скидки" Grid.Row="9" FontSize="12" HorizontalAlignment="Left" Margin="15 0 0 0"/>
-                                <TextBlock Text="{Binding total_sum}" Grid.Row="10" FontSize="12" HorizontalAlignment="Right" Margin="0 0 15 0"/>
+                                <TextBlock Text="{Binding discount_sum}" Grid.Row="10" FontSize="12" HorizontalAlignment="Right" Margin="0 0 15 0"/>
                                 <TextBlock Text="ВАША СКИДКА СОСТАВИЛА" Grid.Row="10" FontSize="12" HorizontalAlignment="Left" Margin="15 0 0 0"/>
 
                                 <TextBlock Text="ИТОГ:" FontWeight="Bold" Margin="15 0 15 0" Grid.Row="12" FontSize="22" HorizontalAlignment="Left"/>

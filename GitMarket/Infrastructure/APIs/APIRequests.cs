@@ -18,7 +18,7 @@ namespace GitMarket.Infrastructure.APIs
 {
     public class APIRequests
     {
-        public static readonly string API_PATH = @"http://127.0.0.1:3001/api/v1";
+        public static string API_PATH = @"http://127.0.0.1:3001/api/v1";
         public static async Task<bool> RegisterAsync(string? login, string? password)
         {
             try

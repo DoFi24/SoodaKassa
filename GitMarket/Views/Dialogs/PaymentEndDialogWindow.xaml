@@ -50,7 +50,9 @@
                     <TextBlock Text="Кассир:" Grid.Row="2" FontSize="13" HorizontalAlignment="Left" Margin="15 0 0 0"/>
                     <TextBlock x:Name="UserName" Text="Имя, длинное, крч тест" Grid.Row="2" FontSize="13" HorizontalAlignment="Right" Margin="0 0 15 0"/>
                     <TextBlock Text="Чек №:" Grid.Row="3" FontSize="13" HorizontalAlignment="Left" Margin="15 0 0 0"/>
-                    <TextBlock Text="" x:Name="CheckNumber" Grid.Row="3" FontSize="15" HorizontalAlignment="Left" Margin="65 0 0 0"/>
+                    <Viewbox Grid.Row="3" HorizontalAlignment="Left" Margin="65 0 0 0" >
+                        <TextBlock Text="" x:Name="CheckNumber" FontSize="15"/>
+                    </Viewbox>
                     <TextBlock x:Name="DateTimeStr" Text="23:00 5 Января 2022г" Grid.Row="3" FontSize="13" HorizontalAlignment="Right" Margin="0 0 15 0"/>
 
                     <Rectangle Margin="15 1 15 0" Grid.Row="4" Stroke="#FF000000" Height="1" StrokeThickness="1" StrokeDashArray="2 2" SnapsToDevicePixels="True"/>

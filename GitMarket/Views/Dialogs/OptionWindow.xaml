@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:GitMarket.Views.Dialogs"
         AllowsTransparency="True"
         mc:Ignorable="d" WindowStyle="None" Icon="/Resources/Base/logo2.png"
-        Title="Настройки" Height="270" Width="320"
+        Title="Настройки" Height="370" Width="320"
         >
     <Border BorderThickness=".1" Background="White"
             BorderBrush="Black" CornerRadius="10">
@@ -14,7 +14,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="45" />
                 <RowDefinition Height="1*" />
-                <RowDefinition Height="90" />
+                <RowDefinition Height="70" />
             </Grid.RowDefinitions>
             <Grid Background="White" MouseDown="Grid_MouseDown" Opacity="0.96"/>
             <Grid>
@@ -31,7 +31,7 @@
                     <TextBlock Foreground="#828282" FontSize="14" Margin="0 3 0 0"
                                FontWeight="DemiBold" Text="Чековый принтер" 
                                HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                    <ComboBox Style="{DynamicResource ComboBoxStyle1}" x:Name="printerskkm" 
+                    <ComboBox Style="{DynamicResource ComboBoxStyle1}" x:Name="printers"
                               HorizontalAlignment="Center" BorderThickness="0" VerticalAlignment="Center"
                               Width="200" Height="30" Margin="0 2 0 0"/>
                 </StackPanel>
@@ -40,9 +40,17 @@
                                FontWeight="DemiBold" Text="КKМ" 
                                HorizontalAlignment="Center" Margin="0 3 0 0" VerticalAlignment="Top"/>
                     <ComboBox  Style="{DynamicResource ComboBoxStyle1}" 
-                               BorderThickness="0"
-                               x:Name="printers" HorizontalAlignment="Center" Margin="0 2 0 0"
+                               BorderThickness="0" x:Name="printerskkm" 
+                               HorizontalAlignment="Center" Margin="0 2 0 0"
                                VerticalAlignment="Center" Width="200" Height="30"/>
+                    <TextBlock Margin="0 5 0 10" HorizontalAlignment="Center" Text="Код компании(UDS)"
+                               Foreground="Black"
+                               FontWeight="DemiBold" FontSize="15" />
+                    <TextBox Margin="30 0 30 0" Height="30" x:Name="CodeCompanyText" TextAlignment="Center"/>
+                    <TextBlock Margin="0 5 0 10" HorizontalAlignment="Center" Text="Ключ компании(UDS)"
+                               Foreground="Black"
+                               FontWeight="DemiBold" FontSize="15" />
+                    <TextBox Margin="30 0 30 0" Height="30" x:Name="KeyCompanyText" TextAlignment="Center"/>
                 </StackPanel>
             </StackPanel>
             <Grid Grid.Row="2">

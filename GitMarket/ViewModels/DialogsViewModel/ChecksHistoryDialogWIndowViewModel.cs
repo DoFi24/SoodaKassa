@@ -14,7 +14,6 @@ namespace GitMarket.ViewModels.DialogsViewModel
         {
             GetChecks();
         }
-
         private async void GetChecks()
         {
             var result = await Infrastructure.APIs.APIRequests.GetFromAPIAsync<CheckModel>(

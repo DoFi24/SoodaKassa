@@ -19,7 +19,7 @@ namespace GitMarket.Domain.Models.APIResponseRequest
         public decimal pay_sum { get; set; }
         public decimal zdach_sum { get; set; }
         public string? status { get; set; }
-        public ulong? comment { get; set; }
+        public string? comment { get; set; }
         public List<CheckDetailProduct>? details { get; set; }
     }
     public class CheckDetailProduct 
@@ -33,10 +33,6 @@ namespace GitMarket.Domain.Models.APIResponseRequest
         public string? unit { get; set; }
         public ulong? unit_id { get; set; }
         public string? unpack_unit { get; set; }
-        public string[]? product_barcodes_string { get; set; }
-        public string[]? product_attributes_string { get; set; }
-        public object? product_barcodes_json { get; set; }
-        public object? product_attributes_json { get; set; }
         public DateTime? srok_start { get; set; }
         public DateTime? srok_end { get; set; }
         public decimal quantity { get; set; }

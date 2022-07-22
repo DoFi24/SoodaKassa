@@ -10,7 +10,6 @@ namespace GitMarket.Views.Dialogs
     /// </summary>
     public partial class ChecksHistoryDialogWindow : Window
     {
-        public Action InBlurMain;
         public ChecksHistoryDialogWindow()
         {
             InitializeComponent();
@@ -24,7 +23,6 @@ namespace GitMarket.Views.Dialogs
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             Close();
-            InBlurMain();
         }
     }
 }

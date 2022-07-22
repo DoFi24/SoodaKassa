@@ -16,7 +16,7 @@ namespace GitMarket.ViewModels.DialogsViewModel
         {
             model = _model;
             ProductList = new ObservableCollection<SaleProduct>(model.SelectedProductsCollection);
-            SetList(model.ReceiptPrice, model.SelectedProductsCollection.Sum(s => s.Itog),  model.ReceiptPaid, model.ReceiptPaidCard);
+            SetList(model.ReceiptPrice, model.SelectedProductsCollection.Sum(s => s.Summa),  model.ReceiptPaid, model.ReceiptPaidCard);
         }
         public PaymentEndDialogWindowViewModel()
         {

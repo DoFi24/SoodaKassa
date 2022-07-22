@@ -1,18 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Printing;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace GitMarket.Views.Dialogs
 {
@@ -21,7 +12,6 @@ namespace GitMarket.Views.Dialogs
     /// </summary>
     public partial class OptionWindow : Window
     {
-        public Action InBlurMain;
         public OptionWindow()
         {
             InitializeComponent();
@@ -51,15 +41,20 @@ namespace GitMarket.Views.Dialogs
             if (printers.Text == string.Empty)
                 return;
 
+            if (!String.IsNullOrWhiteSpace(CodeCompanyText.Text) && !String.IsNullOrWhiteSpace(KeyCompanyText.Text)) 
+            {
+                Setts.Default.CompanyId = CodeCompanyText.Text;
+                Setts.Default.ApiKey = KeyCompanyText.Text;
+                Setts.Default.Save();
+            }
+
             myPrinters.SetDefaultPrinter(printers.Text.ToString());
             MessageBox.Show("Успешно сохранено!");
-            InBlurMain();
             Close();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            InBlurMain();
             Close();
         }
 

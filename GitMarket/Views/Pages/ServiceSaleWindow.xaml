@@ -68,7 +68,7 @@
                     </Grid>
                     <ScrollViewer Height="566" VerticalAlignment="Stretch" 
                               HorizontalAlignment="Stretch" 
-                              VerticalScrollBarVisibility="Hidden"
+                              VerticalScrollBarVisibility="Visible" 
                               PanningMode="Both">
                         <DataGrid Focusable="True" Margin="3 3 3 3" BorderThickness=".8"
                           BorderBrush="LightBlue" Background="Transparent"                 

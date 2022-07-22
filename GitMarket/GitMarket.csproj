@@ -7,10 +7,11 @@
     <UseWPF>true</UseWPF>
     <ApplicationIcon>logo2.ico</ApplicationIcon>
     <AssemblyName>Sooda</AssemblyName>
-    <UseWindowsForms>True</UseWindowsForms>
+    <UseWindowsForms>False</UseWindowsForms>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Properties\Settings.settings" />
     <None Remove="Resources\BackgroundImage\q1.png" />
     <None Remove="Resources\BackgroundImage\q2.png" />
     <None Remove="Resources\BackgroundImage\q3.png" />
@@ -72,6 +73,14 @@
     <None Remove="Resources\MenuButtonIcons\whiteIcons\Setting_alt_line.png" />
     <None Remove="Resources\MenuButtonIcons\whiteIcons\Shape-1.png" />
     <None Remove="Resources\MenuButtonIcons\whiteIcons\Shape.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
@@ -228,21 +237,6 @@
     <Resource Include="Resources\MenuButtonIcons\whiteIcons\Shape-1.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Properties\Settings.Designer.cs">
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
   </ItemGroup>
 
 </Project>

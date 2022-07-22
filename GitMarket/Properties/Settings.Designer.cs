@@ -49,7 +49,7 @@ namespace GitMarket.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
         public uint ShopId {
             get {
                 return ((uint)(this["ShopId"]));
@@ -61,7 +61,7 @@ namespace GitMarket.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
         public uint StaffId {
             get {
                 return ((uint)(this["StaffId"]));
@@ -73,7 +73,7 @@ namespace GitMarket.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
         public uint SkladId {
             get {
                 return ((uint)(this["SkladId"]));

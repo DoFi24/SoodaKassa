@@ -1,11 +1,11 @@
 ﻿global using Setts = GitMarket.Properties.Settings;
 using GitMarket.Domain.Models.APIResponseRequest;
 using GitMarket.Infrastructure.APIs;
-using GitMarket.Views.Dialogs;
 using GitMarket.Views.MainWindows;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows;
 
@@ -23,14 +23,31 @@ namespace GitMarket
 
         protected override async void OnStartup(StartupEventArgs e)
         {
+
             if (IsOnce())
             {
+                try
+                {
+                    using (var sr = new StreamReader(Directory.GetCurrentDirectory() + "/ipAdres.txt"))
+                    {
+                        string[] configurations = sr.ReadToEnd().Split();
+                        APIRequests.API_PATH = configurations[0];
+                        Setts.Default.ShopId = (uint)Convert.ToInt32(configurations[1]);
+                        Setts.Default.SkladId = (uint)Convert.ToInt32(configurations[2]);
+                        Setts.Default.KassaId = (uint)Convert.ToInt32(configurations[3]);
+                        Setts.Default.Save();
+
+                       sr.Close();
+                    }
+                }
+                catch { }
+
                 if (Setts.Default.IsSaveLoginPassword)
                 {
                     if (await APIRequests.GetIsValidAsync())
                     {
                         new MainNavigationWindow(true).Show();
-                    }
+                    }   
                     else
                     {
                         new LoginWindow().Show();

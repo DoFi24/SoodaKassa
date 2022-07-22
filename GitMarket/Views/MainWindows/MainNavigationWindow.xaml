@@ -5,8 +5,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:GitMarket.ViewModels.WindowsViewModels"
-        mc:Ignorable="d"
-        AllowsTransparency="True"
+        mc:Ignorable="d" AllowsTransparency="True"
         d:DataContext="{d:DesignInstance vm:MainNavigationWindowViewModel}"
         Title="{Binding WindowTitle}" Height="800" Width="1200" MouseDown="Window_MouseDown"
         WindowStyle="None" WindowStartupLocation="CenterScreen"  Icon="/Resources/Base/logo2.png"
@@ -32,8 +31,7 @@
                     <StackPanel Margin="25 5 0 0" VerticalAlignment="Center">
                         <Border CornerRadius="5" Background="White">
                             <StackPanel Margin="3" Orientation="Horizontal">
-                                <TextBox IsTabStop="False" x:Name="textBoxSearch"
-                                 Focusable="{Binding IsFocusTextSearch}" BorderThickness="0"
+                                <TextBox IsTabStop="False" PreviewTextInput="PaidTextBox_PreviewTextInput" x:Name="textBoxSearch" BorderThickness="0"
                                  Padding="10 3" FontSize="15" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
                                     Width="320" Height="30"/>
                                 <Button IsTabStop="False" Margin="-30 0 0 0" Command="{Binding SearchByTextCommand}" Padding="0"
@@ -43,7 +41,7 @@
                                 </Button>
                             </StackPanel>
                         </Border>
-                        <Popup Style="{x:Null}" IsOpen="{Binding IsOpenPopup}" Width="320" MaxHeight="200">
+                        <!--<Popup Style="{x:Null}" IsOpen="{Binding IsOpenPopup}" Width="320" MaxHeight="200">
                             <Grid Width="320" Style="{x:Null}" Height="200" Background="White">
                                 <DataGrid AlternatingRowBackground="Transparent"
                           ColumnHeaderStyle="{DynamicResource hederstyle_Kuxne}"
@@ -69,10 +67,12 @@
                                     </DataGrid.Columns>
                                 </DataGrid>
                             </Grid>
-                        </Popup>
+                        </Popup>-->
                     </StackPanel>
                     <TextBlock Margin="20 0 0 0" Text="20 20 2000" x:Name="DateTextBlock" FontSize="22" Foreground="White" VerticalAlignment="Center"/>
-                    <!--<TextBlock MouseLeftButtonDown="TextBlock_MouseLeftButtonDown" Padding="26 4 0 0" Margin="0 0 0 0" Grid.Column="2" Text="Меню" FontWeight="DemiBold" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FontSize="16"/>-->
+                    <!--<TextBlock MouseLeftButtonDown="TextBlock_MouseLeftButtonDown" Padding="26 4 0 0" Margin="0 0 0 0"
+                    Grid.Column="2" Text="Меню" FontWeight="DemiBold" HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch" FontSize="16"/>-->
                 </StackPanel>
                 <Grid Grid.Column="1">
                     <Grid.ColumnDefinitions>
@@ -153,7 +153,9 @@
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <Viewbox HorizontalAlignment="Left">
-                                                        <TextBlock Foreground="Black" FontWeight="DemiBold" HorizontalAlignment="Left" TextAlignment="Left" Text="{Binding Product_Name}"  VerticalAlignment="Center"/>
+                                                        <TextBlock Foreground="Black" FontWeight="DemiBold" 
+                                                                   HorizontalAlignment="Left" TextAlignment="Left"
+                                                                   Text="{Binding Product_Name}"  VerticalAlignment="Center"/>
                                                     </Viewbox>
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
@@ -161,7 +163,9 @@
                                         <DataGridTemplateColumn Width="*" IsReadOnly="True"  Header="Клавиша">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
-                                                    <TextBlock Foreground="Black" FontWeight="DemiBold" HorizontalAlignment="Center" TextAlignment="Center" Text="{Binding Key}" VerticalAlignment="Center"/>
+                                                    <TextBlock Foreground="Black" FontWeight="DemiBold" 
+                                                               HorizontalAlignment="Center" TextAlignment="Center" 
+                                                               Text="{Binding Key}" VerticalAlignment="Center"/>
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
                                         </DataGridTemplateColumn>
@@ -191,7 +195,6 @@
                                       ColumnHeaderStyle="{DynamicResource hederstyle_Kuxne}"
                                       ItemsSource="{Binding SelectedProductsCollection, UpdateSourceTrigger=PropertyChanged}"
                                       SelectedItem="{Binding SelectedProductItem, UpdateSourceTrigger=PropertyChanged}">
-
                                 <DataGrid.Columns>
                                     <DataGridTemplateColumn IsReadOnly="True" Header="Наименование" Width="2*">
                                         <DataGridTemplateColumn.CellTemplate>
@@ -207,7 +210,7 @@
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
-                                    <DataGridTemplateColumn  Width="*" Header="Количество">
+                                    <DataGridTemplateColumn  Width="*" Header="Кол-во">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
                                                 <Button IsTabStop="False" FontSize="18" Background="Transparent" BorderThickness="0" 
@@ -217,11 +220,22 @@
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
-
+                                    <DataGridTemplateColumn  IsReadOnly="True" Header="Скидка" Width="*">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                                    <TextBlock Foreground="Black" Style="{DynamicResource CenterText}"
+                                                               Text="{Binding DiscountPercent,StringFormat=0}"/>
+                                                    <TextBlock Foreground="Black" Style="{DynamicResource CenterText}" Text="%"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
                                     <DataGridTemplateColumn  IsReadOnly="True" Header="Итого" Width="*">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBlock Foreground="Black" Style="{DynamicResource CenterText}"  Text="{Binding Itog,StringFormat=0.00}"/>
+                                                <TextBlock Foreground="Black" Style="{DynamicResource CenterText}"
+                                                           Text="{Binding Itog,StringFormat=0.00}"/>
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
@@ -257,14 +271,14 @@
                                 <TextBlock Margin="10 0 0 0" Style="{DynamicResource SalePageTextBlock}"  Text="Оплачено (Наличный):"/>
                             </StackPanel>
                             <TextBox PreviewTextInput="PaidTextBox_PreviewTextInput" 
-                                     TabIndex="0" x:Name="PaidTextBox" IsReadOnly="False" 
+                                     TabIndex="0" x:Name="PaidTextBox" IsReadOnly="True" 
                                      Margin="10 0 10 0" Text="{Binding ReceiptPaid,UpdateSourceTrigger=PropertyChanged}"/>
                             <StackPanel Margin="20 5 0 0" Orientation="Horizontal">
                                 <icon:PackIcon Kind="CreditCard" Width="20" Height="20"/>
                                 <TextBlock Margin="10 0 0 0" Style="{DynamicResource SalePageTextBlock}" Text="Оплачено (Картой):"/>
                             </StackPanel>
                             <TextBox PreviewTextInput="PaidTextBox_PreviewTextInput"  
-                                     TabIndex="1" IsReadOnly="False" Margin="10 0 10 0"
+                                     TabIndex="1" IsReadOnly="True" Margin="10 0 10 0"
                                      Text="{Binding ReceiptPaidCard,UpdateSourceTrigger=PropertyChanged}"/>
                             <StackPanel Margin="20 5 0 0" Orientation="Horizontal">
                                 <icon:PackIcon Kind="CashReturn"  Width="20" Height="20"/>
@@ -288,12 +302,14 @@
                                         <RowDefinition Height="1*" />
                                     </Grid.RowDefinitions>
                                     <Button  IsTabStop="False" Background="#40CC6F" Height="50" FontSize="15" Content="Оплатить (+)" Command="{Binding ToPayCommand}" Grid.Row="0"/>
-                                    <Button  IsTabStop="False" x:Name="Btn1" Background="#40CC6F" Height="50" FontSize="14" Content="Бонус и скидка (-)" Command="{Binding GetBonusCommand}" Grid.Row="1"/>
+                                    <Button  IsTabStop="False" x:Name="Btn1" Background="#40CC6F" Height="50" FontSize="14" 
+                                             Content="Бонус и скидка (-)" Command="{Binding GetBonusCommand}" Grid.Row="1"/>
                                     <!--<Button Background="#3B9AAE" Height="40" Content="Напечатать чек&#x0a; ()" Command="{Binding CheckPaymentEndCommand}" Grid.Row="3"/>-->
-                                    <!--<Button  IsTabStop="False" Background="#9F40CC"
+                                    <Button  IsTabStop="False" Background="#9F40CC"
                                              Height="50" FontSize="15" Content="UDS"
-                                             Command="{Binding UDSSettingsCommand}" Grid.Row="2"/>-->
-                                    <Button  IsTabStop="False" Background="#FE5555" Height="50" FontSize="15" Content="    Очистить&#x0a; (Ctrl + Delete)" Command="{Binding ClearSelectedProductsCommand}" Grid.Row="5"/>
+                                             Command="{Binding UDSSettingsCommand}" Grid.Row="2"/>
+                                    <Button  IsTabStop="False" Background="#FE5555" Height="50" FontSize="15" Content="    Очистить&#x0a; (Ctrl + Delete)" 
+                                             Command="{Binding ClearSelectedProductsCommand}" Grid.Row="5"/>
                                 </Grid>
                             </StackPanel>
                         </Grid>
@@ -327,6 +343,7 @@
                             <Button Uid="7" Content="Услуги"/>
                             <Button Uid="4" Content="История чеков"/>
                             <Button Uid="2" Content="Горячие клавиши"/>
+                            <Button Uid="3" Content="Дополнительно"/>
                             <Button Uid="8" Content="Настройки"/>
                         </StackPanel>
                     </Grid>

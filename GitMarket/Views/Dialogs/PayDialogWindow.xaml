@@ -7,16 +7,37 @@
         Title="PayDialogWindow"  Icon="/Resources/Base/logo2.png"
         xmlns:gif="http://wpfanimatedgif.codeplex.com" AllowsTransparency="True" Background="Transparent"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowStyle="None"
-        Height="360" Width="400">
-    <Border BorderBrush="Black" BorderThickness="1" CornerRadius="4" Background="#F0F4FB">
-
-        <Grid Margin="2" Background="#FCFEFC" >
-
-            <!--Button Style="{DynamicResource PayDialogButton}" Content="Оплатить&#x0a;(Enter)" Click="Button_Click_1" BorderThickness="0"
-                    Margin="25 10 0 15" Grid.Column="1" Grid.Row="9" HorizontalAlignment="Left"/>
-            <Button Style="{DynamicResource PayDialogButton}" Content="Отмена&#x0a;(Esc)" BorderThickness="3" 
-                    Foreground="#3990A3" BorderBrush="#3B9AAE" Click="Button_Click" Background="white" Margin="0 10 25 15" Grid.Column="1" 
-                    Grid.Row="9" HorizontalAlignment="Right"/>-->
+        Height="300" Width="280" KeyUp="Window_KeyUp">
+    <Border BorderThickness="0.1" Background="White" MouseDown="Border_MouseDown" CornerRadius="10" BorderBrush="Black">
+        <Grid Margin="4" Background="White">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+            <TextBlock Text="Принятие оплаты" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="25"/>
+            <Grid Grid.Column="1" Grid.Row="1">
+                <TextBox Style="{DynamicResource SpecialDiscountDialogTextBox}" x:Name="NalLabel"
+                     Text=".00" Height="50" Width="230"/>
+                <TextBlock Opacity="0.6" HorizontalAlignment="Left" 
+                           Margin="30 0 0 0" Width="80" Height="50" FontSize="15"
+                           Text="Наличные" FontWeight="Light"/>
+            </Grid>
+            <Grid Grid.Column="1" Grid.Row="2">
+                <TextBox Style="{DynamicResource SpecialDiscountDialogTextBox}" x:Name="CardLabel"
+                     Text=".00" Height="50" Width="230"/>
+                <TextBlock Opacity="0.6" Width="50" Height="50" FontSize="15"
+                           Text="Картой" FontWeight="Light"
+                           HorizontalAlignment="Left" Margin="30 0 0 0"/>
+            </Grid>
+            <StackPanel Orientation="Horizontal" Grid.ColumnSpan="3" Grid.Row="3">
+                <Button Padding="5" Content="Выполнить (Enter)" 
+                        Background="#40CC6F" FontSize="12" 
+                        Click="Button_Click" Style="{DynamicResource DiscountDialogButton}"/>
+                <Button Content="Выйти (Esc)" Click="Button_Click_1" 
+                        Background="#FE5555" Style="{DynamicResource DiscountDialogButton}"/>
+            </StackPanel>
         </Grid>
     </Border>
 </Window>

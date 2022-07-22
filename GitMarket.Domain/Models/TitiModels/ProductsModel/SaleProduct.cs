@@ -35,9 +35,10 @@
         public string[]? Product_Barcodes_Json { get; set; }
         public object[]? Product_Attributes_Json { get; set; }
         public string? Comment { get; set; }
-        public decimal Itog { get => (QuantityCount * Sale_Price)+(QuantityCount * Sale_Price * Discount);}
-        public decimal Summa { get => Itog - Discount; }
-        public decimal Discount { get; set; } = 0;
+        public decimal Itog { get => (QuantityCount * Sale_Price) - Discount;}
+        public decimal Summa { get => (QuantityCount * Sale_Price); }
+        public decimal Discount { get=> Summa * DiscountPercent / 100; }
+        public decimal DiscountPercent { get; set; } = 0;
         public int? Service_id { get; set; } = 0;
         public bool? Is_service { get; set; } =false;
 

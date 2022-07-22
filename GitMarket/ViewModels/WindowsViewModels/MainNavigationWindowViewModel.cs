@@ -11,6 +11,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -23,13 +24,17 @@ namespace GitMarket.ViewModels.WindowsViewModels
         public MainNavigationWindow mainWindow;
         public MainNavigationWindowViewModel(MainNavigationWindow _mainWindow)
         {
-            if(_mainWindow._isMain)
+            if (_mainWindow._isMain)
                 GetHotKeys();
             mainWindow = _mainWindow;
+            for (int i = 0; i < 22; i++)
+            {
+                FakeInfoCollection.Add("");
+            }
         }
         public MainNavigationWindowViewModel()
         {
-                GetHotKeys();
+            GetHotKeys();
         }
 
         public delegate void CloseMainWindow();
@@ -40,10 +45,6 @@ namespace GitMarket.ViewModels.WindowsViewModels
         {
             HotKeysStructure.HotKeysDictionary = await HotKeysStructure.GetHotKeys();
             HotKeyCollection = new ObservableCollection<HotKeyModel>(HotKeysStructure.HotKeysDictionary!);
-            for (int i = 0; i < 22; i++)
-            {
-                FakeInfoCollection.Add("");
-            }
         }
 
 
@@ -104,7 +105,6 @@ namespace GitMarket.ViewModels.WindowsViewModels
             get { return _HotKeyCollection; }
             set { Set(ref _HotKeyCollection, value); }
         }
-
         public ObservableCollection<string> FakeInfoCollection { get; set; } = new ObservableCollection<string>();
 
         private ObservableCollection<SaleProduct> _searchProductCollection;
@@ -120,6 +120,7 @@ namespace GitMarket.ViewModels.WindowsViewModels
             get { return _searchSelectedProduct; }
             set { Set(ref _searchSelectedProduct, value); }
         }
+
         #region Prperties
 
         public List<DiscountProduct> discount = new();
@@ -134,6 +135,7 @@ namespace GitMarket.ViewModels.WindowsViewModels
             get => _ReceiptPrice;
             set => Set(ref _ReceiptPrice, value);
         }
+
         private decimal _ReceiptUDSPrice = 0m;
         public decimal ReceiptUDSPrice
         {
@@ -158,10 +160,10 @@ namespace GitMarket.ViewModels.WindowsViewModels
         private decimal _VisualDiscount = 0m;
         public decimal VisualDiscount
         {
-            get => _VisualDiscount; 
-            set 
+            get => _VisualDiscount;
+            set
             {
-                Set(ref _VisualDiscount,value);
+                Set(ref _VisualDiscount, value);
             }
         }
 
@@ -171,6 +173,7 @@ namespace GitMarket.ViewModels.WindowsViewModels
             get => _ReceiptBonus;
             set => Set(ref _ReceiptBonus, value);
         }
+
         private decimal _ReceiptPaid = 0m;
         public decimal ReceiptPaid
         {
@@ -191,6 +194,7 @@ namespace GitMarket.ViewModels.WindowsViewModels
                 GetCalculateOverPrice();
             }
         }
+
         private ObservableCollection<SaleProduct>? _selectedProductsCollection = new();
         public ObservableCollection<SaleProduct>? SelectedProductsCollection
         {
@@ -235,7 +239,6 @@ namespace GitMarket.ViewModels.WindowsViewModels
             if (SelectedProductsCollection.Count > 0)
                 SelectedProductItem = SelectedProductsCollection.Last();
         }
-
         public SaleProduct SelectedProductItem
         {
             get { return _selectedProductItem; }
@@ -248,7 +251,6 @@ namespace GitMarket.ViewModels.WindowsViewModels
             get => _selectedProductIndex;
             set => Set(ref _selectedProductIndex, value);
         }
-
 
         #endregion
 
@@ -283,7 +285,6 @@ namespace GitMarket.ViewModels.WindowsViewModels
                 lastCheck = lastCheck
             }.Show();
         }
-
         public void ChangePriceWithUDS(decimal price)
         {
             ReceiptUDSPrice = price;
@@ -341,45 +342,49 @@ namespace GitMarket.ViewModels.WindowsViewModels
 
         private void ExecuteCloseApplicationCommand(object obj)
         {
-            new ErrorMessegeDialogWindow().ShowDialog();
+            if (new ErrorMessageDialogWindow("Вы действительно хотите выйти из программы?").ShowDialog() == true)
+                Application.Current.Shutdown();
         }
 
         #endregion
 
         #region Search
-        public void AddSelectedProduct()
-        {
-            if (SearchSelectedProduct is null || String.IsNullOrWhiteSpace(SearchSelectedProduct!.Product_Name!))
-                return;
+        //public void AddSelectedProduct()
+        //{
+        //    if (SearchSelectedProduct is null || String.IsNullOrWhiteSpace(SearchSelectedProduct!.Product_Name!))
+        //        return;
 
-            if (!SelectedProductsCollection!.Any(s => s.Prihod_Detail_Id == SearchSelectedProduct.Prihod_Detail_Id))
-            {
-                SearchSelectedProduct.QuantityCount = 1;
-                SelectedProductsCollection!.Add(SearchSelectedProduct);
-            }
-            else
-            {
-                var product = SelectedProductsCollection!.First(s => s.Prihod_Detail_Id == SearchSelectedProduct.Prihod_Detail_Id);
-                if (string.IsNullOrWhiteSpace(product.Product_Name)) return;
-                if (product.QuantityCount < product.Quantity)
-                {
-                    product.QuantityCount++;
-                    SelectedProductsCollection!.Remove(product);
-                    SelectedProductsCollection.Add(product);
-                }
-                else
-                    MessageBox.Show("Не достаточно товаров!");
-            }
-            SelectedProductItem = SelectedProductsCollection!.Last();
-            SearchSelectedProduct = new SaleProduct();
-            GetCalculate();
-            IsOpenPopup = false;
-            SearchText = string.Empty;
-        }
+        //    if (!SelectedProductsCollection!.Any(s => s.Prihod_Detail_Id == SearchSelectedProduct.Prihod_Detail_Id))
+        //    {
+        //        SearchSelectedProduct.QuantityCount = 1;
+        //        SelectedProductsCollection!.Add(SearchSelectedProduct);
+        //    }
+        //    else
+        //    {
+        //        var product = SelectedProductsCollection!.First(s => s.Prihod_Detail_Id == SearchSelectedProduct.Prihod_Detail_Id);
+        //        if (string.IsNullOrWhiteSpace(product.Product_Name)) return;
+        //        if (product.QuantityCount < product.Quantity)
+        //        {
+        //            product.QuantityCount++;
+        //            SelectedProductsCollection!.Remove(product);
+        //            SelectedProductsCollection.Add(product);
+        //        }
+        //        else
+        //            MessageBox.Show("Не достаточно товаров!");
+        //    }
+        //    SelectedProductItem = SelectedProductsCollection!.Last();
+        //    SearchSelectedProduct = new SaleProduct();
+        //    GetCalculate();
+        //    IsOpenPopup = false;
+        //    SearchText = string.Empty;
+        //}
         public async void GetProductwithAPI()
         {
-            if (SearchText == string.Empty) return;
-            SearchProductCollection = new ObservableCollection<SaleProduct>(await APIRequests.GetFromAPIAsync<SaleProduct>(new RequestModelGet
+            if (String.IsNullOrWhiteSpace(SearchText)) return;
+
+            SearchByBarcode(SearchText);
+
+            /* SearchProductCollection = new ObservableCollection<SaleProduct>(await APIRequests.GetFromAPIAsync<SaleProduct>(new RequestModelGet
             {
                 parameter = "get",
                 page = 1,
@@ -388,7 +393,7 @@ namespace GitMarket.ViewModels.WindowsViewModels
                 staffId = Setts.Default.StaffId,
                 data = new
                 {
-                    search = new ArrayList { "=", SearchText }
+                    barcode = new ArrayList { "=", SearchText }
                 }
             }));
             if (IsOpenPopup == false)
@@ -397,33 +402,34 @@ namespace GitMarket.ViewModels.WindowsViewModels
             }
             if (SearchProductCollection.Count > 0)
                 SearchSelectedProduct = SearchProductCollection.First();
+            */
         }
-        public void SearchUpDown(bool v)
-        {
-            if (SearchProductCollection.Count > 0)
-            {
-                if (SearchSelectedProduct == new SaleProduct())
-                    SearchSelectedProduct = SearchProductCollection.First();
-                else
-                {
-                    var index = SearchProductCollection.IndexOf(SearchSelectedProduct);
-                    if (v)
-                    {
-                        if (index == SearchProductCollection.Count - 1)
-                            SearchSelectedProduct = SearchProductCollection.First();
-                        else
-                            SearchSelectedProduct = SearchProductCollection[index + 1];
-                    }
-                    else
-                    {
-                        if (index == 0)
-                            SearchSelectedProduct = SearchProductCollection.Last();
-                        else
-                            SearchSelectedProduct = SearchProductCollection[index - 1];
-                    }
-                }
-            }
-        }
+        //public void SearchUpDown(bool v)
+        //{
+        //    if (SearchProductCollection.Count > 0)
+        //    {
+        //        if (SearchSelectedProduct == new SaleProduct())
+        //            SearchSelectedProduct = SearchProductCollection.First();
+        //        else
+        //        {
+        //            var index = SearchProductCollection.IndexOf(SearchSelectedProduct);
+        //            if (v)
+        //            {
+        //                if (index == SearchProductCollection.Count - 1)
+        //                    SearchSelectedProduct = SearchProductCollection.First();
+        //                else
+        //                    SearchSelectedProduct = SearchProductCollection[index + 1];
+        //            }
+        //            else
+        //            {
+        //                if (index == 0)
+        //                    SearchSelectedProduct = SearchProductCollection.Last();
+        //                else
+        //                    SearchSelectedProduct = SearchProductCollection[index - 1];
+        //            }
+        //        }
+        //    }
+        //}
         public async void SearchByBarcode(string inputDeviceText)
         {
             var products = await APIRequests.GetFromAPIAsync<SaleProduct>(
@@ -481,7 +487,6 @@ namespace GitMarket.ViewModels.WindowsViewModels
 
         #endregion
 
-
         private RelayCommand _сhangePageCommand;
         public RelayCommand ChangePageCommand =>
             _сhangePageCommand ?? (_сhangePageCommand = new RelayCommand(ExecutedChangePageCommand, (object obj) => true));
@@ -499,6 +504,9 @@ namespace GitMarket.ViewModels.WindowsViewModels
                 case "2":
                     ChangeHotKeysVisibility();
                     break;
+                case "3":
+                    OpenAdminProject();
+                    break;
                 case "7":
                     new ServiceSaleWindow(this).ShowDialog();
                     break;
@@ -510,7 +518,13 @@ namespace GitMarket.ViewModels.WindowsViewModels
                     break;
             }
         }
-
+        private void OpenAdminProject()
+        {
+            var p = new System.Diagnostics.Process();
+            p.StartInfo.FileName = Directory.GetCurrentDirectory() + @"\admin\а.exe";
+            p.StartInfo.Arguments = $"{Setts.Default.AuthorizationToken} {Setts.Default.ShopId} {Setts.Default.StaffId} {Setts.Default.SkladId} {APIRequests.API_PATH}";
+            p.Start();
+        }
         private void ChangeHotKeysVisibility()
         {
             if (HotKeyGridVisibility == 0)
@@ -565,11 +579,14 @@ namespace GitMarket.ViewModels.WindowsViewModels
             }
             GetCalculate();
         }
+
         private RelayCommand _toPayCommand;
         public RelayCommand ToPayCommand =>
-            _toPayCommand ??= new RelayCommand(ExecutedToPayCommand, (object obj) => { if (SelectedProductsCollection!.Any() && (ReceiptPaid + ReceiptPaidCard) >= ReceiptPrice) return true; return false; });
+            _toPayCommand ??= new RelayCommand(ExecutedToPayCommand, (object obj) => { if (SelectedProductsCollection!.Any()) return true; return false; });
         private async void ExecutedToPayCommand(object obj)
         {
+            #region MyRegion
+
             //var alltaxes = new TaxesModel
             //{
             //    parameter = "",
@@ -587,22 +604,34 @@ namespace GitMarket.ViewModels.WindowsViewModels
             //taxes = x.Item1.ToList();
             //taxSum = x.Item2;
 
-            Prodaja = await PayMethodAsync();
+            #endregion
 
-            Thread.Sleep(300);
+            if ((ReceiptPaid + ReceiptPaidCard) >= ReceiptPrice)
+            {
+                if (new ErrorMessageDialogWindow("Завершить продажу?").ShowDialog() == true)
+                {
+                    Prodaja = await PayMethodAsync();
 
-            if (Prodaja is null)
-                return;
+                    Thread.Sleep(300);
 
-            new PaymentEndDialogWindow(this).Show();
+                    if (Prodaja is null)
+                        return;
+
+                    new PaymentEndDialogWindow(this).Show();
+                }
+            }
+            else
+                new PayDialogWindow(this).ShowDialog();
+
         }
+
 
         private RelayCommand _getBonusCommand;
         public RelayCommand GetBonusCommand =>
             _getBonusCommand ??= new RelayCommand(ExecutedGetBonusCommand, (object obj) => { if (SelectedProductsCollection.Any()) return true; return false; });
-        private void ExecutedGetBonusCommand(object obj)
+        public void ExecutedGetBonusCommand(object obj)
         {
-            _ = new EndSaleDialogWindow(SelectedProductsCollection.ToList(), this).ShowDialog();
+            new EndSaleDialogWindow(SelectedProductsCollection.ToList(), this).ShowDialog();
         }
 
         private RelayCommand _clearSelectedProductsCommand;
@@ -658,7 +687,7 @@ namespace GitMarket.ViewModels.WindowsViewModels
             if (SelectedProductsCollection!.Count > 0)
             {
                 VisualDiscount = ReceiptDiscount + ReceiptBonus + ReceiptSpecicalPrice + ReceiptUDSPrice;
-                ReceiptPrice = SelectedProductsCollection.Select(t => t.Itog).Sum() - VisualDiscount;
+                ReceiptPrice = SelectedProductsCollection.Select(t => t.Itog).Sum() - (ReceiptDiscount + ReceiptBonus + ReceiptUDSPrice);
                 GetCalculateOverPrice();
             }
             else
@@ -705,7 +734,7 @@ namespace GitMarket.ViewModels.WindowsViewModels
                                         sale_price = (decimal)((bool)!s.IsUnpack ? s.Sale_Price : s.Unpack_Sale_Price),
                                         bonus_sum = b.Bonus_Sum,
                                         discount_id = d.Discount_Id,
-                                        discount_sum = d.Discount_Sum,
+                                        discount_sum = s.Discount,
                                         bonus_id = b.Bonus_Id,
                                         pay_bonus_sum = b.Pay_Bonus_Sum,
                                         taxe_sum = 0,
@@ -746,7 +775,7 @@ namespace GitMarket.ViewModels.WindowsViewModels
                                         discount_id = 0,
                                         sale_price = (decimal)((bool)!s.IsUnpack ? s.Sale_Price : s.Unpack_Sale_Price),
                                         quantity = s.QuantityCount,
-                                        discount_sum = 0,
+                                        discount_sum = s.Discount,
                                         bonus_sum = d.Bonus_Sum,
                                         pay_bonus_sum = 0,
                                         taxe_sum = 0,
@@ -784,7 +813,7 @@ namespace GitMarket.ViewModels.WindowsViewModels
                                         discount_id = d.Discount_Id,
                                         sale_price = (decimal)((bool)!s.IsUnpack ? s.Sale_Price : s.Unpack_Sale_Price),
                                         quantity = s.QuantityCount,
-                                        discount_sum = d.Discount_Sum,
+                                        discount_sum = s.Discount,
                                         bonus_sum = 0,
                                         pay_bonus_sum = 0,
                                         taxe_sum = 0,
@@ -814,7 +843,7 @@ namespace GitMarket.ViewModels.WindowsViewModels
                             pay_sum = ReceiptPrice,
                             kontragent_id = 0,
                             rows = (from s in SelectedProductsCollection
-                                    //join t in taxes on s.Prihod_Detail_Id equals t.prihod_detail_id
+                                        //join t in taxes on s.Prihod_Detail_Id equals t.prihod_detail_id
                                     select new ProdajaProduct
                                     {
                                         prihod_detail_id = (int)s.Prihod_Detail_Id,
@@ -822,7 +851,7 @@ namespace GitMarket.ViewModels.WindowsViewModels
                                         discount_id = 0,
                                         sale_price = (decimal)((bool)!s.IsUnpack ? s.Sale_Price : s.Unpack_Sale_Price),
                                         quantity = s.QuantityCount,
-                                        discount_sum = 0,
+                                        discount_sum = s.Discount,
                                         bonus_sum = 0,
                                         pay_bonus_sum = 0,
                                         taxe_sum = 0,
@@ -913,19 +942,20 @@ namespace GitMarket.ViewModels.WindowsViewModels
         }
         public void OpenSpesialDiscount()
         {
-            if (SelectedProductsCollection!.Count > 0) 
+            if (SelectedProductsCollection!.Count > 0)
             {
-                SpecialDiscountDialogWindow window = new();
+                SpecialDiscountDialogWindow window = new(SelectedProductItem.Itog);
                 window.GetDiscountEvent += GetSpecialDiscount;
                 window.ShowDialog();
             }
         }
-
         private void GetSpecialDiscount(decimal Price)
         {
             if (Price > 0)
             {
-                ReceiptSpecicalPrice = Price;
+                SelectedProductItem.DiscountPercent = Price;
+                SelectedProductsCollection = new ObservableCollection<SaleProduct>(SelectedProductsCollection);
+                ReceiptSpecicalPrice = SelectedProductsCollection.Select(t => t.Discount).Sum();
                 GetCalculate();
             }
         }

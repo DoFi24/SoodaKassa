@@ -11,9 +11,12 @@ namespace GitMarket.Views.Dialogs
     {
         public delegate void GetDiscountDel(decimal discountValue);
         public event GetDiscountDel? GetDiscountEvent;
-        public SpecialDiscountDialogWindow()
+        private decimal price;
+        public SpecialDiscountDialogWindow(decimal _price)
         {
             InitializeComponent();
+            price = _price;
+            DiscountLabel.Focus();
         }
         private void Window_KeyUp(object sender, KeyEventArgs e)
         {
