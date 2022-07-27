@@ -22,6 +22,7 @@ namespace GitMarket.Views.Dialogs
         public readonly List<SaleProduct> products;
 
         private string inputDeviceText = "";
+
         public ViewModels.WindowsViewModels.MainNavigationWindowViewModel model;
         public EndSaleDialogWindow(List<SaleProduct> _products, ViewModels.WindowsViewModels.MainNavigationWindowViewModel md)
         {
@@ -31,7 +32,6 @@ namespace GitMarket.Views.Dialogs
             SetGifAsync();
             GetDiscount();
         }
-
         private void GetDiscount()
         {
             var disc = new DiscountModel
@@ -51,7 +51,6 @@ namespace GitMarket.Views.Dialogs
             model.ReceiptDiscount = model.ReceiptDiscount = model.discount.Sum(s => s.Discount_Sum);
             DiscountLabel.Text = model.ReceiptDiscount.ToString();
         }
-
         private void SetGifAsync()
         {
             Parallel.Invoke(() =>
@@ -67,7 +66,6 @@ namespace GitMarket.Views.Dialogs
                 });
             });
         }
-
         private async void CheckIsDevice()
         {
             await Task.Run(() => timerForDevice());
@@ -94,7 +92,6 @@ namespace GitMarket.Views.Dialogs
             EndCardPayment();
             Close();
         }
-
         private void EndCardPayment()
         {
             model.GetCalculate();
@@ -129,17 +126,17 @@ namespace GitMarket.Views.Dialogs
                     model.bonuses = APIRequests.GetBonusSum(bonus).ToList();
 
                     model.ReceiptBonus = model.bonuses.Sum(s => s.Bonus_Sum);
+
                     BonusLabel.Text = model.ReceiptBonus.ToString();
                 }
             }
         }
-        
+      
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             model.GetCalculate();
             Close();
         }
-
         private void Win_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.Key.ToString().Length > 1 && e.Key.ToString()[0] == 'D' && e.Key.ToString() != "Decimal")
@@ -160,7 +157,6 @@ namespace GitMarket.Views.Dialogs
                         break;
                 }
         }
-
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)
         {
             DragMove();

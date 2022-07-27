@@ -31,14 +31,12 @@
                     <StackPanel Margin="25 5 0 0" VerticalAlignment="Center">
                         <Border CornerRadius="5" Background="White">
                             <StackPanel Margin="3" Orientation="Horizontal">
-                                <TextBox IsTabStop="False" PreviewTextInput="PaidTextBox_PreviewTextInput" x:Name="textBoxSearch" BorderThickness="0"
-                                 Padding="10 3" FontSize="15" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
-                                    Width="320" Height="30"/>
-                                <Button IsTabStop="False" Margin="-30 0 0 0" Command="{Binding SearchByTextCommand}" Padding="0"
-                                BorderThickness="0" Width="25" Height="25" Background="Transparent">
-                                    <icon:PackIcon HorizontalAlignment="Center" 
-                                           Foreground="DarkBlue" Width="25" Height="25" Kind="Search"/>
-                                </Button>
+                                <TextBox IsTabStop="False" PreviewTextInput="PaidTextBox_PreviewTextInput" 
+                                         x:Name="textBoxSearch" BorderThickness="0" Background="Transparent"
+                                         Padding="10 3" FontSize="15" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                                         Width="320" Height="30"/>
+                                <Button Style="{DynamicResource SearchButton}"
+                                        Command="{Binding SearchByTextCommand}"/>
                             </StackPanel>
                         </Border>
                         <!--<Popup Style="{x:Null}" IsOpen="{Binding IsOpenPopup}" Width="320" MaxHeight="200">
@@ -80,7 +78,7 @@
                         <ColumnDefinition Width="2*" />
                         <ColumnDefinition Width="1.5*" />
                     </Grid.ColumnDefinitions>
-                    <ComboBox   Height="30" Style="{DynamicResource ComboBoxStyle1}" Background="Transparent"
+                    <ComboBox   Height="30" Style="{DynamicResource ComboBoxStyle1}" Background="White"
                                 HorizontalAlignment="Right" IsTabStop="False" x:Name="WindowComboBox"
                                 FontSize="12" Foreground="Gray" FontWeight="DemiBold" Width="150"
                                 HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
@@ -174,7 +172,7 @@
                             </Grid>
                             <DataGrid Grid.Column="1" RowStyle="{DynamicResource SaleDataGridRow}" 
                                       Style="{DynamicResource SalePageDataGrid_2}" Background="Transparent"
-                                      IsTabStop="False" Width="Auto" 
+                                      IsTabStop="False" Width="Auto" HorizontalScrollBarVisibility="Disabled"
                                       ColumnHeaderStyle="{DynamicResource hederstyle_Kuxne}"
                                       ItemsSource="{Binding FakeInfoCollection, UpdateSourceTrigger=PropertyChanged}">
                                 <DataGrid.Columns>
@@ -334,13 +332,11 @@
                             </StackPanel.Resources>
                             <Button Background="#40CC6F" Foreground="White" Uid="0" Content="Касса"/>
                             <Button Uid="1" Content="Товары"/>
-                            <!--<Button Uid="2" Content="Возврат"/>-->
-                            <!--<Button Uid="3" Content="В магазине"/>
-                    <Button Uid="4" Content="Заявки"/>
-                    <Button Uid="5" Content="История чеков"/>
-                    <Button Uid="6" Content="Акт-Прием товаров"/>
-                    <Button Uid="7" Content="Передать магазину"/>-->
                             <Button Uid="7" Content="Услуги"/>
+                            <!--<Button Uid="2" Content="Возврат"/>-->
+                            <Button Uid="3" Content="Заявки и прием товаров"/>
+                            <Button Uid="6" Content="Передача товаров"/>
+                            <Button Uid="4" Content="Возврат"/>
                             <Button Uid="4" Content="История чеков"/>
                             <Button Uid="2" Content="Горячие клавиши"/>
                             <Button Uid="3" Content="Дополнительно"/>

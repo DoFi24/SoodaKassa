@@ -16,6 +16,7 @@ namespace GitMarket.Views.Dialogs
         public UDSDialogWindow(MainNavigationWindowViewModel vmodel)
         {
             InitializeComponent();
+            UdsTextCode.Focus();
             _vmodel = vmodel;
             TotalTextBlock.Text = vmodel.ReceiptPrice.ToString();
         }
@@ -35,19 +36,16 @@ namespace GitMarket.Views.Dialogs
                     return;
                 if (e.Key == Key.Return)
                 {
-                    user = await Infrastructure.APIs.APIRequests.GetUDSUserInfoRequest(TotalTextBlock.Text, UdsTextCode.Text);
-                    if (user is null)
-                    {
-                        MessageBox.Show("Неправильный код!", "Непрвильный ввод", MessageBoxButton.OK, MessageBoxImage.Warning);
-                        return;
-                    }
-                    UserName.Text = user.user.displayName;
-                    UserBonus.Text = user!.user!.participant!.points!.ToString() ?? "Нету баллов";
+                    Button_Click_SearchClient(sender,e);
+                }
+                else if (e.Key == Key.Escape)
+                {
+                    this.Close();
                 }
             }
             catch (Exception w)
             {
-                MessageBox.Show("TextKeyUp \n" + w.Message);
+                //MessageBox.Show("TextKeyUp \n" + w.Message);
             }
         }
         private async void Button_Click_Accept(object sender, RoutedEventArgs e)
@@ -68,7 +66,7 @@ namespace GitMarket.Views.Dialogs
                                         receipt = new Receipt
                                         {
                                             total = Convert.ToDecimal(TotalTextBlock.Text),
-                                            skipLoyaltyTotal = String.IsNullOrEmpty(UdsSkipLoyaltyTotal.Text.Replace(",", ".")) ? 1 : Convert.ToDecimal(UdsSkipLoyaltyTotal.Text.Replace(",", ".")),
+                                            skipLoyaltyTotal = String.IsNullOrWhiteSpace(UdsSkipLoyaltyTotal.Text.Replace(",", ".")) ? 1 : Convert.ToDecimal(UdsSkipLoyaltyTotal.Text.Replace(",", ".")),
                                             points = point
                                         }
                                     });
@@ -79,8 +77,8 @@ namespace GitMarket.Views.Dialogs
                         {
                             code = user!.code!,
                             participant = null,
-                            nonce = null,
-                            cashier = null,
+                            nonce = Guid.NewGuid().ToString(),
+                            cashier = String.IsNullOrWhiteSpace(Setts.Default.CashierId) ? null : new Cashier {externalId = Setts.Default.CashierId},
                             receipt = new Receipt
                             {
                                 total = Convert.ToDecimal(TotalTextBlock.Text),
@@ -100,15 +98,15 @@ namespace GitMarket.Views.Dialogs
 
                 Setts.Default.Save();
 
-                _vmodel.ChangePriceWithUDS(Convert.ToDecimal(UdsSpisanieBonus.Text.Replace(",", ".")));
+                _vmodel.ChangePriceWithUDS(String.IsNullOrWhiteSpace(UdsSpisanieBonus.Text) ? 0 : Convert.ToDecimal(UdsSpisanieBonus.Text.Replace(",", ".")));
 
                 MessageBox.Show("Успешно!");
 
                 this.Close();
             }
-            catch (Exception w)
+            catch
             {
-                MessageBox.Show("Button_Click_Accept \n" + w.Message);
+                
             }
         }
 

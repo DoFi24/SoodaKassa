@@ -20,20 +20,44 @@ namespace GitMarket.Views.Dialogs
         }
         private void Window_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Return)
+            switch (e.Key)
             {
-                GetDiscountEvent(Convert.ToDecimal(DiscountLabel.Text.ToString().Replace('.', ',')));
-                Close();
-            }
-            else if (e.Key == Key.Escape)
-            {
-                Close();
+                case Key.Return:
+                    var discount = Convert.ToDecimal(DiscountLabel.Text.ToString().Replace('.', ','));
+                    if (discount > 100)
+                    {
+                        new ErrorMessageDialogWindow("Скидка не может превышать 100%!").ShowDialog();
+                        return;
+                    }
+                    GetDiscountEvent!(discount);
+                    Close();
+                    break;
+                case Key.Escape:
+                    Close();
+                    break;
             }
         }
 
         private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
 
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var discount = Convert.ToDecimal(DiscountLabel.Text.ToString().Replace('.', ','));
+            if (discount > 100)
+            {
+                new ErrorMessageDialogWindow("Скидка не может превышать 100%!").Show();
+                return;
+            }
+            GetDiscountEvent!(discount);
+            Close();
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
     }
 }

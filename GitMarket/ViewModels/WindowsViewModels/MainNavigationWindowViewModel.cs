@@ -521,7 +521,7 @@ namespace GitMarket.ViewModels.WindowsViewModels
         private void OpenAdminProject()
         {
             var p = new System.Diagnostics.Process();
-            p.StartInfo.FileName = Directory.GetCurrentDirectory() + @"\admin\а.exe";
+            p.StartInfo.FileName = Directory.GetCurrentDirectory()+@"\admin\а.exe";
             p.StartInfo.Arguments = $"{Setts.Default.AuthorizationToken} {Setts.Default.ShopId} {Setts.Default.StaffId} {Setts.Default.SkladId} {APIRequests.API_PATH}";
             p.Start();
         }
@@ -686,6 +686,7 @@ namespace GitMarket.ViewModels.WindowsViewModels
         {
             if (SelectedProductsCollection!.Count > 0)
             {
+                ReceiptSpecicalPrice = SelectedProductsCollection.Select(t => t.Discount).Sum();
                 VisualDiscount = ReceiptDiscount + ReceiptBonus + ReceiptSpecicalPrice + ReceiptUDSPrice;
                 ReceiptPrice = SelectedProductsCollection.Select(t => t.Itog).Sum() - (ReceiptDiscount + ReceiptBonus + ReceiptUDSPrice);
                 GetCalculateOverPrice();
@@ -955,7 +956,6 @@ namespace GitMarket.ViewModels.WindowsViewModels
             {
                 SelectedProductItem.DiscountPercent = Price;
                 SelectedProductsCollection = new ObservableCollection<SaleProduct>(SelectedProductsCollection);
-                ReceiptSpecicalPrice = SelectedProductsCollection.Select(t => t.Discount).Sum();
                 GetCalculate();
             }
         }

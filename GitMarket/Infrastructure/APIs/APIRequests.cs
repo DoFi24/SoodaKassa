@@ -39,8 +39,9 @@ namespace GitMarket.Infrastructure.APIs
 
                 if (result!.success)
                 {
-                    Setts.Default.AuthorizationToken = result.data.remember_token;
-                    Setts.Default.StaffId = result.data.USER.Id;
+                    Setts.Default.AuthorizationToken = result!.data!.remember_token;
+                    Setts.Default.StaffId = result!.data!.USER!.Id;
+                    Setts.Default.CashierId = result.data.USER.Uds_Id.ToString();
                     Setts.Default.Save();
 
                 }

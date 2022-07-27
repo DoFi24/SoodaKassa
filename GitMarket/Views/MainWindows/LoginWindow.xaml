@@ -23,8 +23,9 @@
             <ColumnDefinition Width="1*" />
             <ColumnDefinition Width="550" />
         </Grid.ColumnDefinitions>
+        
         <Image x:Name="Wallpaper" Grid.ColumnSpan="2" Source="/Resources/BackgroundImage/q1.png" Style="{DynamicResource DefaultImage}"/>
-
+        
         <Border Grid.Column="1" BorderBrush="#FBFBFB"
                 BorderThickness="4" Style="{DynamicResource DefaultBorder}" 
                 >
@@ -36,9 +37,11 @@
                 </Grid.RowDefinitions>
 
                 <Image Height="120" Source="/Resources/Base/soodaLogo.png" Margin="0 30 0 0" VerticalAlignment="Center"/>
-                
-                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="1" FontSize="25" FontWeight="DemiBold" Text="Добро пожаловать!"/>
 
+                <TextBlock HorizontalAlignment="Center" FontFamily="Roboto" VerticalAlignment="Bottom" Margin="1 0 0 -10"
+                           FontSize="35" FontWeight="DemiBold" Text="Добро пожаловать!"/>
+                <TextBlock HorizontalAlignment="Center" FontFamily="Roboto" VerticalAlignment="Bottom" Margin="-160 0 0 -40"
+                               FontSize="15" Foreground="#545454" Text="Введите логин и пароль"/>
                 <Grid Grid.Row="1" VerticalAlignment="Center">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
@@ -46,6 +49,7 @@
                         <RowDefinition Height="*" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
+                    
                     
 
                     <Border Style="{DynamicResource LoginWidowBorder}" 

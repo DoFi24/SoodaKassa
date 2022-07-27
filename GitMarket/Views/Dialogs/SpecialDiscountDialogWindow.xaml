@@ -24,14 +24,14 @@
             <TextBlock Opacity="0.6" Margin="50 23 0 0" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Top" Text="Скидка" FontWeight="Light" Grid.ColumnSpan="2"/>
             <Button Style="{DynamicResource SpecialDiscountDialogButton}" 
                     Margin="0 5 15 15" Grid.Row="1" Grid.Column="0" 
-                    HorizontalAlignment="Right">
+                    HorizontalAlignment="Right" Click="Button_Click"> 
                 <Border Background="#3B9AAE" CornerRadius="4">
                     <TextBlock Foreground="White" FontWeight="DemiBold" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Ок (Enter)"/>
                 </Border>
             </Button>
             <Button Style="{DynamicResource SpecialDiscountDialogButton}"
                     Margin="15 5 0 15" Grid.Row="1" Grid.Column="1" 
-                    HorizontalAlignment="Left">
+                    HorizontalAlignment="Left" Click="Button_Click_1">
                 <Border Background="white" CornerRadius="4" BorderThickness="2" BorderBrush="#3B9AAE">
                     <TextBlock Foreground="#3B9AAE" FontWeight="DemiBold" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Отмена(Esc)"/>
                 </Border>

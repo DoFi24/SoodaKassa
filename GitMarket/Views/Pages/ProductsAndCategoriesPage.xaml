@@ -4,10 +4,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:GitMarket.ViewModels.PagesViewModels"
+        xmlns:mt="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d" Background="{x:Null}" Title="Выбор товаров" AllowsTransparency="True"
         Icon="/Resources/Base/logo2.png" WindowStyle="None" ResizeMode="NoResize"
         d:DataContext="{d:DesignInstance Type=vm:ProductsAndCategoriesPageViewModel}"
-        d:DesignHeight="600" d:DesignWidth="900" WindowStartupLocation="CenterScreen">
+        d:DesignHeight="600" d:DesignWidth="900" WindowStartupLocation="CenterScreen"
+        KeyUp="Window_KeyUp">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -18,7 +20,35 @@
     </Window.Resources>
     <Border CornerRadius="8" Background="White" BorderThickness=".5" BorderBrush="Black">
         <Grid Margin="10 20 10 10" Background="White">
-            <Grid Background="White" Grid.Row="0" Grid.RowSpan="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="4*" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+                <Border Style="{DynamicResource LoginWidowBorder}" BorderThickness=".5" BorderBrush="#40CC6F"
+                        Width="350" Height="35" Margin="0 -5 0 0" Grid.Row="0">
+                    <StackPanel Margin="3" Background="#e8e8e8" Orientation="Horizontal">
+                        <TextBox MinWidth="310" VerticalContentAlignment="Center" FontSize="15"
+                             Foreground="#03006b" x:Name="SearchTextBox" Style="{DynamicResource ComboBoxEditableTextBox}"
+                             Text="{Binding SearchText,UpdateSourceTrigger=PropertyChanged}" Padding="10 0 0 0"/>
+                        <Button Command="{Binding SearchProductCommand}" Margin="1"
+                                BorderThickness="0" Padding="0" Background="Transparent" Width="30" Height="30">
+                            <mt:PackIcon Background="Transparent" Kind="Search" Foreground="#40CC6F"
+                                         BorderThickness="0" Height="30" Width="30"/>
+                        </Button>
+                    </StackPanel>
+                </Border>
+                
+                <Button Grid.Column="1" Height="30" Width="150" Margin="0 0 20 0"
+                        Content="Выбрать (Enter)" Style="{DynamicResource DefaultButtonProducts}"
+                        Background="#40CC6F" HorizontalAlignment="Right"
+                        Command="{Binding SelectProductCommand}"/>
+            </Grid>
+            <Grid Background="White" Grid.Row="1" Grid.RowSpan="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" MaxWidth="400"/>
                     <ColumnDefinition Width="2*" />
@@ -26,7 +56,7 @@
                 <StackPanel>
                     <TextBlock Background="#40CC6F" Height="25" Margin="0 0 3 0"
                                TextAlignment="Center" Foreground="White" FontSize="18" Text="Выберите категорию"/>
-                    <DataGrid Margin="3" Height="540" SelectionMode="Single" BorderThickness=".8" BorderBrush="LightBlue" FontSize="12" 
+                    <DataGrid Margin="3" Height="500" SelectionMode="Single" BorderThickness=".8" BorderBrush="LightBlue" FontSize="12" 
                               Style="{DynamicResource grid_Kuxne}"
                               ColumnHeaderStyle="{DynamicResource ProductHeaderStyle}"
                               HeadersVisibility="Column"
@@ -66,16 +96,16 @@
                                    TextAlignment="Center" Margin="3 0 3 0"
                                    FontSize="18" Foreground="White"/>
                     </Grid>
-                    <ScrollViewer Height="545" VerticalAlignment="Stretch" 
+                    <ScrollViewer Height="505" VerticalAlignment="Stretch" 
                                   HorizontalAlignment="Stretch" 
                                   VerticalScrollBarVisibility="Visible"
                                   PanningMode="Both">
-                        <DataGrid Focusable="True" Margin="3 3 3 3" BorderThickness=".8"
+                        <DataGrid Focusable="True" Margin="3 3 0 3" BorderThickness=".8"
                           BorderBrush="LightBlue" Background="Transparent"                 
                           CanUserAddRows="False" HeadersVisibility="Column"
                           RowHeight="50" VerticalScrollBarVisibility="Visible"
                           AutoGenerateColumns="False" MaxHeight="545"
-                          CanUserResizeColumns="True"
+                          CanUserResizeColumns="True" SelectedIndex="{Binding SelectedProductIndex}"
                           Style="{DynamicResource SalePageDataGrid_2}"
                           ColumnHeaderStyle="{DynamicResource ColumnHeaderStyleCategoryProduct}"
                           RowStyle="{DynamicResource SaleDataGridRow}"

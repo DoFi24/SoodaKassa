@@ -15,6 +15,7 @@
     public class User
     {
         public uint Id { get; set; }
+        public long? Uds_Id { get; set; }
         public string? Login { get; set; }
         public string? Paswword { get; set; }
         public RURoles[]? Roles { get; set; }

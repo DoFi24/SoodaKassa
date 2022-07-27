@@ -2,11 +2,10 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <Style TargetType="{x:Type Border}" x:Key="DefaultBorder">
-        <Setter Property="CornerRadius" Value="8"/>
-        <Setter Property="Margin" Value="20"/>
+        <Setter Property="CornerRadius" Value="25"/>
+        <Setter Property="Margin" Value="20 50 20 50"/>
         <Setter Property="Background" Value="White"/>
     </Style>
-
     <Style TargetType="Border" x:Key="LoginWidowBorder">
         <Setter Property="Background" Value="#e8e8e8" />
         <Setter Property="CornerRadius" Value="5" />

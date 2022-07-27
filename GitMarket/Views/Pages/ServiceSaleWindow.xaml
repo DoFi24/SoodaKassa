@@ -2,11 +2,12 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mt="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:GitMarket.ViewModels.PagesViewModels" Icon="/Resources/Base/logo2.png"
         d:DataContext="{d:DesignInstance Type=vm:ServiceSaleWindowViewModel}" AllowsTransparency="True"
         mc:Ignorable="d" WindowStyle="None" Title="Услуги" d:DesignHeight="620" 
-        d:DesignWidth="900" WindowStartupLocation="CenterScreen">
+        d:DesignWidth="900" WindowStartupLocation="CenterScreen" KeyUp="Window_KeyUp">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -15,33 +16,60 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
-    <Border CornerRadius="8" BorderThickness=".5" Background="White" BorderBrush="Black">
+    <Border CornerRadius="8" Background="White" BorderThickness=".5" BorderBrush="Black">
         <Grid Margin="10 20 10 10" Background="White">
-            <Grid Background="White" Grid.Row="0" Grid.RowSpan="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="4*" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+                <Border Style="{DynamicResource LoginWidowBorder}" BorderThickness=".5" BorderBrush="#40CC6F"
+                        Width="350" Height="35" Margin="0 -5 0 0" Grid.Row="0">
+                    <StackPanel Margin="3" Background="#e8e8e8" Orientation="Horizontal">
+                        <TextBox MinWidth="310" VerticalContentAlignment="Center" FontSize="15"
+                             Foreground="#03006b" x:Name="SearchTextBox" Style="{DynamicResource ComboBoxEditableTextBox}"
+                             Text="{Binding SearchText,UpdateSourceTrigger=PropertyChanged}" Padding="10 0 0 0"/>
+                        <Button Command="{Binding SearchProductCommand}" Margin="1"
+                                BorderThickness="0" Padding="0" Background="Transparent" Width="30" Height="30">
+                            <mt:PackIcon Background="Transparent" Kind="Search" Foreground="#40CC6F"
+                                         BorderThickness="0" Height="30" Width="30"/>
+                        </Button>
+                    </StackPanel>
+                </Border>
+                <Button Grid.Column="1" Height="30" Width="150" Margin="0 0 20 0"
+                        Content="Выбрать" Style="{DynamicResource DefaultButtonProducts}"
+                        Background="#40CC6F" HorizontalAlignment="Right"
+                        Command="{Binding SelectProductCommand}"/>
+            </Grid>
+            <Grid Background="White" Grid.Row="1" Grid.RowSpan="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" MaxWidth="400"/>
                     <ColumnDefinition Width="2*" />
                 </Grid.ColumnDefinitions>
                 <StackPanel>
                     <TextBlock Background="#40CC6F" Height="25" Margin="0 0 3 0"
-                               TextAlignment="Center" Foreground="White" 
-                               FontSize="18" FontWeight="SemiBold" Text="Выберите категорию"/>
-                    <DataGrid Margin="3" Height="560" SelectionMode="Single" BorderThickness=".8" BorderBrush="LightBlue" FontSize="12" 
-                          Style="{DynamicResource grid_Kuxne}"
-                          ColumnHeaderStyle="{DynamicResource ProductHeaderStyle}"
-                          HeadersVisibility="Column"
-                          RowStyle="{DynamicResource SaleDataGridRow}"
-                          VerticalGridLinesBrush="Transparent"
-                          VerticalScrollBarVisibility="Hidden"
-                          CanUserAddRows="False" AutoGenerateColumns="False"
-                          CanUserResizeColumns="True" SelectedItem="{Binding SelectedCategoryItem, UpdateSourceTrigger=PropertyChanged}"
-                          ItemsSource="{Binding CategoryItems, UpdateSourceTrigger=PropertyChanged}"
-                          Background="Transparent" >
+                               TextAlignment="Center" Foreground="White" FontSize="18" Text="Выберите категорию"/>
+                    <DataGrid Margin="3" Height="500" SelectionMode="Single" BorderThickness=".8" BorderBrush="LightBlue" FontSize="12" 
+                              Style="{DynamicResource grid_Kuxne}"
+                              ColumnHeaderStyle="{DynamicResource ProductHeaderStyle}"
+                              HeadersVisibility="Column"
+                              CellStyle="{DynamicResource CheckHistoryDataGridCell}"
+                              RowStyle="{DynamicResource SaleDataGridRow}"
+                              VerticalGridLinesBrush="Transparent"
+                              VerticalScrollBarVisibility="Hidden"
+                              CanUserAddRows="False" AutoGenerateColumns="False"
+                              CanUserResizeColumns="True" SelectedItem="{Binding SelectedCategoryItem, UpdateSourceTrigger=PropertyChanged}"
+                              ItemsSource="{Binding CategoryItems, UpdateSourceTrigger=PropertyChanged}"
+                              Background="Transparent" >
                         <DataGrid.Columns>
                             <DataGridTemplateColumn>
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock Margin="30 0 0 0" FontWeight="DemiBold" HorizontalAlignment="Left"
+                                        <TextBlock FontWeight="DemiBold" HorizontalAlignment="Center"
                                                    VerticalAlignment="Center" Text="{Binding NAME}" FontSize="17"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
@@ -61,26 +89,25 @@
                 </StackPanel>
                 <StackPanel Grid.Column="1" Grid.Row="1">
                     <Grid>
-                        <TextBlock Margin="3 0 3 0" Height="25" Text="Выберите услугу" Background="#40CC6F"
-                                   TextAlignment="Center" FontWeight="SemiBold"
+                        <TextBlock Height="25" Text="Выберите услугу" Background="#40CC6F"
+                                   TextAlignment="Center" Margin="3 0 3 0"
                                    FontSize="18" Foreground="White"/>
-
                     </Grid>
-                    <ScrollViewer Height="566" VerticalAlignment="Stretch" 
-                              HorizontalAlignment="Stretch" 
-                              VerticalScrollBarVisibility="Visible" 
-                              PanningMode="Both">
-                        <DataGrid Focusable="True" Margin="3 3 3 3" BorderThickness=".8"
+                    <ScrollViewer Height="505" VerticalAlignment="Stretch" 
+                                  HorizontalAlignment="Stretch" 
+                                  VerticalScrollBarVisibility="Visible"
+                                  PanningMode="Both">
+                        <DataGrid Focusable="True" Margin="3 3 0 3" BorderThickness=".8"
                           BorderBrush="LightBlue" Background="Transparent"                 
                           CanUserAddRows="False" HeadersVisibility="Column"
                           RowHeight="50" VerticalScrollBarVisibility="Visible"
-                          AutoGenerateColumns="False"
-                          CanUserResizeColumns="True"
+                          AutoGenerateColumns="False" MaxHeight="545"
+                          CanUserResizeColumns="True" SelectedIndex="{Binding SelectedProductIndex}"
                           Style="{DynamicResource SalePageDataGrid_2}"
                           ColumnHeaderStyle="{DynamicResource ColumnHeaderStyleCategoryProduct}"
                           RowStyle="{DynamicResource SaleDataGridRow}"
                           ItemsSource="{Binding ProductsCollection}"
-                          SelectedItem="{Binding SelectedProduct}">
+                          SelectedItem="{Binding SelectedProduct, UpdateSourceTrigger=PropertyChanged}">
                             <DataGrid.Columns>
                                 <DataGridTemplateColumn Header="Название" Width="4*">
                                     <DataGridTemplateColumn.CellTemplate>
@@ -91,17 +118,24 @@
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="Кол-во" Width="1.5*">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock TextAlignment="Center" Text="{Binding Quantity}" Foreground="Black"  FontSize="20"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
                                 <DataGridTemplateColumn Header="Цена" Width="1.5*">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Grid.Column="2" TextAlignment="Center" Text="{Binding Sale_Price}" Foreground="Black"  FontSize="20"/>
+                                            <TextBlock TextAlignment="Center" Text="{Binding Sale_Price}" Foreground="Black"  FontSize="20"/>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
                                 <DataGridTemplateColumn Header="Коментарий" Width="4*">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Grid.Column="3" TextAlignment="Center" Text="{Binding Comment}" Foreground="Black"  FontSize="20"/>
+                                            <TextBlock TextAlignment="Center" Text="{Binding Comment}" Foreground="Black"  FontSize="20"/>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
@@ -110,8 +144,10 @@
                     </ScrollViewer>
                 </StackPanel>
             </Grid>
-            <Button Style="{x:Null}" Height="20" Width="20" Background="White" BorderThickness="0"
-                                HorizontalAlignment="Right" Click="Button_Click" VerticalAlignment="Top" Margin="0 -20 -2 0">
+            <Button Style="{x:Null}" Height="20" Width="20" 
+                    Background="White" BorderThickness="0"
+                    HorizontalAlignment="Right" Click="Button_Click"
+                    VerticalAlignment="Top" Margin="0 -20 -2 0">
                 <Image Source="/Resources/DefaultIcons/close.png"/>
             </Button>
         </Grid>

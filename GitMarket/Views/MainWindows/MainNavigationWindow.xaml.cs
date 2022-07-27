@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Animation;
 
 namespace GitMarket.Views.MainWindows
@@ -38,6 +39,8 @@ namespace GitMarket.Views.MainWindows
             WindowComboBox.SelectedIndex = 0;
             if (_isMain)
                 ProgramStartWriteToJournal();
+            else
+                WindowComboBox.Foreground = Brushes.Red;
             DateTextBlock.Text = DateTime.UtcNow.ToString("dd.MM.yyyy");
         }
 
@@ -134,7 +137,11 @@ namespace GitMarket.Views.MainWindows
                     itogTextBox.Focus();
                     return;
                 case System.Windows.Input.Key.Enter:
-                    main!.GetProductwithAPI();
+                    if (textBoxSearch.IsFocused)
+                    {
+                        main!.GetProductwithAPI();
+                        textBoxSearch.Text = "";
+                    }
                     itogTextBox.Focus();
                     return;
                 case System.Windows.Input.Key.Add:
@@ -158,7 +165,6 @@ namespace GitMarket.Views.MainWindows
                     return;
                 case System.Windows.Input.Key.Decimal:
                     textBoxSearch.Focus();
-                    itogTextBox.Focus();
                     return;
                 case System.Windows.Input.Key.Divide:
                     if (main!.SelectedProductItem is not null || main!.SelectedProductItem != new SaleProduct())
@@ -182,6 +188,12 @@ namespace GitMarket.Views.MainWindows
                 case System.Windows.Input.Key.Oem3:
                     new ProductsAndCategoriesPage(main!).ShowDialog();
                     return;
+                case System.Windows.Input.Key.Left:
+                    ChangeWindow(0);
+                    return;
+                case System.Windows.Input.Key.Right:
+                    ChangeWindow(1);
+                    return;
             }
 
             if (e.Key.ToString().Length > 1 && e.Key.ToString()[0] == 'D' && e.Key.ToString() != "Decimal")
@@ -191,6 +203,26 @@ namespace GitMarket.Views.MainWindows
                 inputDeviceText += e.Key.ToString()[1];
                 return;
             }
+        }
+
+        private void ChangeWindow(int v)
+        {
+            WindowComboBox.SelectedIndex = v;
+            if (_isMain)
+            {
+                if (WindowComboBox.SelectedIndex == 0)
+                    return;
+                SecondWindow!.WindowComboBox.SelectedIndex = 1;
+                SecondWindow.Show();
+            }
+            else
+            {
+                if (WindowComboBox.SelectedIndex == 1)
+                    return;
+                (Owner as MainNavigationWindow)!.WindowComboBox.SelectedIndex = 0;
+                Owner.Show();
+            }
+            this.Hide();
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)

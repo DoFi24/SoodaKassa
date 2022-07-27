@@ -1,7 +1,9 @@
-﻿using GitMarket.Domain.Models.APIResponseRequest;
+﻿using GitMarket.Commands;
+using GitMarket.Domain.Models.APIResponseRequest;
 using GitMarket.Domain.Models.TitiModels.ProductsModel;
 using GitMarket.Infrastructure.APIs;
 using GitMarket.ViewModels.WindowsViewModels;
+using GitMarket.Views.Dialogs;
 using System;
 using System.Collections;
 using System.Collections.ObjectModel;
@@ -53,30 +55,83 @@ namespace GitMarket.ViewModels.PagesViewModels
             set
             {
                 Set(ref _selectedProduct, value);
-                if (value != null && value != new SaleProduct())
-                {
-                    if (!_model.SelectedProductsCollection.Any(s => s.Prihod_Detail_Id == value.Prihod_Detail_Id))
-                    {
-                        value.QuantityCount = 1;
-                        _model.SelectedProductsCollection.Add(value);
-                    }
-                    else
-                    {
-                        var product = _model.SelectedProductsCollection.First(s => s.Prihod_Detail_Id == value.Prihod_Detail_Id);
-                        if (product.QuantityCount < product.Quantity)
-                        {
-                            product.QuantityCount++;
-                            _model.SelectedProductsCollection.Remove(product);
-                            _model.SelectedProductsCollection.Add(product);
-                        }
-                        else 
-                        MessageBox.Show("Не достаточно товаров!");
-                    }
-                    _model.SelectedProductItem = _model.SelectedProductsCollection.Last();
-                    _model.GetCalculate();
-                    CloseAction!.Invoke();
-                }
             }
+        }
+
+        private string _searchText = String.Empty;
+        public string SearchText
+        {
+            get { return _searchText; }
+            set
+            {
+                Set(ref _searchText, value);
+            }
+        }
+        private int _selectedProductIndex = 0;
+        public int SelectedProductIndex
+        {
+            get { return _selectedProductIndex; }
+            set
+            {
+                Set(ref _selectedProductIndex, value);
+            }
+        }
+        
+        private RelayCommand _searchProductCommand;
+        public RelayCommand SearchProductCommand =>
+            _searchProductCommand ?? (_searchProductCommand = new RelayCommand(SearchProductCommandExecute, (object obj) => true));
+        public async void SearchProductCommandExecute(object obj)
+        {
+            if (string.IsNullOrWhiteSpace(SearchText))
+            {
+                new ErrorMessageDialogWindow("Текст для поиска, пустой!").ShowDialog();
+                return;
+            }
+            ProductsCollection = new ObservableCollection<SaleProduct>(await APIRequests.GetFromAPIAsync<SaleProduct>(
+                new RequestModelGet
+                {
+                    page = 1,
+                    shopId = Setts.Default.ShopId,
+                    staffId = Setts.Default.StaffId,
+                    parameter = "get",
+                    pageSize = 20,
+                    data = new
+                    {
+                        search = new ArrayList { "=", SearchText }
+                    }
+                }));
+            if (ProductsCollection.Any())
+                SelectedProductIndex = 0;
+            SearchText = String.Empty;
+        }
+
+        private RelayCommand _selectProductCommand;
+        public RelayCommand SelectProductCommand =>
+            _selectProductCommand ??= new RelayCommand(SelectProductCommandExecute, (object obj) => true);
+        public void SelectProductCommandExecute(object obj)
+        {
+            if (SelectedProduct is null || SelectedProduct == new SaleProduct() || String.IsNullOrWhiteSpace(SelectedProduct?.Product_Name))
+                return;
+            if (!_model.SelectedProductsCollection.Any(s => s.Prihod_Detail_Id == SelectedProduct.Prihod_Detail_Id))
+            {
+                SelectedProduct.QuantityCount = 1;
+                _model.SelectedProductsCollection.Add(SelectedProduct);
+            }
+            else
+            {
+                var product = _model.SelectedProductsCollection.First(s => s.Prihod_Detail_Id == SelectedProduct.Prihod_Detail_Id);
+                if (product.QuantityCount < product.Quantity)
+                {
+                    product.QuantityCount++;
+                    _model.SelectedProductsCollection.Remove(product);
+                    _model.SelectedProductsCollection.Add(product);
+                }
+                else
+                    MessageBox.Show("Недостаточно товаров!");
+            }
+            _model.SelectedProductItem = _model.SelectedProductsCollection.Last();
+            _model.GetCalculate();
+            CloseAction!.Invoke();
         }
         private async void GetProductsFromCategory(APICategories category)
         {
@@ -87,12 +142,14 @@ namespace GitMarket.ViewModels.PagesViewModels
                     shopId = Setts.Default.ShopId,
                     staffId = Setts.Default.StaffId,
                     parameter = "get",
-                    pageSize = 10,
+                    pageSize = 20,
                     data = new
                     {
                         categoryId = new ArrayList { "=", category.ID }
                     }
                 }));
+            if(ProductsCollection.Any())
+                SelectedProductIndex = 0;
         }
         private async void GetCategoriesAPI()
         {
@@ -100,7 +157,7 @@ namespace GitMarket.ViewModels.PagesViewModels
             {
                 parameter = "get",
                 page = 1,
-                pageSize = 10,
+                pageSize = 20,
                 shopId = Setts.Default.ShopId,
                 staffId = Setts.Default.StaffId,
                 data = new
@@ -113,6 +170,27 @@ namespace GitMarket.ViewModels.PagesViewModels
             };
 
             SelectedCategoryItem = CategoryItems.Last();
+        }
+        public void UpDown(bool isUp)
+        {
+            if (ProductsCollection.Count > 1)
+            {
+                if (isUp)
+                {
+                    if (SelectedProductIndex == ProductsCollection.Count - 1)
+                        SelectedProductIndex = 0;
+                    else
+                        SelectedProductIndex++;
+                }
+                else
+                {
+                    if (SelectedProductIndex <= 0)
+                        SelectedProductIndex = ProductsCollection.Count - 1;
+                    else
+                        SelectedProductIndex--;
+
+                }
+            }
         }
     }
 }
